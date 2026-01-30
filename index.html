@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Solar + Storage | Sales Deck</title>
-  <meta name="description" content="Light-theme interactive sales deck with early inputs synced to a 25-year utility comparison + savings-only proposals + proof tiles + TOU chart." />
+  <meta name="description" content="Light-theme interactive sales deck with early inputs synced to a 25-year utility comparison + savings-only proposals + proof tiles + TOU chart + scrollable yearly monthly tables." />
 
   <style>
     :root{
@@ -59,7 +59,7 @@
     }
 
     a{ color: inherit; }
-    a:hover{ opacity:.9; }
+    a:hover{ opacity:.92; }
 
     .wrap{ max-width:var(--max); margin:0 auto; padding:16px 16px 90px; }
 
@@ -438,6 +438,73 @@
     }
     .good{ color: var(--good); }
     .bad{ color: var(--bad); }
+
+    /* NEW: scrollable yearly monthly list under each option */
+    .yearbox{
+      margin-top:12px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 10px 22px rgba(15,23,42,.04);
+      overflow:hidden;
+    }
+    .yearbox-h{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.85));
+    }
+    .yearbox-h .title{
+      font-size:12px;
+      font-weight:1100;
+      color: rgba(15,23,42,.86);
+      letter-spacing:.22px;
+      text-transform:uppercase;
+    }
+    .yearbox-h .hint{
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .yearscroll{
+      max-height:220px; /* scroll area height */
+      overflow:auto;
+      padding:10px 12px 12px;
+      background: rgba(255,255,255,.95);
+    }
+    .yeartable{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    .yeartable th, .yeartable td{
+      text-align:left;
+      padding:8px 6px;
+      border-bottom:1px dashed rgba(15,23,42,.10);
+      vertical-align:middle;
+    }
+    .yeartable th{
+      font-size:12px;
+      color:var(--muted2);
+      text-transform:uppercase;
+      letter-spacing:.18px;
+      font-weight:1100;
+      position:sticky;
+      top:0;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(15,23,42,.10);
+      z-index:2;
+    }
+    .yeartable td:last-child{
+      font-family: var(--mono);
+      font-weight:1000;
+      color: rgba(15,23,42,.88);
+    }
 
     /* Learning Mode */
     .learn{ margin-top: 14px; display:none; }
@@ -836,6 +903,7 @@
           <p>
             Utility vs two options. The utility column shows the <strong>utility 25-year total</strong>.
             Each proposal shows only the <strong>$$ saved</strong> compared to utility (no proposal totals).
+            Under each proposal, you can scroll the <strong>monthly payment by year</strong> (Years 1–25).
           </p>
 
           <div class="calc-grid">
@@ -909,6 +977,27 @@
                   <div class="big" id="aSave">$—</div>
                 </div>
               </div>
+
+              <!-- NEW: Yearly monthly list -->
+              <div class="yearbox" aria-label="Option A monthly payment by year">
+                <div class="yearbox-h">
+                  <div class="title">Monthly payment by year (1–25)</div>
+                  <div class="hint">Scroll</div>
+                </div>
+                <div class="yearscroll">
+                  <table class="yeartable">
+                    <thead>
+                      <tr>
+                        <th style="width:40%;">Year</th>
+                        <th>Avg monthly</th>
+                      </tr>
+                    </thead>
+                    <tbody id="aYearRows">
+                      <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a monthly payment to populate.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
             <!-- Option B -->
@@ -940,6 +1029,27 @@
                 <div>
                   <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
                   <div class="big" id="bSave">$—</div>
+                </div>
+              </div>
+
+              <!-- NEW: Yearly monthly list -->
+              <div class="yearbox" aria-label="Option B monthly payment by year">
+                <div class="yearbox-h">
+                  <div class="title">Monthly payment by year (1–25)</div>
+                  <div class="hint">Scroll</div>
+                </div>
+                <div class="yearscroll">
+                  <table class="yeartable">
+                    <thead>
+                      <tr>
+                        <th style="width:40%;">Year</th>
+                        <th>Avg monthly</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bYearRows">
+                      <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a monthly payment to populate.</td></tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -1010,7 +1120,7 @@
               <strong>Slide 1:</strong> confirm monthly average, annual usage, and a reasonable annual increase.<br>
               <strong>Slide 2:</strong> TOU penalizes evenings → storage time-shifts power to peak.<br>
               <strong>Slide 3:</strong> VPP is optional; verify rules/availability via the program page.<br>
-              <strong>Slide 4:</strong> show utility total + savings; if it’s not clear, adjust.
+              <strong>Slide 4:</strong> show utility total + savings; review monthly-by-year scroll boxes for clarity.
             </div>
           </div>
         </div>
@@ -1032,8 +1142,6 @@
   <script>
     /***************
       Utility sources + themes
-      - Links show as big square tiles inside Sales slides
-      - Utility selector updates tile sets + utility color accents
     ***************/
     const UTILITIES = {
       sce: {
@@ -1091,6 +1199,12 @@
       return total;
     }
 
+    // Monthly amount in year N (not total) = baseMonthly * (1+r)^(N-1)
+    function monthlyInYear(baseMonthly, escPct, yearIndex){
+      const r = (escPct || 0) / 100;
+      return baseMonthly * Math.pow(1+r, yearIndex - 1);
+    }
+
     function renderTiles(container, items){
       container.innerHTML = "";
       items.filter(Boolean).forEach(x => {
@@ -1105,6 +1219,37 @@
         `;
         container.appendChild(a);
       });
+    }
+
+    function renderYearRows(tbodyEl, baseMonthly, escPct){
+      if (!tbodyEl) return;
+
+      const m = parseFloat(baseMonthly);
+      const e = parseFloat(escPct);
+
+      if (!isFinite(m) || m <= 0){
+        tbodyEl.innerHTML = `
+          <tr>
+            <td colspan="2" style="color:var(--muted2); font-size:12.5px;">
+              Enter a monthly payment to populate.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const safeE = isFinite(e) ? e : 0;
+      let html = "";
+      for (let y = 1; y <= 25; y++){
+        const mo = monthlyInYear(m, safeE, y);
+        html += `
+          <tr>
+            <td>Year ${y}</td>
+            <td>${fmt$(mo)}/mo</td>
+          </tr>
+        `;
+      }
+      tbodyEl.innerHTML = html;
     }
 
     /***************
@@ -1151,6 +1296,10 @@
     const closeB = $("closeB");
     const closeANotes = $("closeANotes");
     const closeBNotes = $("closeBNotes");
+
+    // NEW: yearly rows containers
+    const aYearRows = $("aYearRows");
+    const bYearRows = $("bYearRows");
 
     // Proof containers
     const proofInputs = $("proofInputs");
@@ -1223,6 +1372,10 @@
 
       aSave.className = "big " + ((saveA>=0) ? "good" : "bad");
       bSave.className = "big " + ((saveB>=0) ? "good" : "bad");
+
+      // NEW: yearly monthly tables for options
+      renderYearRows(aYearRows, aMonthly.value, aEsc.value);
+      renderYearRows(bYearRows, bMonthly.value, bEsc.value);
     }
 
     /***************
@@ -1252,7 +1405,6 @@
       setRootVar("--utilityB", u.colors.B);
       utilityColTitle.textContent = `Utility (${u.short})`;
 
-      // Tiles shown per slide
       const tilesInputs = [u.tiles.inc13, u.tiles.base1, u.tiles.base2].filter(Boolean);
       const tilesTou = [u.tiles.tou].filter(Boolean);
       const tilesVpp = [u.tiles.vpp].filter(Boolean);
@@ -1263,7 +1415,6 @@
       renderTiles(proofVpp, tilesVpp);
       renderTiles(proofCompare, tilesCompare);
 
-      // Learning mode shows all available tiles
       const all = [u.tiles.inc13, u.tiles.tou, u.tiles.base1, u.tiles.base2, u.tiles.vpp].filter(Boolean);
       renderTiles(learningTiles, all);
 
