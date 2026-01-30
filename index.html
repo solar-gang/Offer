@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Solar + Storage | Sales Deck</title>
-  <meta name="description" content="Light-theme interactive sales deck with early inputs synced to a 25-year utility comparison + savings-only proposals + proof tiles." />
+  <meta name="description" content="Light-theme interactive sales deck with early inputs synced to a 25-year utility comparison + savings-only proposals + proof tiles + TOU chart." />
 
   <style>
     :root{
-      /* Light, friendly, premium */
+      /* Light, friendly, premium palette */
       --bgA:#F7FAFF;
       --bgB:#FFFFFF;
       --ink:#0F172A;     /* slate-900 */
@@ -22,7 +22,7 @@
       --shadow2: 0 10px 30px rgba(15, 23, 42, .08);
       --radius:22px;
 
-      /* Utility theme defaults */
+      /* Utility theme defaults (changes via utility selector) */
       --utilityA:#D1202E; /* SCE */
       --utilityB:#FFCF36;
 
@@ -57,6 +57,7 @@
         linear-gradient(180deg, var(--bgA), var(--bgB));
       overflow-x:hidden;
     }
+
     a{ color: inherit; }
     a:hover{ opacity:.9; }
 
@@ -92,7 +93,7 @@
       border:1px solid rgba(255,255,255,.55);
       opacity:.55;
     }
-    .brand h1{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:900; line-height:1.1; }
+    .brand h1{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:1000; line-height:1.1; }
     .brand p{ margin:2px 0 0; font-size:12.5px; color:var(--muted2); }
 
     .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
@@ -113,7 +114,7 @@
       border:0;
       outline:none;
     }
-    select{ cursor:pointer; font-weight:900; }
+    select{ cursor:pointer; font-weight:1000; }
 
     .btn{
       cursor:pointer;
@@ -122,7 +123,7 @@
       color:var(--ink);
       padding:14px 16px;
       border-radius:16px;
-      font-weight:900;
+      font-weight:1000;
       letter-spacing:.2px;
       box-shadow: var(--shadow2);
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
@@ -143,7 +144,7 @@
     }
     .toggle button{
       border:0; background:transparent; color:var(--muted);
-      padding:12px 14px; cursor:pointer; font-weight:950; letter-spacing:.2px;
+      padding:12px 14px; cursor:pointer; font-weight:1000; letter-spacing:.2px;
       font-size:14px;
     }
     .toggle button.active{
@@ -244,8 +245,14 @@
       padding:16px;
       box-shadow: 0 10px 26px rgba(15,23,42,.05);
     }
-    .tile .k{ font-size:12.5px; color:var(--muted2); letter-spacing:.25px; font-weight:950; text-transform:uppercase; }
-    .tile .v{ margin-top:8px; font-size:30px; font-weight:1000; letter-spacing:-.4px; }
+    .tile .k{
+      font-size:12.5px;
+      color:var(--muted2);
+      letter-spacing:.25px;
+      font-weight:1000;
+      text-transform:uppercase;
+    }
+    .tile .v{ margin-top:8px; font-size:30px; font-weight:1100; letter-spacing:-.4px; }
     .tile .h{ margin-top:8px; font-size:14px; color:var(--muted); line-height:1.65; }
 
     .bigline{
@@ -279,7 +286,7 @@
       box-shadow: var(--shadow2);
     }
 
-    /* Proof tiles (bigger square blocks) */
+    /* Proof tiles */
     .proofStrip{
       margin-top:16px;
       border-radius:18px;
@@ -296,7 +303,7 @@
     .proofHeader .label{
       font-size:12px;
       color:var(--muted2);
-      font-weight:1000;
+      font-weight:1100;
       letter-spacing:.22px;
       text-transform:uppercase;
     }
@@ -314,13 +321,13 @@
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(241,245,249,.85));
       padding:14px 12px;
-      min-height:78px;
+      min-height:84px;
       text-decoration:none;
       box-shadow: 0 12px 26px rgba(15,23,42,.06);
       transition: transform .12s ease, box-shadow .12s ease;
     }
     .proofTile:hover{ transform:translateY(-1px); box-shadow: 0 18px 34px rgba(15,23,42,.08); }
-    .proofTile .t{ font-weight:950; font-size:13.5px; line-height:1.2; }
+    .proofTile .t{ font-weight:1100; font-size:13.5px; line-height:1.25; }
     .proofTile .s{ margin-top:8px; font-size:12px; color:var(--muted2); display:flex; gap:8px; align-items:center; }
     .pillMini{
       font-size:11px;
@@ -329,7 +336,7 @@
       border:1px solid var(--line2);
       background: rgba(255,255,255,.9);
       color: rgba(15,23,42,.78);
-      font-weight:900;
+      font-weight:1000;
       white-space:nowrap;
     }
 
@@ -363,7 +370,7 @@
     .col.b:before{ background: radial-gradient(circle at 40% 40%, var(--proposalB), transparent 66%); }
 
     .colhead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
-    .colhead h4{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:1000; }
+    .colhead h4{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:1100; }
     .chip{
       font-size: 12px;
       padding: 7px 10px;
@@ -372,7 +379,7 @@
       background: rgba(241,245,249,.9);
       color: rgba(15,23,42,.80);
       white-space:nowrap;
-      font-weight:900;
+      font-weight:1000;
     }
 
     .form{
@@ -393,12 +400,12 @@
       color:var(--muted2);
       margin-bottom:8px;
       letter-spacing:.2px;
-      font-weight:1000;
+      font-weight:1100;
       text-transform:uppercase;
     }
     .field input{
       width:100%;
-      font-weight:1000;
+      font-weight:1100;
       font-size:var(--input);
       padding: 6px 0;
     }
@@ -424,7 +431,7 @@
     }
     .big{
       font-size:var(--big);
-      font-weight:1000;
+      font-weight:1200;
       letter-spacing:-.6px;
       color:rgba(15,23,42,.95);
       line-height:1.05;
@@ -453,7 +460,7 @@
       border-bottom: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.80));
     }
-    .card-h h3{ margin:0; font-size:14px; letter-spacing:.25px; font-weight:1000; }
+    .card-h h3{ margin:0; font-size:14px; letter-spacing:.25px; font-weight:1100; }
     .card-h p{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
     .card-b{ padding: 12px 14px 14px; }
     .callout{
@@ -474,6 +481,144 @@
     /* Fullscreen tweaks */
     body.fullscreen #topbar{ opacity: 0.08; transition: opacity .2s ease; }
     body.fullscreen #topbar:hover{ opacity: 1; }
+
+    /* ---------- TOU Chart (sleek, friendly) ---------- */
+    .touChart{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 28px rgba(15,23,42,.06);
+      padding:14px;
+    }
+
+    .touHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .touHeader .title{
+      font-weight:1200;
+      letter-spacing:.2px;
+      font-size:14px;
+      color: rgba(15,23,42,.92);
+    }
+    .touHeader .note{
+      color:var(--muted2);
+      font-size:12.5px;
+      line-height:1.35;
+      max-width:60ch;
+    }
+
+    .touBarWrap{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(241,245,249,.85), rgba(255,255,255,.90));
+      border-radius:18px;
+      padding:12px;
+    }
+
+    .touBar{
+      position:relative;
+      height:84px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.08);
+      background:
+        linear-gradient(90deg,
+          rgba(37,99,235,.12) 0%,
+          rgba(37,99,235,.08) 55%,
+          rgba(245,158,11,.10) 55%,
+          rgba(245,158,11,.10) 80%,
+          rgba(15,23,42,.05) 80%,
+          rgba(15,23,42,.05) 100%
+        );
+    }
+
+    .touBar:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(15,23,42,.07) 0px,
+          rgba(15,23,42,.07) 1px,
+          transparent 1px,
+          transparent 12.5%
+        );
+      opacity:.35;
+      pointer-events:none;
+    }
+
+    .touPeak{
+      position:absolute;
+      top:8px; bottom:8px;
+      left:55%; width:25%;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(245,158,11,.34), rgba(245,158,11,.18));
+      border:1px solid rgba(245,158,11,.35);
+      box-shadow: 0 12px 22px rgba(245,158,11,.10);
+    }
+
+    .touPeakLabel{
+      position:absolute;
+      left:55%;
+      width:25%;
+      top:10px;
+      text-align:center;
+      font-size:12px;
+      font-weight:1200;
+      color: rgba(15,23,42,.86);
+      letter-spacing:.2px;
+      text-transform:uppercase;
+    }
+
+    .touTicks{
+      display:flex;
+      justify-content:space-between;
+      margin-top:10px;
+      color:var(--muted2);
+      font-size:12px;
+      font-weight:1000;
+    }
+
+    .touLegend{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:12px;
+    }
+
+    .leg{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      background: rgba(241,245,249,.75);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      color: rgba(15,23,42,.82);
+      font-weight:1000;
+    }
+    .swatch{
+      width:14px; height:14px;
+      border-radius:5px;
+      border:1px solid rgba(15,23,42,.12);
+    }
+    .swatch.midday{ background: rgba(37,99,235,.22); }
+    .swatch.peak{ background: rgba(245,158,11,.32); }
+    .swatch.night{ background: rgba(15,23,42,.10); }
+
+    .touFooter{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
   </style>
 </head>
 
@@ -498,7 +643,7 @@
         <button class="btn" id="presentBtn" type="button">Presenter Fullscreen</button>
 
         <div class="pill" title="Select utility">
-          <span style="color:var(--muted2); font-size:12px; letter-spacing:.2px; font-weight:1000; text-transform:uppercase;">Utility</span>
+          <span style="color:var(--muted2); font-size:12px; letter-spacing:.2px; font-weight:1100; text-transform:uppercase;">Utility</span>
           <select id="utilitySelect" aria-label="Select utility">
             <option value="sce">SCE</option>
             <option value="pge">PG&E</option>
@@ -517,44 +662,45 @@
       </div>
 
       <div class="deck-body">
+
         <!-- Slide 1: Inputs -->
         <div class="slide active" data-title="Inputs">
           <h2>Start here: confirm the numbers</h2>
           <p>
-            We agree on your <strong>average monthly bill</strong>, <strong>annual usage</strong>, and a reasonable
-            <strong>annual increase</strong>. These sync into the comparison.
+            Agree on the <strong>average monthly bill</strong>, <strong>annual usage</strong>, and a reasonable
+            <strong>annual increase</strong>. These sync into the comparison so the customer sees consistent math.
           </p>
 
           <div class="two-col">
             <div class="tile">
               <div class="k">Average monthly bill</div>
               <div class="v" id="kpiBill">$—</div>
-              <div class="h">Real average (not the best month).</div>
+              <div class="h">Use the real average (not the best month).</div>
             </div>
             <div class="tile">
               <div class="k">Annual usage</div>
               <div class="v"><span id="kpiUsage">—</span> kWh/yr</div>
-              <div class="h">Used to estimate <strong>¢/kWh</strong> automatically.</div>
+              <div class="h">Used to estimate <strong>¢/kWh</strong> on the comparison slide.</div>
             </div>
           </div>
 
           <div class="two-col" style="margin-top:14px;">
             <div class="field full" style="padding:16px;">
               <label>Monthly bill ($)</label>
-              <input id="uMonthlyEarly" type="number" min="0" step="1" placeholder="e.g., 320" style="font-size:24px; font-weight:1000;" />
+              <input id="uMonthlyEarly" type="number" min="0" step="1" placeholder="e.g., 320" style="font-size:24px; font-weight:1200;" />
               <small>Synced with the calculator.</small>
             </div>
 
             <div class="field full" style="padding:16px;">
               <label>Annual usage (kWh/year)</label>
-              <input id="uAnnualKwhEarly" type="number" min="0" step="1" placeholder="e.g., 8400" style="font-size:24px; font-weight:1000;" />
-              <small>Synced with the calculator (for ¢/kWh).</small>
+              <input id="uAnnualKwhEarly" type="number" min="0" step="1" placeholder="e.g., 8400" style="font-size:24px; font-weight:1200;" />
+              <small>Synced with the calculator for ¢/kWh.</small>
             </div>
           </div>
 
           <div class="field full" style="margin-top:14px; padding:16px;">
             <label>Annual increase (%)</label>
-            <input id="uEscEarly" type="number" min="0" step="0.1" placeholder="e.g., 6.0" style="font-size:24px; font-weight:1000;" />
+            <input id="uEscEarly" type="number" min="0" step="0.1" placeholder="e.g., 6.0" style="font-size:24px; font-weight:1200;" />
             <small>Synced with the calculator (editable there too).</small>
           </div>
 
@@ -577,14 +723,14 @@
           <h2>Time-of-Use: the everyday penalty</h2>
           <p>
             TOU doesn’t just care how much energy you use — it cares <strong>when</strong>.
-            Peak hours are usually when families are home.
+            Peak hours are usually when families are home, so evening power can cost more.
           </p>
 
           <div class="two-col">
             <div class="tile">
               <div class="k">What customers feel</div>
               <div class="v">Night = expensive</div>
-              <div class="h">Cooking, HVAC, laundry, EV charging can land in peak pricing.</div>
+              <div class="h">Cooking, HVAC, laundry, and EV charging often land during peak pricing.</div>
             </div>
             <div class="tile">
               <div class="k">What storage changes</div>
@@ -595,6 +741,40 @@
 
           <div class="bigline">
             <strong>Simple explanation:</strong> A battery turns solar into night-time power — so you stop paying the “peak” premium every day.
+          </div>
+
+          <!-- TOU Visual Chart -->
+          <div class="touChart" aria-label="Time-of-Use Visual">
+            <div class="touHeader">
+              <div class="title">A simple way to see Time-of-Use</div>
+              <div class="note">
+                Same electricity — different price depending on the time. Peak hours (often <strong>4–9 PM</strong>) are when most families use power.
+              </div>
+            </div>
+
+            <div class="touBarWrap">
+              <div class="touBar">
+                <div class="touPeak" aria-hidden="true"></div>
+                <div class="touPeakLabel">4–9 PM • Peak</div>
+              </div>
+
+              <div class="touTicks" aria-hidden="true">
+                <span>Morning</span>
+                <span>Midday</span>
+                <span>Evening</span>
+                <span>Night</span>
+              </div>
+
+              <div class="touLegend" aria-label="Legend">
+                <div class="leg"><span class="swatch midday"></span>Midday (solar-friendly)</div>
+                <div class="leg"><span class="swatch peak"></span>Peak (most expensive)</div>
+                <div class="leg"><span class="swatch night"></span>Off-peak (varies)</div>
+              </div>
+
+              <div class="touFooter">
+                <strong>Battery takeaway:</strong> capture midday solar and use it during peak, so you’re buying less of the most expensive power.
+              </div>
+            </div>
           </div>
 
           <div class="proofStrip">
@@ -616,7 +796,7 @@
           <h2>Tesla Virtual Power Plant: extra value (optional)</h2>
           <p>
             If available for your utility, a VPP lets many home batteries support the grid during events.
-            Programs vary, so we rely on the program page.
+            Programs vary, so rely on the program page for rules and eligibility.
           </p>
 
           <div class="two-col">
@@ -628,7 +808,7 @@
             <div class="tile">
               <div class="k">Customer-first framing</div>
               <div class="v">Backup stays priority</div>
-              <div class="h">Participation is optional; we verify availability and rules together.</div>
+              <div class="h">Participation is optional; availability and rules are confirmed on the program page.</div>
             </div>
           </div>
 
@@ -654,8 +834,8 @@
         <div class="slide" data-title="Compare">
           <h2>Price comparison (25 years)</h2>
           <p>
-            Utility vs two options. We show the <strong>utility total</strong> and the <strong>$$ saved</strong> for each option.
-            Annual increase and usage can be adjusted here too.
+            Utility vs two options. The utility column shows the <strong>utility 25-year total</strong>.
+            Each proposal shows only the <strong>$$ saved</strong> compared to utility (no proposal totals).
           </p>
 
           <div class="calc-grid">
@@ -688,11 +868,11 @@
 
               <div class="summary">
                 <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1000; text-transform:uppercase;">Utility 25-yr total</div>
+                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Utility 25-yr total</div>
                   <div class="big" id="uTotal">$—</div>
                 </div>
                 <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1000; text-transform:uppercase;">Est. ¢/kWh</div>
+                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Est. ¢/kWh</div>
                   <div class="big" id="uCents">—</div>
                 </div>
               </div>
@@ -725,7 +905,7 @@
 
               <div class="summary" style="grid-template-columns:1fr;">
                 <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1000; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
+                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
                   <div class="big" id="aSave">$—</div>
                 </div>
               </div>
@@ -758,7 +938,7 @@
 
               <div class="summary" style="grid-template-columns:1fr;">
                 <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1000; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
+                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
                   <div class="big" id="bSave">$—</div>
                 </div>
               </div>
@@ -774,7 +954,7 @@
           </div>
 
           <div class="bigline">
-            <strong>Trust rule:</strong> If day-one savings isn’t clear, we stop and adjust the plan.
+            <strong>Trust rule:</strong> If day-one savings isn’t clear, stop and adjust the plan so it’s honest and obvious.
           </div>
 
           <div class="nav">
@@ -850,6 +1030,11 @@
   </div>
 
   <script>
+    /***************
+      Utility sources + themes
+      - Links show as big square tiles inside Sales slides
+      - Utility selector updates tile sets + utility color accents
+    ***************/
     const UTILITIES = {
       sce: {
         label: "Southern California Edison (SCE)",
@@ -889,17 +1074,19 @@
       }
     };
 
+    /***************
+      Helpers
+    ***************/
     const $ = (id) => document.getElementById(id);
     const fmt$ = (n) => isFinite(n) ? n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}) : "—";
-
     function setRootVar(key,val){ document.documentElement.style.setProperty(key, val); }
 
+    // 25-year future total with annual % increase applied to the monthly amount
     function projectTotal(monthly, escPct, years=25){
       const r = (escPct || 0) / 100;
       let total = 0;
       for(let y=1; y<=years; y++){
-        const yearCost = (monthly * 12) * Math.pow(1+r, y-1);
-        total += yearCost;
+        total += (monthly * 12) * Math.pow(1+r, y-1);
       }
       return total;
     }
@@ -920,7 +1107,9 @@
       });
     }
 
-    // DOM
+    /***************
+      DOM refs
+    ***************/
     const modePresentation = $("modePresentation");
     const modeLearning = $("modeLearning");
     const subline = $("subline");
@@ -952,6 +1141,7 @@
     const bEsc = $("bEsc");
     const bNotes = $("bNotes");
 
+    // Outputs
     const uTotal = $("uTotal");
     const uCents = $("uCents");
     const aSave = $("aSave");
@@ -962,6 +1152,7 @@
     const closeANotes = $("closeANotes");
     const closeBNotes = $("closeBNotes");
 
+    // Proof containers
     const proofInputs = $("proofInputs");
     const proofTou = $("proofTou");
     const proofVpp = $("proofVpp");
@@ -974,6 +1165,9 @@
     const dots = $("dots");
     let idx = 0;
 
+    /***************
+      KPI + calculator calculations
+    ***************/
     function updateKPIs(){
       const m = parseFloat(uMonthly.value || uMonthlyEarly.value);
       const akwh = parseFloat(uAnnualKwh.value || uAnnualKwhEarly.value);
@@ -1017,10 +1211,10 @@
       const aTotal = projectTotal(isFinite(aM)?aM:0, isFinite(aE)?aE:0, 25);
       const bTotal = projectTotal(isFinite(bM)?bM:0, isFinite(bE)?bE:0, 25);
 
-      // Only show total for utility
+      // Show total only for utility
       uTotal.textContent = isFinite(uM) ? fmt$(utilTotal) : "$—";
 
-      // Options show savings only
+      // Proposals: show savings only
       const saveA = utilTotal - aTotal;
       const saveB = utilTotal - bTotal;
 
@@ -1031,13 +1225,16 @@
       bSave.className = "big " + ((saveB>=0) ? "good" : "bad");
     }
 
-    // Sync logic: Early <-> Calculator
+    /***************
+      Sync logic: Slide 1 <-> Slide 4
+    ***************/
     function syncEarlyToCalc(){
       if (uMonthlyEarly.value !== "" && document.activeElement !== uMonthly) uMonthly.value = uMonthlyEarly.value;
       if (uEscEarly.value !== "" && document.activeElement !== uEsc) uEsc.value = uEscEarly.value;
       if (uAnnualKwhEarly.value !== "" && document.activeElement !== uAnnualKwh) uAnnualKwh.value = uAnnualKwhEarly.value;
       recalc();
     }
+
     function syncCalcToEarly(){
       if (uMonthly.value !== "" && document.activeElement !== uMonthlyEarly) uMonthlyEarly.value = uMonthly.value;
       if (uEsc.value !== "" && document.activeElement !== uEscEarly) uEscEarly.value = uEsc.value;
@@ -1045,13 +1242,17 @@
       recalc();
     }
 
+    /***************
+      Utility apply: colors + links per slide
+    ***************/
     function applyUtility(key){
       const u = UTILITIES[key] || UTILITIES.sce;
+
       setRootVar("--utilityA", u.colors.A);
       setRootVar("--utilityB", u.colors.B);
       utilityColTitle.textContent = `Utility (${u.short})`;
 
-      // slide tiles
+      // Tiles shown per slide
       const tilesInputs = [u.tiles.inc13, u.tiles.base1, u.tiles.base2].filter(Boolean);
       const tilesTou = [u.tiles.tou].filter(Boolean);
       const tilesVpp = [u.tiles.vpp].filter(Boolean);
@@ -1062,7 +1263,7 @@
       renderTiles(proofVpp, tilesVpp);
       renderTiles(proofCompare, tilesCompare);
 
-      // learning tiles: show all available
+      // Learning mode shows all available tiles
       const all = [u.tiles.inc13, u.tiles.tou, u.tiles.base1, u.tiles.base2, u.tiles.vpp].filter(Boolean);
       renderTiles(learningTiles, all);
 
@@ -1070,7 +1271,9 @@
       updateDeckUI();
     }
 
-    // Slides nav UI
+    /***************
+      Slide navigation UI
+    ***************/
     function buildDots(){
       dots.innerHTML = "";
       slides.forEach((s, i) => {
@@ -1081,11 +1284,13 @@
         dots.appendChild(d);
       });
     }
+
     function updateDeckUI(){
       slides.forEach((s,i)=> s.classList.toggle("active", i===idx));
       bar.style.width = (((idx+1)/slides.length)*100) + "%";
       Array.from(dots.children).forEach((d,i)=> d.classList.toggle("active", i===idx));
     }
+
     function go(i){
       idx = Math.max(0, Math.min(slides.length-1, i));
       updateDeckUI();
@@ -1099,6 +1304,7 @@
       if (t && t.matches("[data-next]")) next();
       if (t && t.matches("[data-prev]")) prev();
     });
+
     document.addEventListener("keydown", (e) => {
       if (document.body.classList.contains("presentation")){
         if (e.key === "ArrowRight") next();
@@ -1107,7 +1313,9 @@
       }
     });
 
-    // Modes
+    /***************
+      Modes
+    ***************/
     function setMode(mode){
       if (mode === "learning"){
         document.body.classList.remove("presentation");
@@ -1131,7 +1339,9 @@
     modeLearning.addEventListener("click", ()=> setMode("learning"));
     jumpToLearning?.addEventListener("click", ()=> setMode("learning"));
 
-    // Fullscreen
+    /***************
+      Fullscreen
+    ***************/
     async function toggleFullscreen(){
       try{
         if (!document.fullscreenElement){
@@ -1150,13 +1360,17 @@
       presentBtn.textContent = on ? "Exit Fullscreen" : "Presenter Fullscreen";
     });
 
-    // Input wiring
+    /***************
+      Inputs wiring
+    ***************/
     [uMonthlyEarly, uEscEarly, uAnnualKwhEarly].forEach(inp => inp.addEventListener("input", syncEarlyToCalc));
     [uMonthly, uEsc, uAnnualKwh].forEach(inp => inp.addEventListener("input", syncCalcToEarly));
     [aMonthly,aEsc,aNotes,bMonthly,bEsc,bNotes].forEach(inp => inp.addEventListener("input", recalc));
     utilitySelect.addEventListener("change", () => applyUtility(utilitySelect.value));
 
-    // Reset
+    /***************
+      Reset
+    ***************/
     function resetInputs(){
       uMonthlyEarly.value = ""; uEscEarly.value = ""; uAnnualKwhEarly.value = "";
       uMonthly.value = ""; uEsc.value = ""; uAnnualKwh.value = "";
@@ -1167,7 +1381,9 @@
     }
     resetBtn.addEventListener("click", resetInputs);
 
-    // Init
+    /***************
+      Init
+    ***************/
     buildDots();
     applyUtility("sce");
     setMode("presentation");
