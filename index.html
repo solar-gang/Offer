@@ -4,30 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Solar + Storage | Sales Deck</title>
-  <meta name="description" content="Light-theme interactive sales deck with early inputs synced to a 25-year utility comparison + savings-only proposals + proof tiles + TOU chart + scrollable yearly monthly tables." />
+  <meta name="description" content="Light-theme interactive solar + storage sales deck with synced inputs, proof tiles, TOU chart, VPP slide, and a 25-year comparison with synchronized year scrolling." />
 
   <style>
     :root{
-      /* Light, friendly, premium palette */
+      /* Premium light palette */
       --bgA:#F7FAFF;
       --bgB:#FFFFFF;
-      --ink:#0F172A;     /* slate-900 */
-      --muted:#475569;   /* slate-600 */
-      --muted2:#64748B;  /* slate-500 */
-      --line:#E2E8F0;    /* slate-200 */
-      --line2:#CBD5E1;   /* slate-300 */
-      --card:#FFFFFF;
-      --soft:#F1F5F9;    /* slate-100 */
+      --ink:#0F172A;
+      --muted:#475569;
+      --muted2:#64748B;
+      --line:#E2E8F0;
+      --line2:#CBD5E1;
+      --soft:#F1F5F9;
       --shadow: 0 18px 60px rgba(15, 23, 42, .12);
       --shadow2: 0 10px 30px rgba(15, 23, 42, .08);
       --radius:22px;
 
-      /* Utility theme defaults (changes via utility selector) */
-      --utilityA:#D1202E; /* SCE */
+      /* Utility theme */
+      --utilityA:#D1202E; /* SCE red */
       --utilityB:#FFCF36;
 
       /* Proposal theme */
-      --proposalA:#22C55E; /* green */
+      --proposalA:#16A34A; /* green */
       --proposalB:#2563EB; /* blue */
 
       --good:#16A34A;
@@ -43,6 +42,11 @@
       --btn:15px;
       --input:20px;
       --big:34px;
+
+      /* Chart colors */
+      --cUtility: rgba(220,38,38,.85); /* red */
+      --cA: rgba(22,163,74,.85);       /* green */
+      --cB: rgba(37,99,235,.85);       /* blue */
     }
 
     *{ box-sizing:border-box; }
@@ -57,7 +61,6 @@
         linear-gradient(180deg, var(--bgA), var(--bgB));
       overflow-x:hidden;
     }
-
     a{ color: inherit; }
     a:hover{ opacity:.92; }
 
@@ -75,7 +78,6 @@
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       flex-wrap:wrap;
     }
-
     .brand{ display:flex; gap:12px; align-items:center; }
     .mark{
       width:46px; height:46px; border-radius:16px;
@@ -106,7 +108,6 @@
       display:flex; gap:10px; align-items:center;
       box-shadow: var(--shadow2);
     }
-
     select, input[type="text"], input[type="number"]{
       font:inherit;
       color:var(--ink);
@@ -126,7 +127,7 @@
       font-weight:1000;
       letter-spacing:.2px;
       box-shadow: var(--shadow2);
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      transition: transform .12s ease, box-shadow .12s ease;
       user-select:none;
       white-space:nowrap;
       font-size:var(--btn);
@@ -135,7 +136,7 @@
     .btn:active{ transform:translateY(0); }
 
     .toggle{
-      display:flex; align-items:center; gap:0;
+      display:flex; align-items:center;
       border:1px solid var(--line);
       background: rgba(255,255,255,.85);
       border-radius:999px;
@@ -168,7 +169,6 @@
       background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70));
       flex-wrap:wrap;
     }
-
     .progress{
       flex: 1;
       height:12px;
@@ -185,7 +185,6 @@
       border-radius:999px;
       transition: width .2s ease;
     }
-
     .dots{ display:flex; gap:8px; align-items:center; }
     .dot{
       width:10px; height:10px; border-radius:50%;
@@ -340,12 +339,267 @@
       white-space:nowrap;
     }
 
-    /* Calculator */
+    /* ---------- Slide Graphics Blocks ---------- */
+    .graphicRow{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 980px){
+      .graphicRow{ grid-template-columns: 1fr; }
+    }
+    .graphic{
+      border:1px solid var(--line);
+      border-radius:22px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 26px rgba(15,23,42,.05);
+      overflow:hidden;
+    }
+    .graphic-h{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.86));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .graphic-h .title{
+      font-size:12px;
+      font-weight:1100;
+      letter-spacing:.22px;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.86);
+    }
+    .graphic-b{ padding:12px; }
+
+    /* Mini illustration (pure CSS) */
+    .scene{
+      height:160px;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.06);
+      background:
+        radial-gradient(120px 90px at 20% 20%, rgba(255,255,255,.85), transparent 60%),
+        linear-gradient(180deg, rgba(37,99,235,.10), rgba(34,197,94,.06));
+      position:relative;
+      overflow:hidden;
+    }
+    .house{
+      position:absolute;
+      bottom:18px;
+      width:120px; height:78px;
+      left:18px;
+      border-radius:16px;
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow: 0 14px 24px rgba(15,23,42,.10);
+    }
+    .roof{
+      position:absolute;
+      top:-18px; left:10px;
+      width:100px; height:42px;
+      background: linear-gradient(135deg, rgba(15,23,42,.86), rgba(15,23,42,.62));
+      border-radius:14px;
+      transform:skewX(-18deg);
+      border:1px solid rgba(15,23,42,.14);
+    }
+    .panelRow{
+      position:absolute; top:8px; left:16px;
+      width:68px; height:18px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(37,99,235,.65), rgba(37,99,235,.30));
+      border:1px solid rgba(37,99,235,.35);
+      opacity:.9;
+    }
+    .battery{
+      position:absolute;
+      right:20px; bottom:22px;
+      width:34px; height:54px;
+      border-radius:12px;
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(15,23,42,.12);
+      box-shadow: 0 10px 18px rgba(15,23,42,.10);
+    }
+    .battery:before{
+      content:"";
+      position:absolute;
+      left:8px; right:8px; top:10px;
+      height:6px; border-radius:6px;
+      background: rgba(22,163,74,.30);
+      border:1px solid rgba(22,163,74,.30);
+    }
+    .battery:after{
+      content:"";
+      position:absolute;
+      left:8px; right:8px; top:24px;
+      height:18px; border-radius:10px;
+      background: rgba(22,163,74,.18);
+      border:1px dashed rgba(22,163,74,.28);
+    }
+
+    .legendLines{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .lineTag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:1000;
+      color: rgba(15,23,42,.82);
+    }
+    .sw{
+      width:14px; height:14px;
+      border-radius:5px;
+      border:1px solid rgba(15,23,42,.12);
+      display:inline-block;
+    }
+    .sw.utility{ background: rgba(220,38,38,.25); }
+    .sw.a{ background: rgba(22,163,74,.22); }
+    .sw.b{ background: rgba(37,99,235,.18); }
+
+    /* ---------- TOU Chart ---------- */
+    .touChart{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 28px rgba(15,23,42,.06);
+      padding:14px;
+    }
+    .touHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .touHeader .title{
+      font-weight:1200;
+      letter-spacing:.2px;
+      font-size:14px;
+      color: rgba(15,23,42,.92);
+    }
+    .touHeader .note{
+      color:var(--muted2);
+      font-size:12.5px;
+      line-height:1.35;
+      max-width:60ch;
+    }
+    .touBarWrap{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(241,245,249,.85), rgba(255,255,255,.90));
+      border-radius:18px;
+      padding:12px;
+    }
+    .touBar{
+      position:relative;
+      height:84px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.08);
+      background:
+        linear-gradient(90deg,
+          rgba(37,99,235,.12) 0%,
+          rgba(37,99,235,.08) 55%,
+          rgba(245,158,11,.10) 55%,
+          rgba(245,158,11,.10) 80%,
+          rgba(15,23,42,.05) 80%,
+          rgba(15,23,42,.05) 100%
+        );
+    }
+    .touBar:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(15,23,42,.07) 0px,
+          rgba(15,23,42,.07) 1px,
+          transparent 1px,
+          transparent 12.5%
+        );
+      opacity:.35;
+      pointer-events:none;
+    }
+    .touPeak{
+      position:absolute;
+      top:8px; bottom:8px;
+      left:55%; width:25%;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(245,158,11,.34), rgba(245,158,11,.18));
+      border:1px solid rgba(245,158,11,.35);
+      box-shadow: 0 12px 22px rgba(245,158,11,.10);
+    }
+    .touPeakLabel{
+      position:absolute;
+      left:55%;
+      width:25%;
+      top:10px;
+      text-align:center;
+      font-size:12px;
+      font-weight:1200;
+      color: rgba(15,23,42,.86);
+      letter-spacing:.2px;
+      text-transform:uppercase;
+    }
+    .touTicks{
+      display:flex;
+      justify-content:space-between;
+      margin-top:10px;
+      color:var(--muted2);
+      font-size:12px;
+      font-weight:1000;
+    }
+    .touLegend{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:12px;
+    }
+    .leg{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      background: rgba(241,245,249,.75);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      color: rgba(15,23,42,.82);
+      font-weight:1000;
+    }
+    .swatch{
+      width:14px; height:14px;
+      border-radius:5px;
+      border:1px solid rgba(15,23,42,.12);
+    }
+    .swatch.midday{ background: rgba(37,99,235,.22); }
+    .swatch.peak{ background: rgba(245,158,11,.32); }
+    .swatch.night{ background: rgba(15,23,42,.10); }
+    .touFooter{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    /* ---------- Calculator ---------- */
     .calc-grid{
       display:grid;
       grid-template-columns: 1.25fr 1fr 1fr;
       gap: 14px;
       margin-top: 12px;
+      align-items:start;
     }
     @media (max-width: 980px){ .calc-grid{ grid-template-columns: 1fr; } }
 
@@ -356,7 +610,7 @@
       padding: 14px;
       position: relative;
       overflow:hidden;
-      min-height: 380px;
+      min-height: 420px;
       box-shadow: 0 12px 28px rgba(15,23,42,.06);
     }
     .col:before{
@@ -436,24 +690,44 @@
       color:rgba(15,23,42,.95);
       line-height:1.05;
     }
-    .good{ color: var(--good); }
-    .bad{ color: var(--bad); }
+    /* Colored output: utility red, proposals green */
+    .big.utilityNum{ color: rgba(220,38,38,.92); }
+    .big.proposalNum{ color: rgba(22,163,74,.92); }
+    .big.proposalNumNeg{ color: rgba(220,38,38,.92); }
 
-    /* NEW: scrollable yearly monthly list under each option */
+    /* ---------- Year scroll boxes (larger) ---------- */
+    .yearGrid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 14px;
+      margin-top:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .yearGrid{ grid-template-columns: 1fr; }
+    }
+
     .yearbox{
-      margin-top:12px;
       border-radius:18px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.92);
-      box-shadow: 0 10px 22px rgba(15,23,42,.04);
+      box-shadow: 0 12px 26px rgba(15,23,42,.05);
       overflow:hidden;
+    }
+    .yearbox.utility{
+      border-color: rgba(220,38,38,.18);
+      box-shadow: 0 14px 28px rgba(220,38,38,.05);
+    }
+    .yearbox.proposal{
+      border-color: rgba(22,163,74,.18);
+      box-shadow: 0 14px 28px rgba(22,163,74,.05);
     }
     .yearbox-h{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:10px 12px;
+      padding:12px 14px;
       border-bottom:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.85));
     }
@@ -463,27 +737,51 @@
       color: rgba(15,23,42,.86);
       letter-spacing:.22px;
       text-transform:uppercase;
+      display:flex; align-items:center; gap:10px;
     }
+    .badge{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.9);
+      font-weight:1100;
+      white-space:nowrap;
+    }
+    .badge.utility{ border-color: rgba(220,38,38,.20); color: rgba(220,38,38,.88); }
+    .badge.a{ border-color: rgba(22,163,74,.22); color: rgba(22,163,74,.92); }
+    .badge.b{ border-color: rgba(37,99,235,.22); color: rgba(37,99,235,.92); }
+
     .yearbox-h .hint{
       font-size:12px;
       color:var(--muted2);
       font-weight:900;
       white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:8px;
     }
+    .hint input[type="checkbox"]{
+      width:18px; height:18px;
+      accent-color: rgba(37,99,235,.75);
+      cursor:pointer;
+    }
+
     .yearscroll{
-      max-height:220px; /* scroll area height */
+      max-height:320px; /* larger */
       overflow:auto;
-      padding:10px 12px 12px;
+      padding:12px 14px 14px;
       background: rgba(255,255,255,.95);
+      scroll-behavior:smooth;
     }
     .yeartable{
       width:100%;
       border-collapse:collapse;
-      font-size:13px;
+      font-size:14px;
     }
     .yeartable th, .yeartable td{
       text-align:left;
-      padding:8px 6px;
+      padding:10px 8px;
       border-bottom:1px dashed rgba(15,23,42,.10);
       vertical-align:middle;
     }
@@ -502,9 +800,41 @@
     }
     .yeartable td:last-child{
       font-family: var(--mono);
-      font-weight:1000;
-      color: rgba(15,23,42,.88);
+      font-weight:1100;
     }
+    .yeartable td.utilityVal{ color: rgba(220,38,38,.92); }
+    .yeartable td.proposalVal{ color: rgba(22,163,74,.92); }
+    .yeartable td.proposalValNeg{ color: rgba(220,38,38,.92); }
+
+    /* ---------- Chart (SVG holder) ---------- */
+    .chartWrap{
+      margin-top:14px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 26px rgba(15,23,42,.05);
+      overflow:hidden;
+    }
+    .chartH{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.86));
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .chartH .title{
+      font-size:12px;
+      font-weight:1100;
+      letter-spacing:.22px;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.86);
+    }
+    .chartH .sub{
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:900;
+    }
+    .chartB{ padding:12px; }
+    .chartB svg{ width:100%; height:240px; display:block; }
 
     /* Learning Mode */
     .learn{ margin-top: 14px; display:none; }
@@ -548,144 +878,6 @@
     /* Fullscreen tweaks */
     body.fullscreen #topbar{ opacity: 0.08; transition: opacity .2s ease; }
     body.fullscreen #topbar:hover{ opacity: 1; }
-
-    /* ---------- TOU Chart (sleek, friendly) ---------- */
-    .touChart{
-      margin-top:14px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 12px 28px rgba(15,23,42,.06);
-      padding:14px;
-    }
-
-    .touHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .touHeader .title{
-      font-weight:1200;
-      letter-spacing:.2px;
-      font-size:14px;
-      color: rgba(15,23,42,.92);
-    }
-    .touHeader .note{
-      color:var(--muted2);
-      font-size:12.5px;
-      line-height:1.35;
-      max-width:60ch;
-    }
-
-    .touBarWrap{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(241,245,249,.85), rgba(255,255,255,.90));
-      border-radius:18px;
-      padding:12px;
-    }
-
-    .touBar{
-      position:relative;
-      height:84px;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid rgba(15,23,42,.08);
-      background:
-        linear-gradient(90deg,
-          rgba(37,99,235,.12) 0%,
-          rgba(37,99,235,.08) 55%,
-          rgba(245,158,11,.10) 55%,
-          rgba(245,158,11,.10) 80%,
-          rgba(15,23,42,.05) 80%,
-          rgba(15,23,42,.05) 100%
-        );
-    }
-
-    .touBar:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(15,23,42,.07) 0px,
-          rgba(15,23,42,.07) 1px,
-          transparent 1px,
-          transparent 12.5%
-        );
-      opacity:.35;
-      pointer-events:none;
-    }
-
-    .touPeak{
-      position:absolute;
-      top:8px; bottom:8px;
-      left:55%; width:25%;
-      border-radius:14px;
-      background: linear-gradient(180deg, rgba(245,158,11,.34), rgba(245,158,11,.18));
-      border:1px solid rgba(245,158,11,.35);
-      box-shadow: 0 12px 22px rgba(245,158,11,.10);
-    }
-
-    .touPeakLabel{
-      position:absolute;
-      left:55%;
-      width:25%;
-      top:10px;
-      text-align:center;
-      font-size:12px;
-      font-weight:1200;
-      color: rgba(15,23,42,.86);
-      letter-spacing:.2px;
-      text-transform:uppercase;
-    }
-
-    .touTicks{
-      display:flex;
-      justify-content:space-between;
-      margin-top:10px;
-      color:var(--muted2);
-      font-size:12px;
-      font-weight:1000;
-    }
-
-    .touLegend{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:12px;
-    }
-
-    .leg{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.75);
-      border-radius:999px;
-      padding:8px 10px;
-      font-size:12px;
-      color: rgba(15,23,42,.82);
-      font-weight:1000;
-    }
-    .swatch{
-      width:14px; height:14px;
-      border-radius:5px;
-      border:1px solid rgba(15,23,42,.12);
-    }
-    .swatch.midday{ background: rgba(37,99,235,.22); }
-    .swatch.peak{ background: rgba(245,158,11,.32); }
-    .swatch.night{ background: rgba(15,23,42,.10); }
-
-    .touFooter{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
   </style>
 </head>
 
@@ -697,7 +889,7 @@
         <div class="mark" aria-hidden="true"></div>
         <div>
           <h1>Solar + Storage Sales Deck</h1>
-          <p id="subline">Sales Mode • light theme • proof tiles on every slide</p>
+          <p id="subline">Sales Mode • light theme • proof tiles + visuals</p>
         </div>
       </div>
 
@@ -751,24 +943,52 @@
             </div>
           </div>
 
-          <div class="two-col" style="margin-top:14px;">
-            <div class="field full" style="padding:16px;">
-              <label>Monthly bill ($)</label>
-              <input id="uMonthlyEarly" type="number" min="0" step="1" placeholder="e.g., 320" style="font-size:24px; font-weight:1200;" />
-              <small>Synced with the calculator.</small>
+          <div class="graphicRow">
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Visual: solar + battery = night power</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Simple & non-salesy</div>
+              </div>
+              <div class="graphic-b">
+                <div class="scene" aria-hidden="true">
+                  <div class="house">
+                    <div class="roof"></div>
+                    <div class="panelRow"></div>
+                  </div>
+                  <div class="battery"></div>
+                </div>
+                <div class="legendLines">
+                  <div><span class="lineTag"><span class="sw utility"></span>Utility</span> = you buy power whenever you need it.</div>
+                  <div><span class="lineTag"><span class="sw a"></span>Solar + Storage</span> = store midday energy → use at night.</div>
+                </div>
+              </div>
             </div>
 
-            <div class="field full" style="padding:16px;">
-              <label>Annual usage (kWh/year)</label>
-              <input id="uAnnualKwhEarly" type="number" min="0" step="1" placeholder="e.g., 8400" style="font-size:24px; font-weight:1200;" />
-              <small>Synced with the calculator for ¢/kWh.</small>
-            </div>
-          </div>
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Quick inputs</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Synced</div>
+              </div>
+              <div class="graphic-b">
+                <div class="field full" style="padding:16px; margin-bottom:10px;">
+                  <label>Monthly bill ($)</label>
+                  <input id="uMonthlyEarly" type="number" min="0" step="1" placeholder="e.g., 320" style="font-size:24px; font-weight:1200;" />
+                  <small>Synced with the calculator.</small>
+                </div>
 
-          <div class="field full" style="margin-top:14px; padding:16px;">
-            <label>Annual increase (%)</label>
-            <input id="uEscEarly" type="number" min="0" step="0.1" placeholder="e.g., 6.0" style="font-size:24px; font-weight:1200;" />
-            <small>Synced with the calculator (editable there too).</small>
+                <div class="field full" style="padding:16px; margin-bottom:10px;">
+                  <label>Annual usage (kWh/year)</label>
+                  <input id="uAnnualKwhEarly" type="number" min="0" step="1" placeholder="e.g., 8400" style="font-size:24px; font-weight:1200;" />
+                  <small>Used for ¢/kWh estimate.</small>
+                </div>
+
+                <div class="field full" style="padding:16px;">
+                  <label>Annual increase (%)</label>
+                  <input id="uEscEarly" type="number" min="0" step="0.1" placeholder="e.g., 6.0" style="font-size:24px; font-weight:1200;" />
+                  <small>Editable later too.</small>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="proofStrip">
@@ -844,6 +1064,31 @@
             </div>
           </div>
 
+          <div class="graphicRow">
+            <div class="chartWrap">
+              <div class="chartH">
+                <div class="title">Mini graph: “peak window” concept</div>
+                <div class="sub">Higher costs during 4–9 PM (illustrative)</div>
+              </div>
+              <div class="chartB">
+                <svg id="touMiniSvg" viewBox="0 0 800 240" role="img" aria-label="Illustrative peak cost chart"></svg>
+              </div>
+            </div>
+
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Fast talk track</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">10 seconds</div>
+              </div>
+              <div class="graphic-b">
+                <div class="callout">
+                  <strong>“It’s the same power, but the price changes by time.</strong><br>
+                  The expensive window is when you’re home. Storage lets you avoid buying the most expensive hours.”
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="proofStrip">
             <div class="proofHeader">
               <div class="label">Time-of-Use sources</div>
@@ -865,6 +1110,46 @@
             If available for your utility, a VPP lets many home batteries support the grid during events.
             Programs vary, so rely on the program page for rules and eligibility.
           </p>
+
+          <div class="graphicRow">
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Visual: community batteries helping grid</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Illustration</div>
+              </div>
+              <div class="graphic-b">
+                <div class="scene" aria-hidden="true" style="background:linear-gradient(180deg, rgba(37,99,235,.08), rgba(15,23,42,.02));">
+                  <div class="house" style="left:18px; width:110px;">
+                    <div class="roof"></div>
+                    <div class="panelRow"></div>
+                  </div>
+                  <div class="house" style="left:160px; width:110px; opacity:.92;">
+                    <div class="roof"></div>
+                    <div class="panelRow"></div>
+                  </div>
+                  <div class="house" style="left:300px; width:110px; opacity:.88;">
+                    <div class="roof"></div>
+                    <div class="panelRow"></div>
+                  </div>
+                  <div class="battery" style="right:26px; bottom:22px;"></div>
+                </div>
+                <div class="legendLines">
+                  <div><strong>Optional:</strong> participate if available + if the homeowner opts in.</div>
+                  <div><strong>Trust framing:</strong> backup comes first; rules are confirmed on the program page.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chartWrap">
+              <div class="chartH">
+                <div class="title">Mini graph: “event exports” concept</div>
+                <div class="sub">Illustrative only (varies by program)</div>
+              </div>
+              <div class="chartB">
+                <svg id="vppMiniSvg" viewBox="0 0 800 240" role="img" aria-label="Illustrative VPP events chart"></svg>
+              </div>
+            </div>
+          </div>
 
           <div class="two-col">
             <div class="tile">
@@ -901,10 +1186,20 @@
         <div class="slide" data-title="Compare">
           <h2>Price comparison (25 years)</h2>
           <p>
-            Utility vs two options. The utility column shows the <strong>utility 25-year total</strong>.
-            Each proposal shows only the <strong>$$ saved</strong> compared to utility (no proposal totals).
-            Under each proposal, you can scroll the <strong>monthly payment by year</strong> (Years 1–25).
+            Utility vs two options. Utility shows the <strong>25-year total</strong>.
+            Each proposal shows only <strong>$$ saved</strong> compared to utility (no proposal totals).
+            Below, scroll the <strong>monthly by year</strong> and keep all columns aligned by year (synced scrolling).
           </p>
+
+          <div class="chartWrap">
+            <div class="chartH">
+              <div class="title">Graph: monthly payment by year (1–25)</div>
+              <div class="sub">Utility (red) vs Option A (green) vs Option B (blue)</div>
+            </div>
+            <div class="chartB">
+              <svg id="compareSvg" viewBox="0 0 1100 240" role="img" aria-label="Monthly payment by year chart"></svg>
+            </div>
+          </div>
 
           <div class="calc-grid">
             <!-- Utility -->
@@ -937,7 +1232,7 @@
               <div class="summary">
                 <div>
                   <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Utility 25-yr total</div>
-                  <div class="big" id="uTotal">$—</div>
+                  <div class="big utilityNum" id="uTotal">$—</div>
                 </div>
                 <div>
                   <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Est. ¢/kWh</div>
@@ -974,28 +1269,7 @@
               <div class="summary" style="grid-template-columns:1fr;">
                 <div>
                   <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
-                  <div class="big" id="aSave">$—</div>
-                </div>
-              </div>
-
-              <!-- NEW: Yearly monthly list -->
-              <div class="yearbox" aria-label="Option A monthly payment by year">
-                <div class="yearbox-h">
-                  <div class="title">Monthly payment by year (1–25)</div>
-                  <div class="hint">Scroll</div>
-                </div>
-                <div class="yearscroll">
-                  <table class="yeartable">
-                    <thead>
-                      <tr>
-                        <th style="width:40%;">Year</th>
-                        <th>Avg monthly</th>
-                      </tr>
-                    </thead>
-                    <tbody id="aYearRows">
-                      <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a monthly payment to populate.</td></tr>
-                    </tbody>
-                  </table>
+                  <div class="big proposalNum" id="aSave">$—</div>
                 </div>
               </div>
             </div>
@@ -1028,29 +1302,76 @@
               <div class="summary" style="grid-template-columns:1fr;">
                 <div>
                   <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
-                  <div class="big" id="bSave">$—</div>
+                  <div class="big proposalNum" id="bSave">$—</div>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- NEW: Yearly monthly list -->
-              <div class="yearbox" aria-label="Option B monthly payment by year">
-                <div class="yearbox-h">
-                  <div class="title">Monthly payment by year (1–25)</div>
-                  <div class="hint">Scroll</div>
+          <!-- NEW: Unified Year Scroll Row (Utility + A + B) -->
+          <div class="yearGrid" aria-label="Monthly payment by year (synced scrolling)">
+            <div class="yearbox utility">
+              <div class="yearbox-h">
+                <div class="title">
+                  Monthly by year (Utility)
+                  <span class="badge utility">RED</span>
                 </div>
-                <div class="yearscroll">
-                  <table class="yeartable">
-                    <thead>
-                      <tr>
-                        <th style="width:40%;">Year</th>
-                        <th>Avg monthly</th>
-                      </tr>
-                    </thead>
-                    <tbody id="bYearRows">
-                      <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a monthly payment to populate.</td></tr>
-                    </tbody>
-                  </table>
+                <div class="hint">
+                  <label style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" id="syncScroll" checked />
+                    Sync scroll
+                  </label>
                 </div>
+              </div>
+              <div class="yearscroll" id="uYearScroll">
+                <table class="yeartable">
+                  <thead>
+                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
+                  </thead>
+                  <tbody id="uYearRows">
+                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a utility monthly bill to populate.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="yearbox proposal">
+              <div class="yearbox-h">
+                <div class="title">
+                  Monthly by year (Option A)
+                  <span class="badge a">GREEN</span>
+                </div>
+                <div class="hint">Scroll</div>
+              </div>
+              <div class="yearscroll" id="aYearScroll">
+                <table class="yeartable">
+                  <thead>
+                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
+                  </thead>
+                  <tbody id="aYearRows">
+                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter Option A payment to populate.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="yearbox proposal">
+              <div class="yearbox-h">
+                <div class="title">
+                  Monthly by year (Option B)
+                  <span class="badge b">BLUE</span>
+                </div>
+                <div class="hint">Scroll</div>
+              </div>
+              <div class="yearscroll" id="bYearScroll">
+                <table class="yeartable">
+                  <thead>
+                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
+                  </thead>
+                  <tbody id="bYearRows">
+                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter Option B payment to populate.</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -1094,8 +1415,31 @@
             </div>
           </div>
 
-          <div class="bigline">
-            <strong>Next steps:</strong> qualify → site survey → final design review → permits after you sign off.
+          <div class="graphicRow">
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Simple next steps</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Process clarity</div>
+              </div>
+              <div class="graphic-b">
+                <div class="callout">
+                  <strong>1) Qualify</strong> → <strong>2) Site survey</strong> → <strong>3) Final design review</strong> → <strong>4) Permits after you sign off</strong><br>
+                  <span style="color:var(--muted2); font-weight:900;">No surprises. No pressure.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="graphic">
+              <div class="graphic-h">
+                <div class="title">Optional line</div>
+                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Trust close</div>
+              </div>
+              <div class="graphic-b">
+                <div class="callout">
+                  “If this doesn’t clearly improve your situation, we won’t move forward.”
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="nav">
@@ -1117,10 +1461,10 @@
           </div>
           <div class="card-b">
             <div class="callout">
-              <strong>Slide 1:</strong> confirm monthly average, annual usage, and a reasonable annual increase.<br>
-              <strong>Slide 2:</strong> TOU penalizes evenings → storage time-shifts power to peak.<br>
-              <strong>Slide 3:</strong> VPP is optional; verify rules/availability via the program page.<br>
-              <strong>Slide 4:</strong> show utility total + savings; review monthly-by-year scroll boxes for clarity.
+              <strong>Slide 1:</strong> confirm monthly average, annual usage, and annual increase (keep consistent).<br>
+              <strong>Slide 2:</strong> TOU makes evenings expensive → storage time-shifts power to peak.<br>
+              <strong>Slide 3:</strong> VPP is optional; always verify rules/availability via the program page.<br>
+              <strong>Slide 4:</strong> show utility total + savings; use synced year scroll + chart for clarity.
             </div>
           </div>
         </div>
@@ -1189,7 +1533,6 @@
     const fmt$ = (n) => isFinite(n) ? n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}) : "—";
     function setRootVar(key,val){ document.documentElement.style.setProperty(key, val); }
 
-    // 25-year future total with annual % increase applied to the monthly amount
     function projectTotal(monthly, escPct, years=25){
       const r = (escPct || 0) / 100;
       let total = 0;
@@ -1199,7 +1542,6 @@
       return total;
     }
 
-    // Monthly amount in year N (not total) = baseMonthly * (1+r)^(N-1)
     function monthlyInYear(baseMonthly, escPct, yearIndex){
       const r = (escPct || 0) / 100;
       return baseMonthly * Math.pow(1+r, yearIndex - 1);
@@ -1221,7 +1563,7 @@
       });
     }
 
-    function renderYearRows(tbodyEl, baseMonthly, escPct){
+    function renderYearRows(tbodyEl, baseMonthly, escPct, valueClass){
       if (!tbodyEl) return;
 
       const m = parseFloat(baseMonthly);
@@ -1231,7 +1573,7 @@
         tbodyEl.innerHTML = `
           <tr>
             <td colspan="2" style="color:var(--muted2); font-size:12.5px;">
-              Enter a monthly payment to populate.
+              Enter a monthly amount to populate.
             </td>
           </tr>
         `;
@@ -1245,11 +1587,120 @@
         html += `
           <tr>
             <td>Year ${y}</td>
-            <td>${fmt$(mo)}/mo</td>
+            <td class="${valueClass}">${fmt$(mo)}/mo</td>
           </tr>
         `;
       }
       tbodyEl.innerHTML = html;
+    }
+
+    /***************
+      Simple SVG chart helpers (no libraries)
+    ***************/
+    function svgLineChart(svgEl, series, opts){
+      // series: [{name,color,points:[{x,y}]}]
+      // opts: {xmin,xmax,ymin,ymax, padL,padR,padT,padB, yTicks}
+      if (!svgEl) return;
+      const w = 1100, h = 240; // viewBox sizes
+      const padL = opts?.padL ?? 52;
+      const padR = opts?.padR ?? 18;
+      const padT = opts?.padT ?? 14;
+      const padB = opts?.padB ?? 34;
+      const xmin = opts?.xmin ?? 1;
+      const xmax = opts?.xmax ?? 25;
+      const ymin = opts?.ymin ?? 0;
+      const ymax = opts?.ymax ?? 1;
+      const yTicks = opts?.yTicks ?? 4;
+
+      const X = (x) => padL + ( (x - xmin) / (xmax - xmin) ) * (w - padL - padR);
+      const Y = (y) => (h - padB) - ( (y - ymin) / (ymax - ymin) ) * (h - padT - padB);
+
+      // background + grid
+      let out = "";
+      out += `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
+      // horizontal grid lines
+      for (let i=0;i<=yTicks;i++){
+        const t = ymin + ( (ymax - ymin) * (i / yTicks) );
+        const y = Y(t);
+        out += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="rgba(15,23,42,.08)" stroke-width="1" />`;
+        out += `<text x="${padL-10}" y="${y+4}" text-anchor="end" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">${Math.round(t)}</text>`;
+      }
+      // x ticks (1,5,10,15,20,25)
+      const xt = [1,5,10,15,20,25];
+      xt.forEach(v=>{
+        const x = X(v);
+        out += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${h-padB}" stroke="rgba(15,23,42,.05)" stroke-width="1" />`;
+        out += `<text x="${x}" y="${h-12}" text-anchor="middle" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">${v}</text>`;
+      });
+
+      // axes
+      out += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${h-padB}" stroke="rgba(15,23,42,.14)" stroke-width="1.2" />`;
+      out += `<line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="rgba(15,23,42,.14)" stroke-width="1.2" />`;
+
+      // lines
+      series.forEach(s=>{
+        const pts = s.points;
+        if (!pts || pts.length<2) return;
+        let d = `M ${X(pts[0].x)} ${Y(pts[0].y)}`;
+        for (let i=1;i<pts.length;i++){
+          d += ` L ${X(pts[i].x)} ${Y(pts[i].y)}`;
+        }
+        out += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />`;
+        // end dot
+        const last = pts[pts.length-1];
+        out += `<circle cx="${X(last.x)}" cy="${Y(last.y)}" r="4.5" fill="${s.color}" />`;
+      });
+
+      // legend
+      let lx = padL, ly = 16;
+      series.forEach((s,i)=>{
+        const dx = i*200;
+        out += `<rect x="${lx+dx}" y="${ly-10}" width="14" height="14" rx="4" fill="${s.color}" opacity="0.85"></rect>`;
+        out += `<text x="${lx+dx+20}" y="${ly+2}" font-size="12" fill="rgba(15,23,42,.86)" font-weight="900">${s.name}</text>`;
+      });
+
+      svgEl.innerHTML = out;
+    }
+
+    function svgTouMini(svgEl){
+      if (!svgEl) return;
+      const w=800,h=240;
+      // simple bar-like curve showing peak
+      let out = `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
+      // baseline
+      out += `<line x1="40" y1="190" x2="760" y2="190" stroke="rgba(15,23,42,.14)" stroke-width="1.2"></line>`;
+      // peak band
+      out += `<rect x="470" y="40" width="160" height="150" rx="14" fill="rgba(245,158,11,.18)" stroke="rgba(245,158,11,.25)"></rect>`;
+      out += `<text x="550" y="65" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.82)" font-weight="900">4–9 PM Peak</text>`;
+      // path
+      const pts = [
+        [40,150],[120,145],[200,140],[280,138],[360,142],
+        [450,120],[520,70],[590,80],[650,115],[720,135],[760,145]
+      ];
+      let d=`M ${pts[0][0]} ${pts[0][1]}`;
+      for(let i=1;i<pts.length;i++){ d+=` L ${pts[i][0]} ${pts[i][1]}`; }
+      out += `<path d="${d}" fill="none" stroke="rgba(220,38,38,.80)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`;
+      // labels
+      out += `<text x="40" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Morning</text>`;
+      out += `<text x="300" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Midday</text>`;
+      out += `<text x="560" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Evening</text>`;
+      out += `<text x="740" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)" text-anchor="end">Night</text>`;
+      svgEl.innerHTML = out;
+    }
+
+    function svgVppMini(svgEl){
+      if (!svgEl) return;
+      const w=800,h=240;
+      let out = `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
+      out += `<line x1="40" y1="190" x2="760" y2="190" stroke="rgba(15,23,42,.14)" stroke-width="1.2"></line>`;
+      // event spikes
+      const spikes = [140, 260, 420, 520, 690];
+      spikes.forEach(x=>{
+        out += `<line x1="${x}" y1="190" x2="${x}" y2="95" stroke="rgba(37,99,235,.55)" stroke-width="10" stroke-linecap="round"></line>`;
+      });
+      out += `<text x="40" y="50" font-size="12" fill="rgba(15,23,42,.84)" font-weight="900">Illustrative: event windows</text>`;
+      out += `<text x="40" y="70" font-size="12" fill="rgba(100,116,139,.95)">Programs vary by utility & enrollment</text>`;
+      svgEl.innerHTML = out;
     }
 
     /***************
@@ -1297,9 +1748,14 @@
     const closeANotes = $("closeANotes");
     const closeBNotes = $("closeBNotes");
 
-    // NEW: yearly rows containers
+    // Year rows + scroll containers
+    const syncScroll = $("syncScroll");
+    const uYearRows = $("uYearRows");
     const aYearRows = $("aYearRows");
     const bYearRows = $("bYearRows");
+    const uYearScroll = $("uYearScroll");
+    const aYearScroll = $("aYearScroll");
+    const bYearScroll = $("bYearScroll");
 
     // Proof containers
     const proofInputs = $("proofInputs");
@@ -1314,6 +1770,27 @@
     const dots = $("dots");
     let idx = 0;
 
+    // SVG refs
+    const touMiniSvg = $("touMiniSvg");
+    const vppMiniSvg = $("vppMiniSvg");
+    const compareSvg = $("compareSvg");
+
+    /***************
+      Synced scrolling across year boxes
+    ***************/
+    let isSyncing = false;
+    function syncScrollTo(source){
+      if (!syncScroll?.checked) return;
+      if (isSyncing) return;
+      isSyncing = true;
+      const top = source.scrollTop;
+      [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{
+        if (el && el !== source) el.scrollTop = top;
+      });
+      // release on next frame
+      requestAnimationFrame(()=>{ isSyncing = false; });
+    }
+
     /***************
       KPI + calculator calculations
     ***************/
@@ -1324,8 +1801,6 @@
       kpiBill.textContent = (isFinite(m) && m>=0) ? fmt$(m) : "$—";
       kpiUsage.textContent = (isFinite(akwh) && akwh>=0) ? akwh.toLocaleString() : "—";
 
-      // cents/kWh from annual usage:
-      // monthly kWh = annual/12; cents = (monthly bill / monthly kWh) * 100
       let cents = NaN;
       if (isFinite(m) && m>0 && isFinite(akwh) && akwh>0){
         const monthlyKwh = akwh / 12;
@@ -1360,22 +1835,55 @@
       const aTotal = projectTotal(isFinite(aM)?aM:0, isFinite(aE)?aE:0, 25);
       const bTotal = projectTotal(isFinite(bM)?bM:0, isFinite(bE)?bE:0, 25);
 
-      // Show total only for utility
       uTotal.textContent = isFinite(uM) ? fmt$(utilTotal) : "$—";
 
-      // Proposals: show savings only
       const saveA = utilTotal - aTotal;
       const saveB = utilTotal - bTotal;
 
       aSave.textContent = (isFinite(aM) && isFinite(uM)) ? fmt$(saveA) : "$—";
       bSave.textContent = (isFinite(bM) && isFinite(uM)) ? fmt$(saveB) : "$—";
 
-      aSave.className = "big " + ((saveA>=0) ? "good" : "bad");
-      bSave.className = "big " + ((saveB>=0) ? "good" : "bad");
+      // proposals green when positive, red when negative
+      aSave.className = "big " + ((saveA>=0) ? "proposalNum" : "proposalNumNeg");
+      bSave.className = "big " + ((saveB>=0) ? "proposalNum" : "proposalNumNeg");
 
-      // NEW: yearly monthly tables for options
-      renderYearRows(aYearRows, aMonthly.value, aEsc.value);
-      renderYearRows(bYearRows, bMonthly.value, bEsc.value);
+      // Year rows
+      renderYearRows(uYearRows, uMonthly.value, uEsc.value, "utilityVal");
+      renderYearRows(aYearRows, aMonthly.value, aEsc.value, "proposalVal");
+      renderYearRows(bYearRows, bMonthly.value, bEsc.value, "proposalVal");
+
+      // Chart: monthly by year (use yearly monthly values)
+      drawCompareChart();
+    }
+
+    function drawCompareChart(){
+      // Create 25 points per series
+      const uM = parseFloat(uMonthly.value);
+      const uE = parseFloat(uEsc.value);
+      const aM = parseFloat(aMonthly.value);
+      const aE = parseFloat(aEsc.value);
+      const bM = parseFloat(bMonthly.value);
+      const bE = parseFloat(bEsc.value);
+
+      // If utility missing, keep chart blank-ish with defaults
+      const ptsU = [];
+      const ptsA = [];
+      const ptsB = [];
+      for(let y=1;y<=25;y++){
+        ptsU.push({x:y, y: (isFinite(uM) && uM>0) ? monthlyInYear(uM, isFinite(uE)?uE:0, y) : 0});
+        ptsA.push({x:y, y: (isFinite(aM) && aM>0) ? monthlyInYear(aM, isFinite(aE)?aE:0, y) : 0});
+        ptsB.push({x:y, y: (isFinite(bM) && bM>0) ? monthlyInYear(bM, isFinite(bE)?bE:0, y) : 0});
+      }
+      const allY = [...ptsU,...ptsA,...ptsB].map(p=>p.y);
+      const maxY = Math.max(1, ...allY);
+      const ymin = 0;
+      const ymax = Math.ceil(maxY / 50) * 50; // nice rounding
+
+      svgLineChart(compareSvg, [
+        {name:"Utility", color:"var(--cUtility)", points: ptsU},
+        {name:"Option A", color:"var(--cA)", points: ptsA},
+        {name:"Option B", color:"var(--cB)", points: ptsB},
+      ], {xmin:1,xmax:25,ymin,ymax,yTicks:4,padL:62,padR:22,padT:14,padB:34});
     }
 
     /***************
@@ -1387,7 +1895,6 @@
       if (uAnnualKwhEarly.value !== "" && document.activeElement !== uAnnualKwh) uAnnualKwh.value = uAnnualKwhEarly.value;
       recalc();
     }
-
     function syncCalcToEarly(){
       if (uMonthly.value !== "" && document.activeElement !== uMonthlyEarly) uMonthlyEarly.value = uMonthly.value;
       if (uEsc.value !== "" && document.activeElement !== uEscEarly) uEscEarly.value = uEsc.value;
@@ -1396,13 +1903,17 @@
     }
 
     /***************
-      Utility apply: colors + links per slide
+      Utility apply: colors + links
     ***************/
     function applyUtility(key){
       const u = UTILITIES[key] || UTILITIES.sce;
-
       setRootVar("--utilityA", u.colors.A);
       setRootVar("--utilityB", u.colors.B);
+
+      // Also adjust the red used in charts subtly by utility theme if desired
+      // Keep it consistent "utility red" for readability, but you can swap:
+      // setRootVar("--cUtility", u.colors.A);
+
       utilityColTitle.textContent = `Utility (${u.short})`;
 
       const tilesInputs = [u.tiles.inc13, u.tiles.base1, u.tiles.base2].filter(Boolean);
@@ -1435,13 +1946,11 @@
         dots.appendChild(d);
       });
     }
-
     function updateDeckUI(){
       slides.forEach((s,i)=> s.classList.toggle("active", i===idx));
       bar.style.width = (((idx+1)/slides.length)*100) + "%";
       Array.from(dots.children).forEach((d,i)=> d.classList.toggle("active", i===idx));
     }
-
     function go(i){
       idx = Math.max(0, Math.min(slides.length-1, i));
       updateDeckUI();
@@ -1482,7 +1991,7 @@
         learn.classList.remove("active");
         modePresentation.classList.add("active");
         modeLearning.classList.remove("active");
-        subline.textContent = "Sales Mode • light theme • proof tiles on every slide";
+        subline.textContent = "Sales Mode • light theme • proof tiles + visuals";
         window.scrollTo({top:0, behavior:"smooth"});
       }
     }
@@ -1520,6 +2029,14 @@
     utilitySelect.addEventListener("change", () => applyUtility(utilitySelect.value));
 
     /***************
+      Synced scroll event listeners
+    ***************/
+    [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{
+      if (!el) return;
+      el.addEventListener("scroll", () => syncScrollTo(el), {passive:true});
+    });
+
+    /***************
       Reset
     ***************/
     function resetInputs(){
@@ -1527,6 +2044,10 @@
       uMonthly.value = ""; uEsc.value = ""; uAnnualKwh.value = "";
       aMonthly.value = ""; aEsc.value = ""; aNotes.value = "";
       bMonthly.value = ""; bEsc.value = ""; bNotes.value = "";
+
+      // reset scroll positions together
+      [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{ if(el) el.scrollTop = 0; });
+
       recalc();
       updateKPIs();
     }
@@ -1538,8 +2059,12 @@
     buildDots();
     applyUtility("sce");
     setMode("presentation");
+
+    // mini visuals
+    svgTouMini(touMiniSvg);
+    svgVppMini(vppMiniSvg);
+
     recalc();
-    updateKPIs();
     updateDeckUI();
   </script>
 </body>
