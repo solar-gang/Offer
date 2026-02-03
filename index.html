@@ -1,2071 +1,1560 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Solar + Storage | Sales Deck</title>
-  <meta name="description" content="Light-theme interactive solar + storage sales deck with synced inputs, proof tiles, TOU chart, VPP slide, and a 25-year comparison with synchronized year scrolling." />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Leverage Our Sun • Solar + Storage Presentation</title>
+  <meta name="description" content="TOU problem + real bills + Tesla VPP + outage demo + 25-year savings calculator with Price-is-Right style escalator wheels." />
+
+  <!--
+    ✅ SINGLE-FILE (index.html) — Enterprise style + iPhone smooth
+    Uses YOUR GitHub RAW images (logo + bills) and your video filename.
+
+    ✅ Your confirmed assets (RAW):
+    LOGO:
+    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png
+
+    Utility-only bill (non-solar):
+    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg
+
+    Solar Net Billing bill:
+    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg
+
+    Video (you provided filename):
+    Assumed RAW path in same repo:
+    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/RecordIt-1770162136.mov
+    If your video is hosted elsewhere, replace OUTAGE_VIDEO_URL below.
+
+    ✅ GitHub Pages:
+    Repo → Settings → Pages → Deploy from branch → main → /(root)
+  -->
 
   <style>
     :root{
-      /* Premium light palette */
-      --bgA:#F7FAFF;
-      --bgB:#FFFFFF;
-      --ink:#0F172A;
-      --muted:#475569;
-      --muted2:#64748B;
-      --line:#E2E8F0;
-      --line2:#CBD5E1;
-      --soft:#F1F5F9;
-      --shadow: 0 18px 60px rgba(15, 23, 42, .12);
-      --shadow2: 0 10px 30px rgba(15, 23, 42, .08);
-      --radius:22px;
+      /* Night/base */
+      --night:#06122a;
+      --night2:#040b1c;
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.56);
+      --border: rgba(255,255,255,.14);
+      --shadow: 0 18px 70px rgba(0,0,0,.48);
 
-      /* Utility theme */
-      --utilityA:#D1202E; /* SCE red */
-      --utilityB:#FFCF36;
+      /* Logo energy */
+      --sun2:#ff7a00;
+      --sun:#ffb000;
+      --lime:#8cff3f;
+      --cyan:#00c2ff;
+      --bolt:#ffe94a;
 
-      /* Proposal theme */
-      --proposalA:#16A34A; /* green */
-      --proposalB:#2563EB; /* blue */
+      /* Semantics */
+      --red:#ff3b30;
+      --green:#34c759;
+      --blue:#00c2ff;
 
-      --good:#16A34A;
-      --bad:#DC2626;
+      --r:18px;
+      --r2:22px;
 
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-
-      /* Sizing */
-      --max:1320px;
-      --h2:44px;
-      --p:18.5px;
-      --btn:15px;
-      --input:20px;
-      --big:34px;
-
-      /* Chart colors */
-      --cUtility: rgba(220,38,38,.85); /* red */
-      --cA: rgba(22,163,74,.85);       /* green */
-      --cB: rgba(37,99,235,.85);       /* blue */
+      --grad: linear-gradient(135deg, var(--sun2), var(--lime), var(--cyan));
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{ scroll-behavior:smooth; scroll-padding-top: 96px; }
     body{
       margin:0;
-      font-family:var(--sans);
-      color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(900px 420px at 15% 10%, rgba(37,99,235,.10), transparent 60%),
-        radial-gradient(900px 420px at 85% 5%, rgba(34,197,94,.10), transparent 60%),
-        linear-gradient(180deg, var(--bgA), var(--bgB));
-      overflow-x:hidden;
+        radial-gradient(900px 520px at 16% 10%, rgba(255,122,0,.22), transparent 58%),
+        radial-gradient(900px 520px at 46% 40%, rgba(140,255,63,.10), transparent 58%),
+        radial-gradient(900px 520px at 84% 12%, rgba(0,194,255,.20), transparent 55%),
+        radial-gradient(1200px 700px at 55% 95%, rgba(255,233,74,.08), transparent 62%),
+        linear-gradient(180deg, var(--night), var(--night2));
     }
-    a{ color: inherit; }
-    a:hover{ opacity:.92; }
-
-    .wrap{ max-width:var(--max); margin:0 auto; padding:16px 16px 90px; }
+    a{color:#cfe8ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    a, button { -webkit-tap-highlight-color: transparent; }
 
     /* Topbar */
     .topbar{
-      position:sticky; top:12px; z-index:60;
-      border:1px solid var(--line);
-      border-radius:26px;
-      background: rgba(255,255,255,.78);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      padding:12px 12px;
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      position:fixed; inset:0 0 auto 0;
+      background:rgba(4,10,22,.62);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom:1px solid rgba(255,255,255,.14);
+      z-index:50;
+      padding-top: env(safe-area-inset-top);
+    }
+    .topbar-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:12px 18px;
+      padding-left: calc(18px + env(safe-area-inset-left));
+      padding-right: calc(18px + env(safe-area-inset-right));
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
       flex-wrap:wrap;
     }
-    .brand{ display:flex; gap:12px; align-items:center; }
-    .mark{
-      width:46px; height:46px; border-radius:16px;
-      background:
-        radial-gradient(circle at 25% 25%, rgba(255,255,255,.75), transparent 55%),
-        linear-gradient(135deg, rgba(37,99,235,.95), rgba(34,197,94,.85));
-      box-shadow: 0 10px 24px rgba(37,99,235,.18);
-      border:1px solid rgba(15,23,42,.06);
-      position:relative;
+    .brand{ display:flex; align-items:center; gap:12px; min-width: 280px; }
+    .brand img{ height:42px; width:auto; display:block; }
+    .brandText{ display:flex; flex-direction:column; line-height:1.15; }
+    .brandTitle{ font-weight:950; letter-spacing:-.02em; display:flex; align-items:center; gap:10px; }
+    .brandGlow{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--grad);
+      box-shadow: 0 0 0 6px rgba(255,122,0,.10), 0 0 24px rgba(0,194,255,.26);
     }
-    .mark:after{
-      content:"";
-      position:absolute; inset:11px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.55);
-      opacity:.55;
-    }
-    .brand h1{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:1000; line-height:1.1; }
-    .brand p{ margin:2px 0 0; font-size:12.5px; color:var(--muted2); }
+    .brandSub{ color:var(--muted2); font-size:12.5px; margin-top:2px; }
 
-    .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.85);
-      border-radius:999px;
-      padding:10px 12px;
-      display:flex; gap:10px; align-items:center;
-      box-shadow: var(--shadow2);
-    }
-    select, input[type="text"], input[type="number"]{
-      font:inherit;
-      color:var(--ink);
-      background:transparent;
-      border:0;
-      outline:none;
-    }
-    select{ cursor:pointer; font-weight:1000; }
+    .nav{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 
     .btn{
-      cursor:pointer;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.9);
-      color:var(--ink);
-      padding:14px 16px;
-      border-radius:16px;
-      font-weight:1000;
-      letter-spacing:.2px;
-      box-shadow: var(--shadow2);
-      transition: transform .12s ease, box-shadow .12s ease;
-      user-select:none;
-      white-space:nowrap;
-      font-size:var(--btn);
-    }
-    .btn:hover{ transform:translateY(-1px); box-shadow: 0 16px 40px rgba(15,23,42,.10); }
-    .btn:active{ transform:translateY(0); }
-
-    .toggle{
-      display:flex; align-items:center;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.85);
-      border-radius:999px;
-      overflow:hidden;
-      box-shadow: var(--shadow2);
-    }
-    .toggle button{
-      border:0; background:transparent; color:var(--muted);
-      padding:12px 14px; cursor:pointer; font-weight:1000; letter-spacing:.2px;
-      font-size:14px;
-    }
-    .toggle button.active{
-      background: rgba(37,99,235,.10);
-      color: rgba(15,23,42,.95);
-    }
-
-    /* Deck */
-    .deck{
-      margin-top:14px;
-      border:1px solid var(--line);
-      border-radius:30px;
-      background: rgba(255,255,255,.85);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .deck-top{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       padding:12px 14px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70));
-      flex-wrap:wrap;
-    }
-    .progress{
-      flex: 1;
-      height:12px;
-      border-radius:999px;
-      background: rgba(15,23,42,.06);
-      border:1px solid rgba(15,23,42,.08);
-      overflow:hidden;
-      min-width:220px;
-    }
-    .bar{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(37,99,235,.92), rgba(34,197,94,.90));
-      border-radius:999px;
-      transition: width .2s ease;
-    }
-    .dots{ display:flex; gap:8px; align-items:center; }
-    .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: rgba(15,23,42,.18);
-      border: 1px solid rgba(15,23,42,.14);
-      cursor:pointer;
-    }
-    .dot.active{ background: rgba(15,23,42,.78); border-color: rgba(15,23,42,.24); }
-
-    .deck-body{ padding:18px; }
-
-    .slide{
-      display:none;
-      border:1px solid var(--line);
-      border-radius:26px;
-      background:
-        radial-gradient(680px 360px at 14% 14%, rgba(37,99,235,.08), transparent 60%),
-        radial-gradient(680px 360px at 86% 18%, rgba(34,197,94,.08), transparent 60%),
-        #FFFFFF;
-      padding:26px;
-      min-height: 520px;
-      position:relative;
-      box-shadow: 0 10px 30px rgba(15,23,42,.06);
-    }
-    .slide.active{ display:block; }
-
-    .slide h2{
-      margin:0 0 10px;
-      font-size:var(--h2);
-      letter-spacing:-.9px;
-      line-height:1.05;
-    }
-    .slide p{
-      margin:0 0 16px;
-      color:var(--muted);
-      font-size:var(--p);
-      line-height:1.7;
-      max-width: 92ch;
-    }
-
-    .two-col{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    @media (max-width: 980px){
-      :root{ --h2:34px; --p:18px; }
-      .two-col{ grid-template-columns: 1fr; }
-      .slide{ min-height:unset; }
-    }
-
-    .tile{
-      border-radius:22px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      padding:16px;
-      box-shadow: 0 10px 26px rgba(15,23,42,.05);
-    }
-    .tile .k{
-      font-size:12.5px;
-      color:var(--muted2);
-      letter-spacing:.25px;
-      font-weight:1000;
-      text-transform:uppercase;
-    }
-    .tile .v{ margin-top:8px; font-size:30px; font-weight:1100; letter-spacing:-.4px; }
-    .tile .h{ margin-top:8px; font-size:14px; color:var(--muted); line-height:1.65; }
-
-    .bigline{
-      margin-top:14px;
-      border-radius:22px;
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.9);
-      padding:16px;
-      font-size:18px;
-      color: rgba(15,23,42,.88);
-      line-height:1.65;
-    }
-    .bigline strong{ color: rgba(15,23,42,.96); }
-
-    .nav{
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-      margin-top:18px;
-      flex-wrap:wrap;
-    }
-    .nav .left, .nav .right{ display:flex; gap:10px; align-items:center; }
-
-    .kbd{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: rgba(15,23,42,.70);
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.9);
       border-radius: 12px;
-      padding: 10px 12px;
-      white-space:nowrap;
-      box-shadow: var(--shadow2);
-    }
-
-    /* Proof tiles */
-    .proofStrip{
-      margin-top:16px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.88);
-      padding:12px;
-      box-shadow: 0 10px 24px rgba(15,23,42,.05);
-    }
-    .proofHeader{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom:10px;
-      flex-wrap:wrap;
-    }
-    .proofHeader .label{
-      font-size:12px;
-      color:var(--muted2);
-      font-weight:1100;
-      letter-spacing:.22px;
-      text-transform:uppercase;
-    }
-    .proofGrid{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width: 980px){
-      .proofGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-    .proofTile{
-      display:block;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(241,245,249,.85));
-      padding:14px 12px;
-      min-height:84px;
-      text-decoration:none;
-      box-shadow: 0 12px 26px rgba(15,23,42,.06);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .proofTile:hover{ transform:translateY(-1px); box-shadow: 0 18px 34px rgba(15,23,42,.08); }
-    .proofTile .t{ font-weight:1100; font-size:13.5px; line-height:1.25; }
-    .proofTile .s{ margin-top:8px; font-size:12px; color:var(--muted2); display:flex; gap:8px; align-items:center; }
-    .pillMini{
-      font-size:11px;
-      padding:5px 9px;
-      border-radius:999px;
-      border:1px solid var(--line2);
-      background: rgba(255,255,255,.9);
-      color: rgba(15,23,42,.78);
-      font-weight:1000;
-      white-space:nowrap;
-    }
-
-    /* ---------- Slide Graphics Blocks ---------- */
-    .graphicRow{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    @media (max-width: 980px){
-      .graphicRow{ grid-template-columns: 1fr; }
-    }
-    .graphic{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 12px 26px rgba(15,23,42,.05);
-      overflow:hidden;
-    }
-    .graphic-h{
-      padding:10px 12px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.86));
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .graphic-h .title{
-      font-size:12px;
-      font-weight:1100;
-      letter-spacing:.22px;
-      text-transform:uppercase;
-      color: rgba(15,23,42,.86);
-    }
-    .graphic-b{ padding:12px; }
-
-    /* Mini illustration (pure CSS) */
-    .scene{
-      height:160px;
-      border-radius:18px;
-      border:1px solid rgba(15,23,42,.06);
-      background:
-        radial-gradient(120px 90px at 20% 20%, rgba(255,255,255,.85), transparent 60%),
-        linear-gradient(180deg, rgba(37,99,235,.10), rgba(34,197,94,.06));
-      position:relative;
-      overflow:hidden;
-    }
-    .house{
-      position:absolute;
-      bottom:18px;
-      width:120px; height:78px;
-      left:18px;
-      border-radius:16px;
-      background: rgba(255,255,255,.88);
-      border:1px solid rgba(15,23,42,.10);
-      box-shadow: 0 14px 24px rgba(15,23,42,.10);
-    }
-    .roof{
-      position:absolute;
-      top:-18px; left:10px;
-      width:100px; height:42px;
-      background: linear-gradient(135deg, rgba(15,23,42,.86), rgba(15,23,42,.62));
-      border-radius:14px;
-      transform:skewX(-18deg);
-      border:1px solid rgba(15,23,42,.14);
-    }
-    .panelRow{
-      position:absolute; top:8px; left:16px;
-      width:68px; height:18px;
-      border-radius:10px;
-      background: linear-gradient(135deg, rgba(37,99,235,.65), rgba(37,99,235,.30));
-      border:1px solid rgba(37,99,235,.35);
-      opacity:.9;
-    }
-    .battery{
-      position:absolute;
-      right:20px; bottom:22px;
-      width:34px; height:54px;
-      border-radius:12px;
-      background: rgba(255,255,255,.92);
-      border:1px solid rgba(15,23,42,.12);
-      box-shadow: 0 10px 18px rgba(15,23,42,.10);
-    }
-    .battery:before{
-      content:"";
-      position:absolute;
-      left:8px; right:8px; top:10px;
-      height:6px; border-radius:6px;
-      background: rgba(22,163,74,.30);
-      border:1px solid rgba(22,163,74,.30);
-    }
-    .battery:after{
-      content:"";
-      position:absolute;
-      left:8px; right:8px; top:24px;
-      height:18px; border-radius:10px;
-      background: rgba(22,163,74,.18);
-      border:1px dashed rgba(22,163,74,.28);
-    }
-
-    .legendLines{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:8px;
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.55;
-    }
-    .lineTag{
+      font-weight: 900;
+      cursor:pointer;
+      min-height:44px;
+      line-height:1;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      touch-action: manipulation;
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
-      font-weight:1000;
-      color: rgba(15,23,42,.82);
     }
-    .sw{
-      width:14px; height:14px;
-      border-radius:5px;
-      border:1px solid rgba(15,23,42,.12);
-      display:inline-block;
+    .btn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+    .btn.primary{
+      background: var(--grad);
+      border-color: rgba(255,255,255,.18);
+      color: #06101e;
+      box-shadow: 0 14px 50px rgba(0,194,255,.12), 0 14px 50px rgba(255,122,0,.10);
     }
-    .sw.utility{ background: rgba(220,38,38,.25); }
-    .sw.a{ background: rgba(22,163,74,.22); }
-    .sw.b{ background: rgba(37,99,235,.18); }
 
-    /* ---------- TOU Chart ---------- */
-    .touChart{
-      margin-top:14px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 12px 28px rgba(15,23,42,.06);
-      padding:14px;
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding: calc(92px + env(safe-area-inset-top)) 18px calc(84px + env(safe-area-inset-bottom));
+      padding-left: calc(18px + env(safe-area-inset-left));
+      padding-right: calc(18px + env(safe-area-inset-right));
     }
-    .touHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .touHeader .title{
-      font-weight:1200;
-      letter-spacing:.2px;
-      font-size:14px;
-      color: rgba(15,23,42,.92);
-    }
-    .touHeader .note{
-      color:var(--muted2);
-      font-size:12.5px;
-      line-height:1.35;
-      max-width:60ch;
-    }
-    .touBarWrap{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(241,245,249,.85), rgba(255,255,255,.90));
-      border-radius:18px;
-      padding:12px;
-    }
-    .touBar{
+
+    /* Hero */
+    .hero{
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--r2);
+      box-shadow: var(--shadow);
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1.25fr .9fr;
+      gap:14px;
+      overflow:hidden;
       position:relative;
-      height:84px;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid rgba(15,23,42,.08);
-      background:
-        linear-gradient(90deg,
-          rgba(37,99,235,.12) 0%,
-          rgba(37,99,235,.08) 55%,
-          rgba(245,158,11,.10) 55%,
-          rgba(245,158,11,.10) 80%,
-          rgba(15,23,42,.05) 80%,
-          rgba(15,23,42,.05) 100%
-        );
     }
-    .touBar:before{
+    .hero::before{
       content:"";
-      position:absolute; inset:0;
+      position:absolute; inset:-2px;
       background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(15,23,42,.07) 0px,
-          rgba(15,23,42,.07) 1px,
-          transparent 1px,
-          transparent 12.5%
-        );
-      opacity:.35;
+        radial-gradient(700px 300px at 20% 20%, rgba(255,122,0,.14), transparent 60%),
+        radial-gradient(700px 300px at 80% 20%, rgba(0,194,255,.12), transparent 60%),
+        radial-gradient(700px 300px at 55% 90%, rgba(140,255,63,.10), transparent 60%);
       pointer-events:none;
+      filter: blur(2px);
     }
-    .touPeak{
-      position:absolute;
-      top:8px; bottom:8px;
-      left:55%; width:25%;
-      border-radius:14px;
-      background: linear-gradient(180deg, rgba(245,158,11,.34), rgba(245,158,11,.18));
-      border:1px solid rgba(245,158,11,.35);
-      box-shadow: 0 12px 22px rgba(245,158,11,.10);
+    .hero > *{ position:relative; z-index:1; }
+
+    h1{
+      margin:0;
+      font-size: clamp(22px, 3.2vw, 36px);
+      letter-spacing:-.035em;
+      line-height:1.08;
     }
-    .touPeakLabel{
-      position:absolute;
-      left:55%;
-      width:25%;
-      top:10px;
-      text-align:center;
-      font-size:12px;
-      font-weight:1200;
-      color: rgba(15,23,42,.86);
-      letter-spacing:.2px;
-      text-transform:uppercase;
+    .gradText{
+      background: var(--grad);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-weight: 1000;
     }
-    .touTicks{
-      display:flex;
-      justify-content:space-between;
-      margin-top:10px;
-      color:var(--muted2);
-      font-size:12px;
-      font-weight:1000;
-    }
-    .touLegend{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:12px;
-    }
-    .leg{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.75);
-      border-radius:999px;
+    .hero p{ margin:10px 0 0; color:var(--muted); line-height:1.45; max-width: 820px; }
+
+    .pills{ margin-top:14px; display:flex; flex-wrap:wrap; gap:10px; }
+    .pill{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
       padding:8px 10px;
-      font-size:12px;
-      color: rgba(15,23,42,.82);
-      font-weight:1000;
-    }
-    .swatch{
-      width:14px; height:14px;
-      border-radius:5px;
-      border:1px solid rgba(15,23,42,.12);
-    }
-    .swatch.midday{ background: rgba(37,99,235,.22); }
-    .swatch.peak{ background: rgba(245,158,11,.32); }
-    .swatch.night{ background: rgba(15,23,42,.10); }
-    .touFooter{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    /* ---------- Calculator ---------- */
-    .calc-grid{
-      display:grid;
-      grid-template-columns: 1.25fr 1fr 1fr;
-      gap: 14px;
-      margin-top: 12px;
-      align-items:start;
-    }
-    @media (max-width: 980px){ .calc-grid{ grid-template-columns: 1fr; } }
-
-    .col{
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255,255,255,.95);
-      padding: 14px;
-      position: relative;
-      overflow:hidden;
-      min-height: 420px;
-      box-shadow: 0 12px 28px rgba(15,23,42,.06);
-    }
-    .col:before{
-      content:"";
-      position:absolute; inset:-90px -90px auto auto;
-      width:270px; height:270px; border-radius:50%;
-      opacity:.12;
-    }
-    .col.utility:before{ background: radial-gradient(circle at 40% 40%, var(--utilityB), transparent 66%); }
-    .col.a:before{ background: radial-gradient(circle at 40% 40%, var(--proposalA), transparent 66%); }
-    .col.b:before{ background: radial-gradient(circle at 40% 40%, var(--proposalB), transparent 66%); }
-
-    .colhead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
-    .colhead h4{ margin:0; font-size:14px; letter-spacing:.2px; font-weight:1100; }
-    .chip{
-      font-size: 12px;
-      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(241,245,249,.9);
-      color: rgba(15,23,42,.80);
-      white-space:nowrap;
-      font-weight:1000;
-    }
-
-    .form{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .field{
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.75);
-      border-radius:18px;
-      padding:12px;
-    }
-    .field.full{ grid-column:1 / -1; }
-    .field label{
-      display:block;
-      font-size:12px;
-      color:var(--muted2);
-      margin-bottom:8px;
-      letter-spacing:.2px;
-      font-weight:1100;
-      text-transform:uppercase;
-    }
-    .field input{
-      width:100%;
-      font-weight:1100;
-      font-size:var(--input);
-      padding: 6px 0;
-    }
-    .field small{
-      display:block;
-      margin-top:8px;
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.45;
-    }
-
-    .summary{
-      margin-top:12px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.75);
-      padding:12px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .big{
-      font-size:var(--big);
-      font-weight:1200;
-      letter-spacing:-.6px;
-      color:rgba(15,23,42,.95);
-      line-height:1.05;
-    }
-    /* Colored output: utility red, proposals green */
-    .big.utilityNum{ color: rgba(220,38,38,.92); }
-    .big.proposalNum{ color: rgba(22,163,74,.92); }
-    .big.proposalNumNeg{ color: rgba(220,38,38,.92); }
-
-    /* ---------- Year scroll boxes (larger) ---------- */
-    .yearGrid{
-      display:grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 14px;
-      margin-top:14px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .yearGrid{ grid-template-columns: 1fr; }
-    }
-
-    .yearbox{
-      border-radius:18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 12px 26px rgba(15,23,42,.05);
-      overflow:hidden;
-    }
-    .yearbox.utility{
-      border-color: rgba(220,38,38,.18);
-      box-shadow: 0 14px 28px rgba(220,38,38,.05);
-    }
-    .yearbox.proposal{
-      border-color: rgba(22,163,74,.18);
-      box-shadow: 0 14px 28px rgba(22,163,74,.05);
-    }
-    .yearbox-h{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.85));
-    }
-    .yearbox-h .title{
-      font-size:12px;
-      font-weight:1100;
-      color: rgba(15,23,42,.86);
-      letter-spacing:.22px;
-      text-transform:uppercase;
-      display:flex; align-items:center; gap:10px;
-    }
-    .badge{
-      font-size:11px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line2);
-      background: rgba(255,255,255,.9);
-      font-weight:1100;
-      white-space:nowrap;
-    }
-    .badge.utility{ border-color: rgba(220,38,38,.20); color: rgba(220,38,38,.88); }
-    .badge.a{ border-color: rgba(22,163,74,.22); color: rgba(22,163,74,.92); }
-    .badge.b{ border-color: rgba(37,99,235,.22); color: rgba(37,99,235,.92); }
-
-    .yearbox-h .hint{
-      font-size:12px;
-      color:var(--muted2);
-      font-weight:900;
-      white-space:nowrap;
+      color: var(--muted);
+      font-size: 13px;
       display:flex;
       align-items:center;
       gap:8px;
     }
-    .hint input[type="checkbox"]{
-      width:18px; height:18px;
-      accent-color: rgba(37,99,235,.75);
-      cursor:pointer;
-    }
-
-    .yearscroll{
-      max-height:320px; /* larger */
-      overflow:auto;
-      padding:12px 14px 14px;
-      background: rgba(255,255,255,.95);
-      scroll-behavior:smooth;
-    }
-    .yeartable{
-      width:100%;
-      border-collapse:collapse;
-      font-size:14px;
-    }
-    .yeartable th, .yeartable td{
-      text-align:left;
-      padding:10px 8px;
-      border-bottom:1px dashed rgba(15,23,42,.10);
-      vertical-align:middle;
-    }
-    .yeartable th{
-      font-size:12px;
-      color:var(--muted2);
-      text-transform:uppercase;
-      letter-spacing:.18px;
-      font-weight:1100;
-      position:sticky;
-      top:0;
-      background: rgba(255,255,255,.95);
-      backdrop-filter: blur(6px);
-      border-bottom:1px solid rgba(15,23,42,.10);
-      z-index:2;
-    }
-    .yeartable td:last-child{
-      font-family: var(--mono);
-      font-weight:1100;
-    }
-    .yeartable td.utilityVal{ color: rgba(220,38,38,.92); }
-    .yeartable td.proposalVal{ color: rgba(22,163,74,.92); }
-    .yeartable td.proposalValNeg{ color: rgba(220,38,38,.92); }
-
-    /* ---------- Chart (SVG holder) ---------- */
-    .chartWrap{
+    .pill .dot{ width:8px;height:8px;border-radius:999px;background: var(--grad); box-shadow: 0 0 18px rgba(0,194,255,.22); }
+    .heroActions{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+    .note{
       margin-top:14px;
-      border-radius:22px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 12px 26px rgba(15,23,42,.05);
-      overflow:hidden;
+      color: var(--muted2);
+      font-size: 12.5px;
+      border-left: 3px solid rgba(0,194,255,.55);
+      padding-left: 10px;
+      line-height: 1.45;
     }
-    .chartH{
-      padding:10px 12px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.86));
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
-    .chartH .title{
-      font-size:12px;
-      font-weight:1100;
-      letter-spacing:.22px;
-      text-transform:uppercase;
-      color: rgba(15,23,42,.86);
-    }
-    .chartH .sub{
-      font-size:12px;
-      color:var(--muted2);
-      font-weight:900;
-    }
-    .chartB{ padding:12px; }
-    .chartB svg{ width:100%; height:240px; display:block; }
 
-    /* Learning Mode */
-    .learn{ margin-top: 14px; display:none; }
-    .learn.active{ display:block; }
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
     .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      border-radius: var(--r);
+      padding:14px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.25);
+    }
+    .fieldGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    label span{
+      display:block;
+      color:var(--muted2);
+      font-size:11.5px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    input{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      font-weight: 900;
+      outline:none;
+      min-height:44px;
+      font-size:16px; /* iPhone no-zoom */
+    }
+    input:focus{
+      border-color: rgba(0,194,255,.65);
+      box-shadow: 0 0 0 6px rgba(0,194,255,.14);
+    }
+
+    /* Sections */
+    .section{
+      margin-top: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--r2);
       box-shadow: var(--shadow);
       overflow:hidden;
+      scroll-margin-top: 96px;
     }
-    .card-h{
-      padding: 14px 14px 10px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.80));
+    .sectionHead{
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
     }
-    .card-h h3{ margin:0; font-size:14px; letter-spacing:.25px; font-weight:1100; }
-    .card-h p{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
-    .card-b{ padding: 12px 14px 14px; }
-    .callout{
-      border:1px solid var(--line);
-      background: rgba(241,245,249,.8);
-      border-radius: 16px;
-      padding: 12px;
+    .sectionHead h2{ margin:0; font-size:16px; display:flex; align-items:center; gap:10px; }
+    .spark{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--grad);
+      box-shadow: 0 0 22px rgba(255,122,0,.18), 0 0 22px rgba(0,194,255,.16);
+    }
+    .sectionHead p{ margin:6px 0 0; color:var(--muted); max-width:840px; font-size:13.5px; line-height:1.35; }
+    .sectionBody{ padding:18px; }
+
+    .grid12{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
+    .span5{ grid-column: span 5; }
+    .span6{ grid-column: span 6; }
+    .span7{ grid-column: span 7; }
+    .span12{ grid-column: span 12; }
+
+    .badgeRow{ display:flex; gap:10px; flex-wrap:wrap; }
+    .badge{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size: 12.5px;
       color: var(--muted);
-      font-size: 13.5px;
-      line-height: 1.7;
+      font-weight: 900;
     }
-    .callout strong{ color: rgba(15,23,42,.92); }
+    .badge.problem{ border-color: rgba(255,59,48,.40); background: rgba(255,59,48,.10); }
+    .badge.solution{ border-color: rgba(52,199,89,.40); background: rgba(52,199,89,.10); }
+    .badge.energy{ border-color: rgba(0,194,255,.35); background: rgba(0,194,255,.10); }
 
-    /* Modes */
-    body.presentation .learn{ display:none !important; }
-    body.learning .deck{ display:none !important; }
+    .callout{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      border-radius: var(--r);
+      padding:12px;
+      line-height:1.4;
+    }
+    .callout h3{
+      margin:0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+    }
+    .callout ul{ margin:0; padding-left: 18px; color: rgba(255,255,255,.88); }
+    .callout li{ margin:8px 0; }
 
-    /* Fullscreen tweaks */
-    body.fullscreen #topbar{ opacity: 0.08; transition: opacity .2s ease; }
-    body.fullscreen #topbar:hover{ opacity: 1; }
+    /* Bills */
+    figure.bill{
+      margin:0;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--r);
+      background: rgba(0,0,0,.20);
+      overflow:hidden;
+    }
+    figure.bill img{
+      width:100%;
+      height:auto;
+      display:block;
+      cursor: zoom-in;
+      background:#fff;
+      -webkit-user-select:none;
+      user-select:none;
+    }
+    .billCaption{
+      padding:10px 12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color: var(--muted2);
+      font-size: 12.5px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-weight:900;
+      font-size: 12px;
+    }
+    .tag .mini{ width:8px;height:8px;border-radius:999px;background: var(--grad); }
+
+    /* Video */
+    .videoWrap{
+      border-radius: var(--r);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      box-shadow: 0 18px 70px rgba(0,0,0,.35);
+    }
+    video{ width:100%; height:auto; display:block; background:#000; }
+
+    /* Calculator */
+    .columns{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .col{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--r);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .colHead{
+      padding:12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,.05);
+    }
+    .colLabel{ color:var(--muted2); text-transform:uppercase; letter-spacing:.06em; font-size:11px; }
+    .colTitle{ font-weight:1000; font-size:18px; letter-spacing:-.02em; margin-top:2px; }
+    .chip{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .col.utility .colHead{ background: linear-gradient(180deg, rgba(255,59,48,.20), rgba(255,255,255,.05)); }
+    .col.opt1 .colHead{ background: linear-gradient(135deg, rgba(255,122,0,.18), rgba(140,255,63,.10), rgba(0,194,255,.12)); }
+    .col.opt2 .colHead{ background: linear-gradient(180deg, rgba(0,194,255,.18), rgba(52,199,89,.10), rgba(255,255,255,.05)); }
+
+    .totals{
+      padding:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.12);
+    }
+    .metric{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius: 12px;
+      padding:10px;
+    }
+    .metric .k{
+      color:var(--muted2);
+      font-size:11.5px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .metric .v{
+      margin-top:6px;
+      font-weight:1000;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+
+    /* Swipe table */
+    .tableWrap{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--r);
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      background: rgba(0,0,0,.16);
+    }
+    table{
+      width:100%;
+      min-width: 640px;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    thead th{
+      text-align:left;
+      padding:10px 10px;
+      color:var(--muted);
+      background: rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      position:sticky; top:0;
+    }
+    tbody td{
+      padding:9px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      color: rgba(255,255,255,.88);
+      white-space: nowrap;
+    }
+
+    /* Escalator Wheels section */
+    .wheelSection{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--r2);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .wheelHead{
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, rgba(255,122,0,.10), rgba(140,255,63,.06), rgba(0,194,255,.08));
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .wheelHead .title{
+      font-weight:1000;
+      letter-spacing:-.02em;
+    }
+    .wheelHead .sub{
+      margin-top:6px;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      max-width:820px;
+    }
+    .wheelBody{
+      padding:16px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .wheelCard{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--r);
+      background: rgba(0,0,0,.20);
+      padding:12px;
+      display:grid;
+      gap:10px;
+      align-items:center;
+    }
+    .wheelTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .wheelName{
+      font-weight:1000;
+      letter-spacing:-.02em;
+    }
+    .wheelValue{
+      font-weight:1000;
+      font-size:20px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      min-width: 86px;
+      text-align:center;
+    }
+    .wheelCanvasWrap{
+      position:relative;
+      width:100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: radial-gradient(closest-side, rgba(255,255,255,.06), rgba(0,0,0,.35));
+    }
+    canvas.wheel{
+      width:100%;
+      height:100%;
+      display:block;
+      touch-action: none; /* allow custom drag on iOS */
+    }
+    .wheelPointer{
+      position:absolute;
+      top: 8px;
+      left:50%;
+      transform: translateX(-50%);
+      width:0;height:0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 18px solid rgba(255,255,255,.92);
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+    .wheelHint{
+      color: var(--muted2);
+      font-size: 12.5px;
+      line-height:1.35;
+    }
+    .wheelButtons{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .miniBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor:pointer;
+      min-height: 44px;
+      line-height:1;
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.80);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 22px;
+      padding-top: calc(22px + env(safe-area-inset-top));
+      padding-bottom: calc(22px + env(safe-area-inset-bottom));
+      z-index:200;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox-inner{
+      max-width:min(1100px, 96vw);
+      max-height: 92vh;
+      background: rgba(8,12,22,.94);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: 0 30px 120px rgba(0,0,0,.55);
+    }
+    .lightbox-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      font-weight:900;
+      font-size: 13px;
+    }
+    .lightbox-bar button{
+      min-height:44px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .lightbox img{ width:100%; height:auto; display:block; background:#fff; }
+
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .span5,.span6,.span7,.span12{ grid-column: span 12; }
+      .fieldGrid{ grid-template-columns: 1fr; }
+      .columns{ grid-template-columns: 1fr; }
+      .wheelBody{ grid-template-columns: 1fr; }
+    }
+
+    @media print{
+      .topbar{ display:none !important; }
+      body{ background:#fff; color:#000; }
+      .section, .hero, .card, figure.bill, .tableWrap, .wheelSection{ box-shadow:none !important; background:#fff !important; border-color:#ddd !important; }
+      a{ color:#000; text-decoration:underline; }
+      .btn, .miniBtn{ display:none !important; }
+      .billCaption{ color:#333 !important; }
+    }
   </style>
 </head>
 
-<body class="presentation">
-  <div class="wrap">
-
-    <div class="topbar" id="topbar">
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
       <div class="brand">
-        <div class="mark" aria-hidden="true"></div>
-        <div>
-          <h1>Solar + Storage Sales Deck</h1>
-          <p id="subline">Sales Mode • light theme • proof tiles + visuals</p>
+        <img id="brandLogo" src="" alt="Leverage Our Sun logo">
+        <div class="brandText">
+          <div class="brandTitle"><span class="brandGlow"></span> Leverage Our Sun</div>
+          <div class="brandSub">TOU problem → net billing → battery solution → 25-year savings</div>
         </div>
       </div>
-
-      <div class="controls">
-        <div class="toggle" aria-label="Mode toggle">
-          <button id="modePresentation" class="active" type="button">Sales</button>
-          <button id="modeLearning" type="button">Learning</button>
-        </div>
-
-        <button class="btn" id="presentBtn" type="button">Presenter Fullscreen</button>
-
-        <div class="pill" title="Select utility">
-          <span style="color:var(--muted2); font-size:12px; letter-spacing:.2px; font-weight:1100; text-transform:uppercase;">Utility</span>
-          <select id="utilitySelect" aria-label="Select utility">
-            <option value="sce">SCE</option>
-            <option value="pge">PG&E</option>
-            <option value="sdge">SDG&E</option>
-          </select>
-        </div>
-
-        <button class="btn" id="resetBtn" type="button">Reset</button>
+      <div class="nav">
+        <a class="btn" href="#tou">TOU</a>
+        <a class="btn" href="#bills">Bills</a>
+        <a class="btn" href="#vpp">VPP</a>
+        <a class="btn" href="#outage">Outage</a>
+        <a class="btn primary" href="#calculator">Calculator</a>
+        <button class="btn" id="btnPrint" type="button">Print / Save PDF</button>
       </div>
     </div>
+  </div>
 
-    <section class="deck" id="deck" aria-label="Presentation deck">
-      <div class="deck-top">
-        <div class="progress" aria-label="Slide progress"><div class="bar" id="bar"></div></div>
-        <div class="dots" id="dots" aria-label="Slide dots"></div>
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <h1>Win the day. <span class="gradText">Own the night.</span></h1>
+        <p>
+          This presentation uses real SCE bills to explain the Time-of-Use problem, the Solar Net Billing reality,
+          and why batteries change everything — then it closes with a 25-year comparison and a “Price is Right” escalator wheel.
+        </p>
+
+        <div class="pills">
+          <div class="pill"><span class="dot"></span><b>Real Proof:</b> your bills (tap to zoom)</div>
+          <div class="pill"><span class="dot"></span><b>Simple Story:</b> TOU → Net Billing → Battery</div>
+          <div class="pill"><span class="dot"></span><b>Close Strong:</b> live savings + wheel</div>
+        </div>
+
+        <div class="heroActions">
+          <a class="btn primary" href="#bills">Start with the bills</a>
+          <a class="btn" href="#calculator">Jump to calculator</a>
+        </div>
+
+        <div class="note">
+          iPhone: tap bill images to zoom. Swipe the 25-year table left/right. Spin the wheel to set escalators.
+        </div>
       </div>
 
-      <div class="deck-body">
-
-        <!-- Slide 1: Inputs -->
-        <div class="slide active" data-title="Inputs">
-          <h2>Start here: confirm the numbers</h2>
-          <p>
-            Agree on the <strong>average monthly bill</strong>, <strong>annual usage</strong>, and a reasonable
-            <strong>annual increase</strong>. These sync into the comparison so the customer sees consistent math.
-          </p>
-
-          <div class="two-col">
-            <div class="tile">
-              <div class="k">Average monthly bill</div>
-              <div class="v" id="kpiBill">$—</div>
-              <div class="h">Use the real average (not the best month).</div>
-            </div>
-            <div class="tile">
-              <div class="k">Annual usage</div>
-              <div class="v"><span id="kpiUsage">—</span> kWh/yr</div>
-              <div class="h">Used to estimate <strong>¢/kWh</strong> on the comparison slide.</div>
-            </div>
-          </div>
-
-          <div class="graphicRow">
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Visual: solar + battery = night power</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Simple & non-salesy</div>
-              </div>
-              <div class="graphic-b">
-                <div class="scene" aria-hidden="true">
-                  <div class="house">
-                    <div class="roof"></div>
-                    <div class="panelRow"></div>
-                  </div>
-                  <div class="battery"></div>
-                </div>
-                <div class="legendLines">
-                  <div><span class="lineTag"><span class="sw utility"></span>Utility</span> = you buy power whenever you need it.</div>
-                  <div><span class="lineTag"><span class="sw a"></span>Solar + Storage</span> = store midday energy → use at night.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Quick inputs</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Synced</div>
-              </div>
-              <div class="graphic-b">
-                <div class="field full" style="padding:16px; margin-bottom:10px;">
-                  <label>Monthly bill ($)</label>
-                  <input id="uMonthlyEarly" type="number" min="0" step="1" placeholder="e.g., 320" style="font-size:24px; font-weight:1200;" />
-                  <small>Synced with the calculator.</small>
-                </div>
-
-                <div class="field full" style="padding:16px; margin-bottom:10px;">
-                  <label>Annual usage (kWh/year)</label>
-                  <input id="uAnnualKwhEarly" type="number" min="0" step="1" placeholder="e.g., 8400" style="font-size:24px; font-weight:1200;" />
-                  <small>Used for ¢/kWh estimate.</small>
-                </div>
-
-                <div class="field full" style="padding:16px;">
-                  <label>Annual increase (%)</label>
-                  <input id="uEscEarly" type="number" min="0" step="0.1" placeholder="e.g., 6.0" style="font-size:24px; font-weight:1200;" />
-                  <small>Editable later too.</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="proofStrip">
-            <div class="proofHeader">
-              <div class="label">Sources used in this section</div>
-              <div style="color:var(--muted2); font-size:12px;">Tap to open (new tab)</div>
-            </div>
-            <div class="proofGrid" id="proofInputs"></div>
-          </div>
-
-          <div class="nav">
-            <div class="left"><span class="kbd">→ / ← • Press F for fullscreen</span></div>
-            <div class="right"><button class="btn" data-next type="button">Next</button></div>
-          </div>
+      <div class="card">
+        <h3 style="margin:0 0 10px;">Appointment quick notes</h3>
+        <div class="fieldGrid">
+          <label><span>Homeowner name</span><input id="custName" placeholder="John & Jane"></label>
+          <label><span>City</span><input id="custCity" placeholder="Murrieta, CA"></label>
+          <label><span>Major loads</span><input id="custLoads" placeholder="EV / pool / A/C"></label>
+          <label><span>Goal</span><input id="custGoal" placeholder="Lower bill + backup power"></label>
         </div>
-
-        <!-- Slide 2: TOU -->
-        <div class="slide" data-title="TOU">
-          <h2>Time-of-Use: the everyday penalty</h2>
-          <p>
-            TOU doesn’t just care how much energy you use — it cares <strong>when</strong>.
-            Peak hours are usually when families are home, so evening power can cost more.
-          </p>
-
-          <div class="two-col">
-            <div class="tile">
-              <div class="k">What customers feel</div>
-              <div class="v">Night = expensive</div>
-              <div class="h">Cooking, HVAC, laundry, and EV charging often land during peak pricing.</div>
-            </div>
-            <div class="tile">
-              <div class="k">What storage changes</div>
-              <div class="v">Buy less peak power</div>
-              <div class="h">Store midday solar → use it during peak → reduce the pricey hours.</div>
-            </div>
-          </div>
-
-          <div class="bigline">
-            <strong>Simple explanation:</strong> A battery turns solar into night-time power — so you stop paying the “peak” premium every day.
-          </div>
-
-          <!-- TOU Visual Chart -->
-          <div class="touChart" aria-label="Time-of-Use Visual">
-            <div class="touHeader">
-              <div class="title">A simple way to see Time-of-Use</div>
-              <div class="note">
-                Same electricity — different price depending on the time. Peak hours (often <strong>4–9 PM</strong>) are when most families use power.
-              </div>
-            </div>
-
-            <div class="touBarWrap">
-              <div class="touBar">
-                <div class="touPeak" aria-hidden="true"></div>
-                <div class="touPeakLabel">4–9 PM • Peak</div>
-              </div>
-
-              <div class="touTicks" aria-hidden="true">
-                <span>Morning</span>
-                <span>Midday</span>
-                <span>Evening</span>
-                <span>Night</span>
-              </div>
-
-              <div class="touLegend" aria-label="Legend">
-                <div class="leg"><span class="swatch midday"></span>Midday (solar-friendly)</div>
-                <div class="leg"><span class="swatch peak"></span>Peak (most expensive)</div>
-                <div class="leg"><span class="swatch night"></span>Off-peak (varies)</div>
-              </div>
-
-              <div class="touFooter">
-                <strong>Battery takeaway:</strong> capture midday solar and use it during peak, so you’re buying less of the most expensive power.
-              </div>
-            </div>
-          </div>
-
-          <div class="graphicRow">
-            <div class="chartWrap">
-              <div class="chartH">
-                <div class="title">Mini graph: “peak window” concept</div>
-                <div class="sub">Higher costs during 4–9 PM (illustrative)</div>
-              </div>
-              <div class="chartB">
-                <svg id="touMiniSvg" viewBox="0 0 800 240" role="img" aria-label="Illustrative peak cost chart"></svg>
-              </div>
-            </div>
-
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Fast talk track</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">10 seconds</div>
-              </div>
-              <div class="graphic-b">
-                <div class="callout">
-                  <strong>“It’s the same power, but the price changes by time.</strong><br>
-                  The expensive window is when you’re home. Storage lets you avoid buying the most expensive hours.”
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="proofStrip">
-            <div class="proofHeader">
-              <div class="label">Time-of-Use sources</div>
-              <div style="color:var(--muted2); font-size:12px;">Tap to open</div>
-            </div>
-            <div class="proofGrid" id="proofTou"></div>
-          </div>
-
-          <div class="nav">
-            <div class="left"><button class="btn" data-prev type="button">Back</button></div>
-            <div class="right"><button class="btn" data-next type="button">Next</button></div>
-          </div>
+        <div style="margin-top:12px;color:var(--muted2);font-size:12.5px;line-height:1.45;">
+          Use Print/PDF for a clean recap after the appointment.
         </div>
-
-        <!-- Slide 3: VPP -->
-        <div class="slide" data-title="VPP">
-          <h2>Tesla Virtual Power Plant: extra value (optional)</h2>
-          <p>
-            If available for your utility, a VPP lets many home batteries support the grid during events.
-            Programs vary, so rely on the program page for rules and eligibility.
-          </p>
-
-          <div class="graphicRow">
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Visual: community batteries helping grid</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Illustration</div>
-              </div>
-              <div class="graphic-b">
-                <div class="scene" aria-hidden="true" style="background:linear-gradient(180deg, rgba(37,99,235,.08), rgba(15,23,42,.02));">
-                  <div class="house" style="left:18px; width:110px;">
-                    <div class="roof"></div>
-                    <div class="panelRow"></div>
-                  </div>
-                  <div class="house" style="left:160px; width:110px; opacity:.92;">
-                    <div class="roof"></div>
-                    <div class="panelRow"></div>
-                  </div>
-                  <div class="house" style="left:300px; width:110px; opacity:.88;">
-                    <div class="roof"></div>
-                    <div class="panelRow"></div>
-                  </div>
-                  <div class="battery" style="right:26px; bottom:22px;"></div>
-                </div>
-                <div class="legendLines">
-                  <div><strong>Optional:</strong> participate if available + if the homeowner opts in.</div>
-                  <div><strong>Trust framing:</strong> backup comes first; rules are confirmed on the program page.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="chartWrap">
-              <div class="chartH">
-                <div class="title">Mini graph: “event exports” concept</div>
-                <div class="sub">Illustrative only (varies by program)</div>
-              </div>
-              <div class="chartB">
-                <svg id="vppMiniSvg" viewBox="0 0 800 240" role="img" aria-label="Illustrative VPP events chart"></svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="two-col">
-            <div class="tile">
-              <div class="k">What it is</div>
-              <div class="v">Grid support events</div>
-              <div class="h">If you opt in, your battery can export during events under program rules.</div>
-            </div>
-            <div class="tile">
-              <div class="k">Customer-first framing</div>
-              <div class="v">Backup stays priority</div>
-              <div class="h">Participation is optional; availability and rules are confirmed on the program page.</div>
-            </div>
-          </div>
-
-          <div class="bigline">
-            <strong>Keep it factual:</strong> “If it’s available and you opt in, it can add value — and we’ll verify your program rules.”
-          </div>
-
-          <div class="proofStrip">
-            <div class="proofHeader">
-              <div class="label">Tesla VPP sources</div>
-              <div style="color:var(--muted2); font-size:12px;">Tap to open</div>
-            </div>
-            <div class="proofGrid" id="proofVpp"></div>
-          </div>
-
-          <div class="nav">
-            <div class="left"><button class="btn" data-prev type="button">Back</button></div>
-            <div class="right"><button class="btn" data-next type="button">Next</button></div>
-          </div>
-        </div>
-
-        <!-- Slide 4: Compare -->
-        <div class="slide" data-title="Compare">
-          <h2>Price comparison (25 years)</h2>
-          <p>
-            Utility vs two options. Utility shows the <strong>25-year total</strong>.
-            Each proposal shows only <strong>$$ saved</strong> compared to utility (no proposal totals).
-            Below, scroll the <strong>monthly by year</strong> and keep all columns aligned by year (synced scrolling).
-          </p>
-
-          <div class="chartWrap">
-            <div class="chartH">
-              <div class="title">Graph: monthly payment by year (1–25)</div>
-              <div class="sub">Utility (red) vs Option A (green) vs Option B (blue)</div>
-            </div>
-            <div class="chartB">
-              <svg id="compareSvg" viewBox="0 0 1100 240" role="img" aria-label="Monthly payment by year chart"></svg>
-            </div>
-          </div>
-
-          <div class="calc-grid">
-            <!-- Utility -->
-            <div class="col utility">
-              <div class="colhead">
-                <h4 id="utilityColTitle">Utility (SCE)</h4>
-                <div class="chip">Utility total shown</div>
-              </div>
-
-              <div class="form">
-                <div class="field full">
-                  <label>Monthly bill ($)</label>
-                  <input id="uMonthly" type="number" min="0" step="1" placeholder="e.g., 320" />
-                  <small>Synced from Slide 1.</small>
-                </div>
-
-                <div class="field">
-                  <label>Annual increase (%)</label>
-                  <input id="uEsc" type="number" min="0" step="0.1" placeholder="e.g., 6.0" />
-                  <small>Adjustable here (syncs back).</small>
-                </div>
-
-                <div class="field">
-                  <label>Annual usage (kWh/yr)</label>
-                  <input id="uAnnualKwh" type="number" min="0" step="1" placeholder="e.g., 8400" />
-                  <small>Used for ¢/kWh estimate.</small>
-                </div>
-              </div>
-
-              <div class="summary">
-                <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Utility 25-yr total</div>
-                  <div class="big utilityNum" id="uTotal">$—</div>
-                </div>
-                <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Est. ¢/kWh</div>
-                  <div class="big" id="uCents">—</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Option A -->
-            <div class="col a">
-              <div class="colhead">
-                <h4>Option A</h4>
-                <div class="chip">Savings only</div>
-              </div>
-
-              <div class="form">
-                <div class="field full">
-                  <label>Monthly payment ($)</label>
-                  <input id="aMonthly" type="number" min="0" step="1" placeholder="e.g., 255" />
-                  <small>Enter your offer.</small>
-                </div>
-                <div class="field">
-                  <label>Annual escalator (%)</label>
-                  <input id="aEsc" type="number" min="0" step="0.1" placeholder="e.g., 0.0" />
-                  <small>If any.</small>
-                </div>
-                <div class="field">
-                  <label>Notes</label>
-                  <input id="aNotes" type="text" placeholder="e.g., 1x PW3, fixed payment" />
-                  <small>Optional.</small>
-                </div>
-              </div>
-
-              <div class="summary" style="grid-template-columns:1fr;">
-                <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
-                  <div class="big proposalNum" id="aSave">$—</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Option B -->
-            <div class="col b">
-              <div class="colhead">
-                <h4>Option B</h4>
-                <div class="chip">Savings only</div>
-              </div>
-
-              <div class="form">
-                <div class="field full">
-                  <label>Monthly payment ($)</label>
-                  <input id="bMonthly" type="number" min="0" step="1" placeholder="e.g., 285" />
-                  <small>Premium option.</small>
-                </div>
-                <div class="field">
-                  <label>Annual escalator (%)</label>
-                  <input id="bEsc" type="number" min="0" step="0.1" placeholder="e.g., 0.0" />
-                  <small>If any.</small>
-                </div>
-                <div class="field">
-                  <label>Notes</label>
-                  <input id="bNotes" type="text" placeholder="e.g., more storage, max TOU control" />
-                  <small>Optional.</small>
-                </div>
-              </div>
-
-              <div class="summary" style="grid-template-columns:1fr;">
-                <div>
-                  <div style="color:var(--muted2); font-size:12px; font-weight:1100; text-transform:uppercase;">Estimated savings vs utility (25 yrs)</div>
-                  <div class="big proposalNum" id="bSave">$—</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- NEW: Unified Year Scroll Row (Utility + A + B) -->
-          <div class="yearGrid" aria-label="Monthly payment by year (synced scrolling)">
-            <div class="yearbox utility">
-              <div class="yearbox-h">
-                <div class="title">
-                  Monthly by year (Utility)
-                  <span class="badge utility">RED</span>
-                </div>
-                <div class="hint">
-                  <label style="display:flex; align-items:center; gap:8px;">
-                    <input type="checkbox" id="syncScroll" checked />
-                    Sync scroll
-                  </label>
-                </div>
-              </div>
-              <div class="yearscroll" id="uYearScroll">
-                <table class="yeartable">
-                  <thead>
-                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
-                  </thead>
-                  <tbody id="uYearRows">
-                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter a utility monthly bill to populate.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="yearbox proposal">
-              <div class="yearbox-h">
-                <div class="title">
-                  Monthly by year (Option A)
-                  <span class="badge a">GREEN</span>
-                </div>
-                <div class="hint">Scroll</div>
-              </div>
-              <div class="yearscroll" id="aYearScroll">
-                <table class="yeartable">
-                  <thead>
-                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
-                  </thead>
-                  <tbody id="aYearRows">
-                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter Option A payment to populate.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="yearbox proposal">
-              <div class="yearbox-h">
-                <div class="title">
-                  Monthly by year (Option B)
-                  <span class="badge b">BLUE</span>
-                </div>
-                <div class="hint">Scroll</div>
-              </div>
-              <div class="yearscroll" id="bYearScroll">
-                <table class="yeartable">
-                  <thead>
-                    <tr><th style="width:36%;">Year</th><th>Avg monthly</th></tr>
-                  </thead>
-                  <tbody id="bYearRows">
-                    <tr><td colspan="2" style="color:var(--muted2); font-size:12.5px;">Enter Option B payment to populate.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div class="proofStrip">
-            <div class="proofHeader">
-              <div class="label">Comparison sources</div>
-              <div style="color:var(--muted2); font-size:12px;">Tap to open</div>
-            </div>
-            <div class="proofGrid" id="proofCompare"></div>
-          </div>
-
-          <div class="bigline">
-            <strong>Trust rule:</strong> If day-one savings isn’t clear, stop and adjust the plan so it’s honest and obvious.
-          </div>
-
-          <div class="nav">
-            <div class="left"><button class="btn" data-prev type="button">Back</button></div>
-            <div class="right"><button class="btn" data-next type="button">Finish</button></div>
-          </div>
-        </div>
-
-        <!-- Slide 5: Close -->
-        <div class="slide" data-title="Close">
-          <h2>Close with clarity (not pressure)</h2>
-          <p>
-            “By the end of today you should have enough information to make an educated decision.
-            If we can’t improve your situation, we won’t move forward.”
-          </p>
-
-          <div class="two-col">
-            <div class="tile">
-              <div class="k">Option A</div>
-              <div class="v" id="closeA">—</div>
-              <div class="h" id="closeANotes">—</div>
-            </div>
-            <div class="tile">
-              <div class="k">Option B</div>
-              <div class="v" id="closeB">—</div>
-              <div class="h" id="closeBNotes">—</div>
-            </div>
-          </div>
-
-          <div class="graphicRow">
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Simple next steps</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Process clarity</div>
-              </div>
-              <div class="graphic-b">
-                <div class="callout">
-                  <strong>1) Qualify</strong> → <strong>2) Site survey</strong> → <strong>3) Final design review</strong> → <strong>4) Permits after you sign off</strong><br>
-                  <span style="color:var(--muted2); font-weight:900;">No surprises. No pressure.</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="graphic">
-              <div class="graphic-h">
-                <div class="title">Optional line</div>
-                <div style="color:var(--muted2); font-size:12px; font-weight:900;">Trust close</div>
-              </div>
-              <div class="graphic-b">
-                <div class="callout">
-                  “If this doesn’t clearly improve your situation, we won’t move forward.”
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="nav">
-            <div class="left"><button class="btn" data-prev type="button">Back</button></div>
-            <div class="right"><button class="btn" id="jumpToLearning" type="button">Open Learning Mode</button></div>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <!-- Learning Mode -->
-    <section class="learn" id="learn">
-      <div class="grid">
-        <div class="card">
-          <div class="card-h">
-            <h3>Learning: Quick talk track</h3>
-            <p>Short rep notes that match the slides.</p>
+    <!-- TOU -->
+    <section class="section" id="tou">
+      <div class="sectionHead">
+        <div>
+          <h2><span class="spark"></span> 1) Time-of-Use: the “when” problem</h2>
+          <p>
+            Edison prices change by time of day. The expensive window is when most families are home.
+            Use the official links below for current rate info.
+          </p>
+        </div>
+        <div class="badgeRow">
+          <span class="badge problem">Problem: Peak pricing</span>
+          <span class="badge energy">Up-to-date links</span>
+        </div>
+      </div>
+
+      <div class="sectionBody grid12">
+        <div class="span5">
+          <div class="callout">
+            <h3>Talk track</h3>
+            <ul>
+              <li><b>Not just how much</b> you use — <b>when</b> you use it</li>
+              <li><b>Evening peak</b> is the most expensive window</li>
+              <li><b>Batteries</b> shift usage away from peak</li>
+            </ul>
           </div>
-          <div class="card-b">
-            <div class="callout">
-              <strong>Slide 1:</strong> confirm monthly average, annual usage, and annual increase (keep consistent).<br>
-              <strong>Slide 2:</strong> TOU makes evenings expensive → storage time-shifts power to peak.<br>
-              <strong>Slide 3:</strong> VPP is optional; always verify rules/availability via the program page.<br>
-              <strong>Slide 4:</strong> show utility total + savings; use synced year scroll + chart for clarity.
+
+          <div class="card" style="margin-top:12px;">
+            <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
+              Official Edison links
             </div>
+            <div style="display:grid;gap:10px;">
+              <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
+                 href="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">
+                SCE Residential TOU Plans (current info)
+              </a>
+              <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
+                 href="https://www.sce.com/save-money/rates-financing/sce-rate-advisory">
+                SCE Rates Advisory (rate changes)
+              </a>
+            </div>
+          </div>
+
+          <div class="note">
+            “Solar produces when power is cheaper. Batteries cover the expensive hours.”
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-h">
-            <h3>Learning: Same sources</h3>
-            <p>These are the same proof tiles shown in Sales mode.</p>
+        <div class="span7">
+          <figure class="bill">
+            <img id="imgUtilityOnly"
+              src=""
+              alt="SCE utility-only bill (non-solar)"
+              data-zoom-title="Utility-Only SCE Bill (No Solar)"
+            />
+            <div class="billCaption">
+              <span class="tag"><span class="mini"></span> Tap to zoom</span>
+              <span class="tag"><span class="mini"></span> Proof of the problem</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bills -->
+    <section class="section" id="bills">
+      <div class="sectionHead">
+        <div>
+          <h2><span class="spark"></span> 2) Proof using bills: Utility vs Solar Net Billing</h2>
+          <p>
+            Solar helps, but Net Billing can still leave you exposed at night. This is why storage makes the biggest difference.
+          </p>
+        </div>
+        <div class="badgeRow">
+          <span class="badge problem">Utility (red)</span>
+          <span class="badge energy">Net Billing</span>
+          <span class="badge solution">Storage impact</span>
+        </div>
+      </div>
+
+      <div class="sectionBody grid12">
+        <div class="span6">
+          <div class="callout" style="border-color:rgba(255,59,48,.26);background:rgba(255,59,48,.10);">
+            <h3>Utility-only (problem)</h3>
+            <ul>
+              <li>High exposure to TOU peaks</li>
+              <li>Rate increases compound over time</li>
+              <li>No backup power during outages</li>
+            </ul>
           </div>
-          <div class="card-b">
-            <div id="learningTiles" class="proofGrid"></div>
+        </div>
+
+        <div class="span6">
+          <div class="callout" style="border-color:rgba(0,194,255,.26);background:rgba(0,194,255,.10);">
+            <h3>Solar Net Billing (reality)</h3>
+            <ul>
+              <li>Solar offsets daytime usage</li>
+              <li>Evening power is still expensive</li>
+              <li>Storage is what “wins the night”</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="span12">
+          <figure class="bill">
+            <img id="imgSolarNetBilling"
+              src=""
+              alt="SCE solar net billing bill"
+              data-zoom-title="Solar Only – Net Billing (Still TOU Exposed)"
+            />
+            <div class="billCaption">
+              <span class="tag"><span class="mini"></span> Tap to zoom</span>
+              <span class="tag"><span class="mini"></span> Net Billing proof</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- VPP -->
+    <section class="section" id="vpp">
+      <div class="sectionHead">
+        <div>
+          <h2><span class="spark"></span> 3) Tesla Virtual Power Plant (VPP)</h2>
+          <p>
+            When eligible, battery owners can participate in events and potentially earn incentives. Use Tesla’s official pages for details.
+          </p>
+        </div>
+        <div class="badgeRow">
+          <span class="badge energy">Tesla</span>
+          <span class="badge solution">Extra value</span>
+        </div>
+      </div>
+
+      <div class="sectionBody grid12">
+        <div class="card span6">
+          <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
+            Official links
+          </div>
+          <div style="display:grid;gap:10px;">
+            <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
+               href="https://www.tesla.com/support/energy/virtual-power-plant/sce">
+              Tesla VPP with SCE (official)
+            </a>
+            <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
+               href="https://www.tesla.com/support/energy/powerwall/learn/incentives">
+              Tesla incentives overview (official)
+            </a>
+          </div>
+          <div class="note" style="margin-top:12px;">
+            “It’s another way batteries can pay you back — on top of bill savings and backup power.”
+          </div>
+        </div>
+
+        <div class="card span6">
+          <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
+            Your Tesla check images
+          </div>
+          <div style="color:var(--muted);line-height:1.45;">
+            If you upload check screenshots to the repo, you can add them the same way we added bills.
+            (This file supports optional check image URLs in the SETTINGS section.)
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Outage Video -->
+    <section class="section" id="outage">
+      <div class="sectionHead">
+        <div>
+          <h2><span class="spark"></span> 4) Outage demo: “the neighborhood is dark, this home is lit”</h2>
+          <p>Video is set to play inline on iPhone (no forced fullscreen). Tap play.</p>
+        </div>
+        <div class="badgeRow">
+          <span class="badge energy">Backup</span>
+          <span class="badge solution">Confidence</span>
+        </div>
+      </div>
+
+      <div class="sectionBody">
+        <div class="videoWrap">
+          <video id="outageVideo" controls playsinline preload="metadata">
+            <source id="outageSource" src="" type="video/quicktime">
+            <source id="outageSourceMp4" src="" type="video/mp4">
+            Your browser can’t play this video.
+          </video>
+        </div>
+        <div class="note">
+          If the .mov doesn’t play on a device, export a second copy as .mp4 and paste that link into OUTAGE_VIDEO_URL_MP4 in settings.
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="section" id="calculator">
+      <div class="sectionHead">
+        <div>
+          <h2><span class="spark"></span> 5) 25-Year comparison calculator</h2>
+          <p>
+            Utility is red. Your options are green and blue. Use the wheel at the bottom to “spin” escalators like Price is Right.
+          </p>
+        </div>
+        <div class="badgeRow">
+          <span class="badge problem">Utility (red)</span>
+          <span class="badge solution">Option 1 (green)</span>
+          <span class="badge energy">Option 2 (blue)</span>
+        </div>
+      </div>
+
+      <div class="sectionBody">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+          <div style="color:var(--muted);font-size:13px;">Live updates as you type (or spin).</div>
+          <button class="btn" id="btnReset" type="button">Reset example</button>
+        </div>
+
+        <div class="columns">
+          <!-- Utility -->
+          <div class="col utility">
+            <div class="colHead">
+              <div>
+                <div class="colLabel">Current Utility</div>
+                <div class="colTitle">Edison</div>
+              </div>
+              <div class="chip">Red</div>
+            </div>
+            <div style="padding:12px;display:grid;gap:10px;">
+              <label><span>Avg monthly bill ($)</span><input id="uPay" value="458" inputmode="decimal" step="1"></label>
+              <label><span>Annual increase (%)</span><input id="uEsc" value="9" inputmode="decimal" step="0.1"></label>
+            </div>
+            <div class="totals">
+              <div class="metric"><div class="k">25-Year total</div><div class="v" style="color:var(--red)" id="uTotal">$0</div></div>
+              <div class="metric"><div class="k">Year 25 monthly</div><div class="v" id="uY25">$0</div></div>
+            </div>
+          </div>
+
+          <!-- Option 1 green -->
+          <div class="col opt1">
+            <div class="colHead">
+              <div>
+                <div class="colLabel">Option 1</div>
+                <div class="colTitle">Solar + Battery</div>
+              </div>
+              <div class="chip">Green</div>
+            </div>
+            <div style="padding:12px;display:grid;gap:10px;">
+              <label><span>Avg monthly payment ($)</span><input id="o1Pay" value="295" inputmode="decimal" step="1"></label>
+              <label><span>Annual escalator (%)</span><input id="o1Esc" value="3.5" inputmode="decimal" step="0.1"></label>
+            </div>
+            <div class="totals">
+              <div class="metric"><div class="k">25-Year total</div><div class="v" id="o1Total">$0</div></div>
+              <div class="metric"><div class="k">Savings vs utility</div><div class="v" style="color:var(--green)" id="o1Save">$0</div></div>
+            </div>
+          </div>
+
+          <!-- Option 2 blue -->
+          <div class="col opt2">
+            <div class="colHead">
+              <div>
+                <div class="colLabel">Option 2</div>
+                <div class="colTitle">Solar + Battery</div>
+              </div>
+              <div class="chip">Blue</div>
+            </div>
+            <div style="padding:12px;display:grid;gap:10px;">
+              <label><span>Avg monthly payment ($)</span><input id="o2Pay" value="310" inputmode="decimal" step="1"></label>
+              <label><span>Annual escalator (%)</span><input id="o2Esc" value="0" inputmode="decimal" step="0.1"></label>
+            </div>
+            <div class="totals">
+              <div class="metric"><div class="k">25-Year total</div><div class="v" id="o2Total">$0</div></div>
+              <div class="metric"><div class="k">Savings vs utility</div><div class="v" style="color:var(--green)" id="o2Save">$0</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tableWrap" aria-label="25-year table (swipe left/right on phones)">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:70px">Year</th>
+                <th>Utility Monthly</th>
+                <th>Option 1 Monthly</th>
+                <th>Option 2 Monthly</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+
+        <!-- PRICE IS RIGHT STYLE WHEELS -->
+        <div class="wheelSection" id="wheels">
+          <div class="wheelHead">
+            <div>
+              <div class="title">Escalator Spin Wheels</div>
+              <div class="sub">
+                Drag the wheel and “spin” to set each annual escalator. It snaps to common values and updates the calculator instantly.
+                Utility is red, Option 1 is green, Option 2 is blue.
+              </div>
+            </div>
+            <div class="wheelButtons">
+              <button class="miniBtn" id="spinAll">Spin All</button>
+              <button class="miniBtn" id="setTypical">Set Typical</button>
+            </div>
+          </div>
+
+          <div class="wheelBody">
+            <div class="wheelCard">
+              <div class="wheelTop">
+                <div class="wheelName" style="color:var(--red)">Utility Escalator</div>
+                <div class="wheelValue" id="wheelValU">0.0%</div>
+              </div>
+              <div class="wheelCanvasWrap">
+                <div class="wheelPointer"></div>
+                <canvas class="wheel" id="wheelU"></canvas>
+              </div>
+              <div class="wheelHint">Drag to spin. Snaps to 0–15% in 0.5% steps.</div>
+            </div>
+
+            <div class="wheelCard">
+              <div class="wheelTop">
+                <div class="wheelName" style="color:var(--green)">Option 1 Escalator</div>
+                <div class="wheelValue" id="wheelValO1">0.0%</div>
+              </div>
+              <div class="wheelCanvasWrap">
+                <div class="wheelPointer"></div>
+                <canvas class="wheel" id="wheelO1"></canvas>
+              </div>
+              <div class="wheelHint">Spin to set escalator. Great for showing “locked” vs “rising.”</div>
+            </div>
+
+            <div class="wheelCard">
+              <div class="wheelTop">
+                <div class="wheelName" style="color:var(--blue)">Option 2 Escalator</div>
+                <div class="wheelValue" id="wheelValO2">0.0%</div>
+              </div>
+              <div class="wheelCanvasWrap">
+                <div class="wheelPointer"></div>
+                <canvas class="wheel" id="wheelO2"></canvas>
+              </div>
+              <div class="wheelHint">Blue option wheel. Drag to spin; it snaps to a clean value.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px;">
+          Closing line: “If it saves you money now, protects you in outages, and can earn extra value — why keep renting power from the utility?”
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-inner">
+      <div class="lightbox-bar">
+        <div id="lightboxTitle">Preview</div>
+        <button id="lightboxClose" type="button">Close</button>
+      </div>
+      <img id="lightboxImg" alt="Zoomed image"/>
+    </div>
   </div>
 
   <script>
-    /***************
-      Utility sources + themes
-    ***************/
-    const UTILITIES = {
-      sce: {
-        label: "Southern California Edison (SCE)",
-        short: "SCE",
-        colors: { A: "#D1202E", B: "#FFCF36" },
-        tiles: {
-          tou:  { title: "SCE Time-of-Use Plans", url: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans", tag:"TOU" },
-          inc13:{ title: "SCE: Understanding updates to your bill (~13%)", url: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill", tag:"Rates" },
-          base1:{ title: "SCE: Base Service Charge overview", url: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/bsc", tag:"Base" },
-          base2:{ title: "SCE: Base Services Charge & other charges", url: "https://www.sce.com/customer-service-center/help-center/rate-plans-pricing/base-services-charge/bsc-other-charges", tag:"Base" },
-          vpp:  { title: "Tesla VPP with SCE (DSGS)", url: "https://www.tesla.com/support/energy/virtual-power-plant/sce", tag:"Tesla VPP" }
-        }
-      },
-      pge: {
-        label: "PG&E",
-        short: "PG&E",
-        colors: { A: "#0071CE", B: "#FFD100" },
-        tiles: {
-          tou:  { title: "PG&E rate plans (TOU info)", url: "https://www.pge.com/en/account/rate-plans.html", tag:"TOU" },
-          inc13:{ title: "PG&E rate changes / info", url: "https://www.pge.com/en/account/rate-plans/rate-changes.html", tag:"Rates" },
-          base1:{ title: "PG&E: Understand your bill", url: "https://www.pge.com/en/account/billing-and-assistance/understand-your-bill.html", tag:"Bill" },
-          base2:null,
-          vpp:  { title: "Tesla VPP with PG&E", url: "https://www.tesla.com/support/energy/virtual-power-plant/pge", tag:"Tesla VPP" }
-        }
-      },
-      sdge: {
-        label: "SDG&E",
-        short: "SDG&E",
-        colors: { A: "#00A6E7", B: "#9BE15D" },
-        tiles: {
-          tou:  { title: "SDG&E: WhenMatters (TOU info)", url: "https://www.sdge.com/residential/pricing-plans/about-our-pricing-plans/whenmatters", tag:"TOU" },
-          inc13:{ title: "SDG&E pricing plans / rates", url: "https://www.sdge.com/residential/pricing-plans", tag:"Rates" },
-          base1:{ title: "SDG&E: Understanding your bill", url: "https://www.sdge.com/residential/customer-service/billing/payment/understanding-your-bill", tag:"Bill" },
-          base2:null,
-          vpp:  { title: "Tesla VPP (DSGS CA overview)", url: "https://www.tesla.com/support/energy/virtual-power-plant/dsgs", tag:"Tesla VPP" }
-        }
-      }
-    };
+    // =============================
+    // SETTINGS (your assets)
+    // =============================
+    const LOGO_URL =
+      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png";
 
-    /***************
-      Helpers
-    ***************/
+    const UTILITY_ONLY_BILL_URL =
+      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg";
+
+    const SOLAR_NET_BILLING_BILL_URL =
+      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg";
+
+    // You said: "RecordIt-1770162136.mov"
+    // Assumed it lives in the same repo root:
+    const OUTAGE_VIDEO_URL =
+      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/RecordIt-1770162136.mov";
+
+    // Optional: if you export an mp4, paste it here (recommended for max compatibility):
+    const OUTAGE_VIDEO_URL_MP4 = "";
+
+    // =============================
+    // Helpers
+    // =============================
     const $ = (id) => document.getElementById(id);
-    const fmt$ = (n) => isFinite(n) ? n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}) : "—";
-    function setRootVar(key,val){ document.documentElement.style.setProperty(key, val); }
 
-    function projectTotal(monthly, escPct, years=25){
-      const r = (escPct || 0) / 100;
-      let total = 0;
+    function toNumber(val){
+      const n = parseFloat(String(val).replace(/[^0-9.\-]/g,''));
+      return Number.isFinite(n) ? n : 0;
+    }
+    function money0(n){
+      const x = Number.isFinite(n) ? n : 0;
+      return x.toLocaleString(undefined, { style:'currency', currency:'USD', maximumFractionDigits: 0 });
+    }
+    function money2(n){
+      const x = Number.isFinite(n) ? n : 0;
+      return x.toLocaleString(undefined, { style:'currency', currency:'USD', maximumFractionDigits: 2 });
+    }
+
+    // =============================
+    // Wire assets
+    // =============================
+    $('brandLogo').src = LOGO_URL;
+    $('imgUtilityOnly').src = UTILITY_ONLY_BILL_URL;
+    $('imgSolarNetBilling').src = SOLAR_NET_BILLING_BILL_URL;
+
+    // Video sources
+    $('outageSource').src = OUTAGE_VIDEO_URL || "";
+    $('outageSourceMp4').src = OUTAGE_VIDEO_URL_MP4 || "";
+    $('outageVideo').load();
+
+    // =============================
+    // Calculator logic
+    // =============================
+    function monthlyByYear(baseMonthly, annualEscPct, years=25){
+      const esc = annualEscPct / 100;
+      const arr = [];
       for(let y=1; y<=years; y++){
-        total += (monthly * 12) * Math.pow(1+r, y-1);
+        arr.push(baseMonthly * Math.pow(1+esc, y-1));
       }
-      return total;
+      return arr;
+    }
+    function total25yr(baseMonthly, annualEscPct){
+      const series = monthlyByYear(baseMonthly, annualEscPct, 25);
+      return series.reduce((sum, m) => sum + (m*12), 0);
     }
 
-    function monthlyInYear(baseMonthly, escPct, yearIndex){
-      const r = (escPct || 0) / 100;
-      return baseMonthly * Math.pow(1+r, yearIndex - 1);
-    }
+    function render(){
+      const uPay = toNumber($('uPay').value);
+      const uEsc = toNumber($('uEsc').value);
 
-    function renderTiles(container, items){
-      container.innerHTML = "";
-      items.filter(Boolean).forEach(x => {
-        const a = document.createElement("a");
-        a.className = "proofTile";
-        a.href = x.url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.innerHTML = `
-          <div class="t">${x.title}</div>
-          <div class="s"><span class="pillMini">${x.tag || "Source"}</span><span>Open</span></div>
+      const o1Pay = toNumber($('o1Pay').value);
+      const o1Esc = toNumber($('o1Esc').value);
+
+      const o2Pay = toNumber($('o2Pay').value);
+      const o2Esc = toNumber($('o2Esc').value);
+
+      const uSeries = monthlyByYear(uPay, uEsc, 25);
+      const o1Series = monthlyByYear(o1Pay, o1Esc, 25);
+      const o2Series = monthlyByYear(o2Pay, o2Esc, 25);
+
+      const uTotal = total25yr(uPay, uEsc);
+      const o1Total = total25yr(o1Pay, o1Esc);
+      const o2Total = total25yr(o2Pay, o2Esc);
+
+      $('uTotal').textContent = money0(uTotal);
+      $('o1Total').textContent = money0(o1Total);
+      $('o2Total').textContent = money0(o2Total);
+
+      const s1 = uTotal - o1Total;
+      const s2 = uTotal - o2Total;
+
+      $('o1Save').textContent = money0(s1);
+      $('o2Save').textContent = money0(s2);
+
+      $('o1Save').style.color = s1 >= 0 ? 'var(--green)' : 'var(--red)';
+      $('o2Save').style.color = s2 >= 0 ? 'var(--green)' : 'var(--red)';
+
+      $('uY25').textContent = money2(uSeries[24]);
+
+      const tbody = $('rows');
+      tbody.innerHTML = '';
+      for(let y=1; y<=25; y++){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${y}</td>
+          <td>${money2(uSeries[y-1])}</td>
+          <td>${money2(o1Series[y-1])}</td>
+          <td>${money2(o2Series[y-1])}</td>
         `;
-        container.appendChild(a);
+        tbody.appendChild(tr);
+      }
+    }
+
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => {
+      // keep wheels in sync when user types escalators
+      syncWheelsFromInputs();
+      render();
+    }));
+
+    $('btnPrint').addEventListener('click', () => window.print());
+    $('btnReset').addEventListener('click', () => {
+      $('uPay').value = '458';
+      $('uEsc').value = '9';
+      $('o1Pay').value = '295';
+      $('o1Esc').value = '3.5';
+      $('o2Pay').value = '310';
+      $('o2Esc').value = '0';
+      syncWheelsFromInputs(true);
+      render();
+    });
+
+    // =============================
+    // Lightbox zoom
+    // =============================
+    const lb = $('lightbox');
+    const lbImg = $('lightboxImg');
+    const lbTitle = $('lightboxTitle');
+
+    function openLightbox(src, title){
+      lbImg.src = src;
+      lbTitle.textContent = title || 'Preview';
+      lb.classList.add('open');
+    }
+    function closeLightbox(){
+      lb.classList.remove('open');
+      lbImg.src = '';
+    }
+
+    document.querySelectorAll('img[data-zoom-title]').forEach(img => {
+      img.addEventListener('click', () => {
+        if(!img.src) return;
+        openLightbox(img.src, img.dataset.zoomTitle);
       });
+    });
+
+    $('lightboxClose').addEventListener('click', closeLightbox);
+    lb.addEventListener('click', (e) => { if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+
+    // iOS anchor nudge
+    window.addEventListener('hashchange', () => setTimeout(() => window.scrollBy(0, -6), 0));
+
+    // =============================
+    // PRICE-IS-RIGHT STYLE WHEELS
+    // =============================
+
+    // Wheel values: 0.0% to 15.0% step 0.5%
+    const STEP = 0.5;
+    const MIN = 0.0;
+    const MAX = 15.0;
+    const VALUES = [];
+    for(let v=MIN; v<=MAX+1e-9; v+=STEP) VALUES.push(Math.round(v*10)/10);
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    function nearestStep(v){
+      const idx = Math.round((v - MIN) / STEP);
+      return clamp(idx, 0, VALUES.length-1);
     }
 
-    function renderYearRows(tbodyEl, baseMonthly, escPct, valueClass){
-      if (!tbodyEl) return;
+    function fmtPct(v){ return `${v.toFixed(1)}%`; }
 
-      const m = parseFloat(baseMonthly);
-      const e = parseFloat(escPct);
-
-      if (!isFinite(m) || m <= 0){
-        tbodyEl.innerHTML = `
-          <tr>
-            <td colspan="2" style="color:var(--muted2); font-size:12.5px;">
-              Enter a monthly amount to populate.
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      const safeE = isFinite(e) ? e : 0;
-      let html = "";
-      for (let y = 1; y <= 25; y++){
-        const mo = monthlyInYear(m, safeE, y);
-        html += `
-          <tr>
-            <td>Year ${y}</td>
-            <td class="${valueClass}">${fmt$(mo)}/mo</td>
-          </tr>
-        `;
-      }
-      tbodyEl.innerHTML = html;
+    // Map wheel angle → value index
+    // Pointer is at top (angle -90deg); our wheel rotation determines which segment hits pointer.
+    function angleToIndex(theta){
+      // normalize 0..2pi
+      let a = theta % (Math.PI*2);
+      if(a < 0) a += Math.PI*2;
+      const seg = (Math.PI*2) / VALUES.length;
+      // pointer at -pi/2, so shift
+      const shifted = (a + Math.PI/2) % (Math.PI*2);
+      const idx = Math.floor(shifted / seg);
+      return clamp(idx, 0, VALUES.length-1);
     }
 
-    /***************
-      Simple SVG chart helpers (no libraries)
-    ***************/
-    function svgLineChart(svgEl, series, opts){
-      // series: [{name,color,points:[{x,y}]}]
-      // opts: {xmin,xmax,ymin,ymax, padL,padR,padT,padB, yTicks}
-      if (!svgEl) return;
-      const w = 1100, h = 240; // viewBox sizes
-      const padL = opts?.padL ?? 52;
-      const padR = opts?.padR ?? 18;
-      const padT = opts?.padT ?? 14;
-      const padB = opts?.padB ?? 34;
-      const xmin = opts?.xmin ?? 1;
-      const xmax = opts?.xmax ?? 25;
-      const ymin = opts?.ymin ?? 0;
-      const ymax = opts?.ymax ?? 1;
-      const yTicks = opts?.yTicks ?? 4;
+    function indexToAngle(idx){
+      const seg = (Math.PI*2) / VALUES.length;
+      // inverse of above: place idx under pointer
+      // shifted = idx*seg + seg/2, then undo shift
+      const shifted = idx*seg + seg/2;
+      const a = shifted - Math.PI/2;
+      return a;
+    }
 
-      const X = (x) => padL + ( (x - xmin) / (xmax - xmin) ) * (w - padL - padR);
-      const Y = (y) => (h - padB) - ( (y - ymin) / (ymax - ymin) ) * (h - padT - padB);
+    function getStyleVar(name){
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
 
-      // background + grid
-      let out = "";
-      out += `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
-      // horizontal grid lines
-      for (let i=0;i<=yTicks;i++){
-        const t = ymin + ( (ymax - ymin) * (i / yTicks) );
-        const y = Y(t);
-        out += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="rgba(15,23,42,.08)" stroke-width="1" />`;
-        out += `<text x="${padL-10}" y="${y+4}" text-anchor="end" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">${Math.round(t)}</text>`;
+    class SpinWheel{
+      constructor(canvasId, valueElId, accent){
+        this.canvas = $(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.valueEl = $(valueElId);
+
+        this.accent = accent; // css var color string
+        this.theta = 0;       // rotation angle
+        this.omega = 0;       // angular velocity
+        this.dragging = false;
+
+        this.lastT = 0;
+        this.lastPointer = null;
+
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+
+        this.bind();
+        this.draw();
+        requestAnimationFrame((t)=>this.tick(t));
       }
-      // x ticks (1,5,10,15,20,25)
-      const xt = [1,5,10,15,20,25];
-      xt.forEach(v=>{
-        const x = X(v);
-        out += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${h-padB}" stroke="rgba(15,23,42,.05)" stroke-width="1" />`;
-        out += `<text x="${x}" y="${h-12}" text-anchor="middle" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">${v}</text>`;
-      });
 
-      // axes
-      out += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${h-padB}" stroke="rgba(15,23,42,.14)" stroke-width="1.2" />`;
-      out += `<line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="rgba(15,23,42,.14)" stroke-width="1.2" />`;
+      resize(){
+        const rect = this.canvas.getBoundingClientRect();
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        this.canvas.width = Math.round(rect.width * dpr);
+        this.canvas.height = Math.round(rect.height * dpr);
+        this.ctx.setTransform(dpr,0,0,dpr,0,0);
+        this.draw();
+      }
 
-      // lines
-      series.forEach(s=>{
-        const pts = s.points;
-        if (!pts || pts.length<2) return;
-        let d = `M ${X(pts[0].x)} ${Y(pts[0].y)}`;
-        for (let i=1;i<pts.length;i++){
-          d += ` L ${X(pts[i].x)} ${Y(pts[i].y)}`;
+      bind(){
+        const onDown = (e) => {
+          this.dragging = true;
+          this.omega = 0;
+          this.lastPointer = this.getPointer(e);
+          this.lastT = performance.now();
+          this.canvas.setPointerCapture?.(e.pointerId);
+        };
+        const onMove = (e) => {
+          if(!this.dragging) return;
+          const p = this.getPointer(e);
+          const c = this.center();
+          const a1 = Math.atan2(this.lastPointer.y - c.y, this.lastPointer.x - c.x);
+          const a2 = Math.atan2(p.y - c.y, p.x - c.x);
+          let da = a2 - a1;
+          // unwrap
+          if(da > Math.PI) da -= Math.PI*2;
+          if(da < -Math.PI) da += Math.PI*2;
+
+          this.theta += da;
+          const now = performance.now();
+          const dt = Math.max(0.016, (now - this.lastT)/1000);
+          this.omega = da / dt;
+          this.lastT = now;
+          this.lastPointer = p;
+          this.draw();
+          this.emitValue();
+        };
+        const onUp = () => {
+          if(!this.dragging) return;
+          this.dragging = false;
+
+          // Snap a bit by reducing velocity
+          // (keeps the Price-is-Right feel but still controllable)
+          this.omega = clamp(this.omega, -12, 12);
+        };
+
+        // Pointer events for iPhone + desktop
+        this.canvas.addEventListener('pointerdown', onDown);
+        window.addEventListener('pointermove', onMove, { passive:false });
+        window.addEventListener('pointerup', onUp);
+
+        // quick tap spin (small “flick”)
+        this.canvas.addEventListener('dblclick', () => this.spinRandom());
+      }
+
+      getPointer(e){
+        const rect = this.canvas.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      }
+      center(){
+        const rect = this.canvas.getBoundingClientRect();
+        return { x: rect.width/2, y: rect.height/2 };
+      }
+
+      currentIndex(){
+        return angleToIndex(this.theta);
+      }
+      currentValue(){
+        return VALUES[this.currentIndex()];
+      }
+
+      setValue(v, immediate=false){
+        const idx = nearestStep(v);
+        const target = indexToAngle(idx);
+        // choose closest equivalent rotation (avoid jumping backwards)
+        const twoPi = Math.PI*2;
+        let a = target;
+        // align a near current theta
+        while(a - this.theta > Math.PI) a -= twoPi;
+        while(this.theta - a > Math.PI) a += twoPi;
+
+        if(immediate){
+          this.theta = a;
+          this.omega = 0;
+          this.draw();
+          this.emitValue();
+          return;
         }
-        out += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />`;
-        // end dot
-        const last = pts[pts.length-1];
-        out += `<circle cx="${X(last.x)}" cy="${Y(last.y)}" r="4.5" fill="${s.color}" />`;
-      });
+        // ease to target
+        const start = this.theta;
+        const delta = a - start;
+        const startTime = performance.now();
+        const dur = 280;
 
-      // legend
-      let lx = padL, ly = 16;
-      series.forEach((s,i)=>{
-        const dx = i*200;
-        out += `<rect x="${lx+dx}" y="${ly-10}" width="14" height="14" rx="4" fill="${s.color}" opacity="0.85"></rect>`;
-        out += `<text x="${lx+dx+20}" y="${ly+2}" font-size="12" fill="rgba(15,23,42,.86)" font-weight="900">${s.name}</text>`;
-      });
-
-      svgEl.innerHTML = out;
-    }
-
-    function svgTouMini(svgEl){
-      if (!svgEl) return;
-      const w=800,h=240;
-      // simple bar-like curve showing peak
-      let out = `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
-      // baseline
-      out += `<line x1="40" y1="190" x2="760" y2="190" stroke="rgba(15,23,42,.14)" stroke-width="1.2"></line>`;
-      // peak band
-      out += `<rect x="470" y="40" width="160" height="150" rx="14" fill="rgba(245,158,11,.18)" stroke="rgba(245,158,11,.25)"></rect>`;
-      out += `<text x="550" y="65" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.82)" font-weight="900">4–9 PM Peak</text>`;
-      // path
-      const pts = [
-        [40,150],[120,145],[200,140],[280,138],[360,142],
-        [450,120],[520,70],[590,80],[650,115],[720,135],[760,145]
-      ];
-      let d=`M ${pts[0][0]} ${pts[0][1]}`;
-      for(let i=1;i<pts.length;i++){ d+=` L ${pts[i][0]} ${pts[i][1]}`; }
-      out += `<path d="${d}" fill="none" stroke="rgba(220,38,38,.80)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`;
-      // labels
-      out += `<text x="40" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Morning</text>`;
-      out += `<text x="300" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Midday</text>`;
-      out += `<text x="560" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)">Evening</text>`;
-      out += `<text x="740" y="210" font-size="11" fill="rgba(71,85,105,.9)" font-family="var(--mono)" text-anchor="end">Night</text>`;
-      svgEl.innerHTML = out;
-    }
-
-    function svgVppMini(svgEl){
-      if (!svgEl) return;
-      const w=800,h=240;
-      let out = `<rect x="0" y="0" width="${w}" height="${h}" rx="16" ry="16" fill="rgba(255,255,255,0.0)"></rect>`;
-      out += `<line x1="40" y1="190" x2="760" y2="190" stroke="rgba(15,23,42,.14)" stroke-width="1.2"></line>`;
-      // event spikes
-      const spikes = [140, 260, 420, 520, 690];
-      spikes.forEach(x=>{
-        out += `<line x1="${x}" y1="190" x2="${x}" y2="95" stroke="rgba(37,99,235,.55)" stroke-width="10" stroke-linecap="round"></line>`;
-      });
-      out += `<text x="40" y="50" font-size="12" fill="rgba(15,23,42,.84)" font-weight="900">Illustrative: event windows</text>`;
-      out += `<text x="40" y="70" font-size="12" fill="rgba(100,116,139,.95)">Programs vary by utility & enrollment</text>`;
-      svgEl.innerHTML = out;
-    }
-
-    /***************
-      DOM refs
-    ***************/
-    const modePresentation = $("modePresentation");
-    const modeLearning = $("modeLearning");
-    const subline = $("subline");
-    const learn = $("learn");
-    const jumpToLearning = $("jumpToLearning");
-
-    const presentBtn = $("presentBtn");
-    const resetBtn = $("resetBtn");
-    const deck = $("deck");
-
-    const utilitySelect = $("utilitySelect");
-    const utilityColTitle = $("utilityColTitle");
-
-    // Slide 1 inputs
-    const uMonthlyEarly = $("uMonthlyEarly");
-    const uEscEarly = $("uEscEarly");
-    const uAnnualKwhEarly = $("uAnnualKwhEarly");
-    const kpiBill = $("kpiBill");
-    const kpiUsage = $("kpiUsage");
-
-    // Slide 4 inputs
-    const uMonthly = $("uMonthly");
-    const uEsc = $("uEsc");
-    const uAnnualKwh = $("uAnnualKwh");
-    const aMonthly = $("aMonthly");
-    const aEsc = $("aEsc");
-    const aNotes = $("aNotes");
-    const bMonthly = $("bMonthly");
-    const bEsc = $("bEsc");
-    const bNotes = $("bNotes");
-
-    // Outputs
-    const uTotal = $("uTotal");
-    const uCents = $("uCents");
-    const aSave = $("aSave");
-    const bSave = $("bSave");
-
-    const closeA = $("closeA");
-    const closeB = $("closeB");
-    const closeANotes = $("closeANotes");
-    const closeBNotes = $("closeBNotes");
-
-    // Year rows + scroll containers
-    const syncScroll = $("syncScroll");
-    const uYearRows = $("uYearRows");
-    const aYearRows = $("aYearRows");
-    const bYearRows = $("bYearRows");
-    const uYearScroll = $("uYearScroll");
-    const aYearScroll = $("aYearScroll");
-    const bYearScroll = $("bYearScroll");
-
-    // Proof containers
-    const proofInputs = $("proofInputs");
-    const proofTou = $("proofTou");
-    const proofVpp = $("proofVpp");
-    const proofCompare = $("proofCompare");
-    const learningTiles = $("learningTiles");
-
-    // Slides UI
-    const slides = Array.from(document.querySelectorAll(".slide"));
-    const bar = $("bar");
-    const dots = $("dots");
-    let idx = 0;
-
-    // SVG refs
-    const touMiniSvg = $("touMiniSvg");
-    const vppMiniSvg = $("vppMiniSvg");
-    const compareSvg = $("compareSvg");
-
-    /***************
-      Synced scrolling across year boxes
-    ***************/
-    let isSyncing = false;
-    function syncScrollTo(source){
-      if (!syncScroll?.checked) return;
-      if (isSyncing) return;
-      isSyncing = true;
-      const top = source.scrollTop;
-      [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{
-        if (el && el !== source) el.scrollTop = top;
-      });
-      // release on next frame
-      requestAnimationFrame(()=>{ isSyncing = false; });
-    }
-
-    /***************
-      KPI + calculator calculations
-    ***************/
-    function updateKPIs(){
-      const m = parseFloat(uMonthly.value || uMonthlyEarly.value);
-      const akwh = parseFloat(uAnnualKwh.value || uAnnualKwhEarly.value);
-
-      kpiBill.textContent = (isFinite(m) && m>=0) ? fmt$(m) : "$—";
-      kpiUsage.textContent = (isFinite(akwh) && akwh>=0) ? akwh.toLocaleString() : "—";
-
-      let cents = NaN;
-      if (isFinite(m) && m>0 && isFinite(akwh) && akwh>0){
-        const monthlyKwh = akwh / 12;
-        cents = (m / monthlyKwh) * 100;
+        const anim = (t) => {
+          const p = clamp((t - startTime)/dur, 0, 1);
+          const ease = 1 - Math.pow(1-p, 3);
+          this.theta = start + delta*ease;
+          this.draw();
+          this.emitValue();
+          if(p < 1) requestAnimationFrame(anim);
+          else this.omega = 0;
+        };
+        requestAnimationFrame(anim);
       }
-      uCents.textContent = isFinite(cents) ? `${cents.toFixed(1)} ¢/kWh` : "—";
-    }
 
-    function updateClose(){
-      const aM = parseFloat(aMonthly.value);
-      const bM = parseFloat(bMonthly.value);
-      closeA.textContent = isFinite(aM) ? `${fmt$(aM)}/mo` : "—";
-      closeB.textContent = isFinite(bM) ? `${fmt$(bM)}/mo` : "—";
-      closeANotes.textContent = aNotes.value?.trim() ? aNotes.value.trim() : "Add notes (battery count, fixed payment, etc.)";
-      closeBNotes.textContent = bNotes.value?.trim() ? bNotes.value.trim() : "Add notes (more storage, max TOU control, etc.)";
-    }
-
-    function recalc(){
-      updateKPIs();
-      updateClose();
-
-      const uM = parseFloat(uMonthly.value);
-      const uE = parseFloat(uEsc.value);
-
-      const aM = parseFloat(aMonthly.value);
-      const aE = parseFloat(aEsc.value);
-
-      const bM = parseFloat(bMonthly.value);
-      const bE = parseFloat(bEsc.value);
-
-      const utilTotal = projectTotal(isFinite(uM)?uM:0, isFinite(uE)?uE:0, 25);
-      const aTotal = projectTotal(isFinite(aM)?aM:0, isFinite(aE)?aE:0, 25);
-      const bTotal = projectTotal(isFinite(bM)?bM:0, isFinite(bE)?bE:0, 25);
-
-      uTotal.textContent = isFinite(uM) ? fmt$(utilTotal) : "$—";
-
-      const saveA = utilTotal - aTotal;
-      const saveB = utilTotal - bTotal;
-
-      aSave.textContent = (isFinite(aM) && isFinite(uM)) ? fmt$(saveA) : "$—";
-      bSave.textContent = (isFinite(bM) && isFinite(uM)) ? fmt$(saveB) : "$—";
-
-      // proposals green when positive, red when negative
-      aSave.className = "big " + ((saveA>=0) ? "proposalNum" : "proposalNumNeg");
-      bSave.className = "big " + ((saveB>=0) ? "proposalNum" : "proposalNumNeg");
-
-      // Year rows
-      renderYearRows(uYearRows, uMonthly.value, uEsc.value, "utilityVal");
-      renderYearRows(aYearRows, aMonthly.value, aEsc.value, "proposalVal");
-      renderYearRows(bYearRows, bMonthly.value, bEsc.value, "proposalVal");
-
-      // Chart: monthly by year (use yearly monthly values)
-      drawCompareChart();
-    }
-
-    function drawCompareChart(){
-      // Create 25 points per series
-      const uM = parseFloat(uMonthly.value);
-      const uE = parseFloat(uEsc.value);
-      const aM = parseFloat(aMonthly.value);
-      const aE = parseFloat(aEsc.value);
-      const bM = parseFloat(bMonthly.value);
-      const bE = parseFloat(bEsc.value);
-
-      // If utility missing, keep chart blank-ish with defaults
-      const ptsU = [];
-      const ptsA = [];
-      const ptsB = [];
-      for(let y=1;y<=25;y++){
-        ptsU.push({x:y, y: (isFinite(uM) && uM>0) ? monthlyInYear(uM, isFinite(uE)?uE:0, y) : 0});
-        ptsA.push({x:y, y: (isFinite(aM) && aM>0) ? monthlyInYear(aM, isFinite(aE)?aE:0, y) : 0});
-        ptsB.push({x:y, y: (isFinite(bM) && bM>0) ? monthlyInYear(bM, isFinite(bE)?bE:0, y) : 0});
+      spinRandom(){
+        // big spin with random direction
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        this.omega = dir * (8 + Math.random()*8);
       }
-      const allY = [...ptsU,...ptsA,...ptsB].map(p=>p.y);
-      const maxY = Math.max(1, ...allY);
-      const ymin = 0;
-      const ymax = Math.ceil(maxY / 50) * 50; // nice rounding
 
-      svgLineChart(compareSvg, [
-        {name:"Utility", color:"var(--cUtility)", points: ptsU},
-        {name:"Option A", color:"var(--cA)", points: ptsA},
-        {name:"Option B", color:"var(--cB)", points: ptsB},
-      ], {xmin:1,xmax:25,ymin,ymax,yTicks:4,padL:62,padR:22,padT:14,padB:34});
-    }
-
-    /***************
-      Sync logic: Slide 1 <-> Slide 4
-    ***************/
-    function syncEarlyToCalc(){
-      if (uMonthlyEarly.value !== "" && document.activeElement !== uMonthly) uMonthly.value = uMonthlyEarly.value;
-      if (uEscEarly.value !== "" && document.activeElement !== uEsc) uEsc.value = uEscEarly.value;
-      if (uAnnualKwhEarly.value !== "" && document.activeElement !== uAnnualKwh) uAnnualKwh.value = uAnnualKwhEarly.value;
-      recalc();
-    }
-    function syncCalcToEarly(){
-      if (uMonthly.value !== "" && document.activeElement !== uMonthlyEarly) uMonthlyEarly.value = uMonthly.value;
-      if (uEsc.value !== "" && document.activeElement !== uEscEarly) uEscEarly.value = uEsc.value;
-      if (uAnnualKwh.value !== "" && document.activeElement !== uAnnualKwhEarly) uAnnualKwhEarly.value = uAnnualKwh.value;
-      recalc();
-    }
-
-    /***************
-      Utility apply: colors + links
-    ***************/
-    function applyUtility(key){
-      const u = UTILITIES[key] || UTILITIES.sce;
-      setRootVar("--utilityA", u.colors.A);
-      setRootVar("--utilityB", u.colors.B);
-
-      // Also adjust the red used in charts subtly by utility theme if desired
-      // Keep it consistent "utility red" for readability, but you can swap:
-      // setRootVar("--cUtility", u.colors.A);
-
-      utilityColTitle.textContent = `Utility (${u.short})`;
-
-      const tilesInputs = [u.tiles.inc13, u.tiles.base1, u.tiles.base2].filter(Boolean);
-      const tilesTou = [u.tiles.tou].filter(Boolean);
-      const tilesVpp = [u.tiles.vpp].filter(Boolean);
-      const tilesCompare = [u.tiles.inc13, u.tiles.tou, u.tiles.base1, u.tiles.vpp].filter(Boolean);
-
-      renderTiles(proofInputs, tilesInputs);
-      renderTiles(proofTou, tilesTou);
-      renderTiles(proofVpp, tilesVpp);
-      renderTiles(proofCompare, tilesCompare);
-
-      const all = [u.tiles.inc13, u.tiles.tou, u.tiles.base1, u.tiles.base2, u.tiles.vpp].filter(Boolean);
-      renderTiles(learningTiles, all);
-
-      recalc();
-      updateDeckUI();
-    }
-
-    /***************
-      Slide navigation UI
-    ***************/
-    function buildDots(){
-      dots.innerHTML = "";
-      slides.forEach((s, i) => {
-        const d = document.createElement("div");
-        d.className = "dot" + (i===idx ? " active" : "");
-        d.title = s.dataset.title || `Slide ${i+1}`;
-        d.addEventListener("click", () => go(i));
-        dots.appendChild(d);
-      });
-    }
-    function updateDeckUI(){
-      slides.forEach((s,i)=> s.classList.toggle("active", i===idx));
-      bar.style.width = (((idx+1)/slides.length)*100) + "%";
-      Array.from(dots.children).forEach((d,i)=> d.classList.toggle("active", i===idx));
-    }
-    function go(i){
-      idx = Math.max(0, Math.min(slides.length-1, i));
-      updateDeckUI();
-      deck?.scrollIntoView({behavior:"smooth", block:"start"});
-    }
-    function next(){ go(idx+1); }
-    function prev(){ go(idx-1); }
-
-    document.addEventListener("click", (e) => {
-      const t = e.target;
-      if (t && t.matches("[data-next]")) next();
-      if (t && t.matches("[data-prev]")) prev();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (document.body.classList.contains("presentation")){
-        if (e.key === "ArrowRight") next();
-        if (e.key === "ArrowLeft") prev();
-        if (e.key.toLowerCase() === "f") toggleFullscreen();
+      emitValue(){
+        const v = this.currentValue();
+        this.valueEl.textContent = fmtPct(v);
+        if(this.onValue) this.onValue(v);
       }
-    });
 
-    /***************
-      Modes
-    ***************/
-    function setMode(mode){
-      if (mode === "learning"){
-        document.body.classList.remove("presentation");
-        document.body.classList.add("learning");
-        learn.classList.add("active");
-        modeLearning.classList.add("active");
-        modePresentation.classList.remove("active");
-        subline.textContent = "Learning Mode • rep notes + same sources";
-        window.scrollTo({top:0, behavior:"smooth"});
-      } else {
-        document.body.classList.add("presentation");
-        document.body.classList.remove("learning");
-        learn.classList.remove("active");
-        modePresentation.classList.add("active");
-        modeLearning.classList.remove("active");
-        subline.textContent = "Sales Mode • light theme • proof tiles + visuals";
-        window.scrollTo({top:0, behavior:"smooth"});
-      }
-    }
-    modePresentation.addEventListener("click", ()=> setMode("presentation"));
-    modeLearning.addEventListener("click", ()=> setMode("learning"));
-    jumpToLearning?.addEventListener("click", ()=> setMode("learning"));
+      tick(t){
+        const dt = this.lastTick ? (t - this.lastTick)/1000 : 0;
+        this.lastTick = t;
 
-    /***************
-      Fullscreen
-    ***************/
-    async function toggleFullscreen(){
-      try{
-        if (!document.fullscreenElement){
-          await (deck || document.documentElement).requestFullscreen();
-        } else {
-          await document.exitFullscreen();
+        if(!this.dragging){
+          // inertia + friction
+          const friction = 3.2; // higher = stops faster
+          if(Math.abs(this.omega) > 0.01){
+            const sign = Math.sign(this.omega);
+            this.omega -= sign * friction * dt;
+            if(Math.sign(this.omega) !== sign) this.omega = 0;
+            this.theta += this.omega * dt;
+            this.draw();
+            this.emitValue();
+          } else {
+            // snap to nearest segment when stopped
+            const idx = this.currentIndex();
+            const target = indexToAngle(idx);
+            // move tiny amount toward perfect snap
+            const snapStrength = 10;
+            let diff = target - this.theta;
+            // unwrap
+            if(diff > Math.PI) diff -= Math.PI*2;
+            if(diff < -Math.PI) diff += Math.PI*2;
+            this.theta += diff * Math.min(1, snapStrength*dt);
+            this.draw();
+            this.emitValue();
+          }
         }
-      }catch(e){
-        alert("Fullscreen isn't available on this device/browser.");
+        requestAnimationFrame((tt)=>this.tick(tt));
+      }
+
+      draw(){
+        const ctx = this.ctx;
+        const rect = this.canvas.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
+        const cx = w/2, cy = h/2;
+        const r = Math.min(w,h)*0.46;
+
+        ctx.clearRect(0,0,w,h);
+
+        // outer ring glow
+        ctx.save();
+        ctx.translate(cx,cy);
+
+        // subtle glow
+        ctx.beginPath();
+        ctx.arc(0,0,r*1.08,0,Math.PI*2);
+        ctx.fillStyle = "rgba(255,255,255,0.02)";
+        ctx.fill();
+
+        // segments
+        const seg = (Math.PI*2)/VALUES.length;
+        const accent = this.accent;
+        const accentRGBA = accent; // used directly
+
+        for(let i=0;i<VALUES.length;i++){
+          const a0 = this.theta + i*seg;
+          const a1 = a0 + seg;
+
+          // alternating shades
+          const alt = i % 2 === 0;
+          ctx.beginPath();
+          ctx.moveTo(0,0);
+          ctx.arc(0,0,r,a0,a1);
+          ctx.closePath();
+
+          // base slice color based on accent, plus alternating brightness
+          ctx.fillStyle = alt ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)";
+          ctx.fill();
+
+          // accent overlay stronger every few slices (like Price is Right pegs)
+          if(i % 5 === 0){
+            ctx.fillStyle = accentRGBA;
+            ctx.globalAlpha = 0.10;
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+          }
+
+          ctx.strokeStyle = "rgba(255,255,255,0.08)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // inner circle
+        ctx.beginPath();
+        ctx.arc(0,0,r*0.58,0,Math.PI*2);
+        ctx.fillStyle = "rgba(0,0,0,0.34)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,0.12)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // center label
+        ctx.fillStyle = "rgba(255,255,255,0.92)";
+        ctx.font = `900 ${Math.max(16, r*0.15)}px ui-sans-serif, system-ui, -apple-system`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("ESC", 0, -r*0.06);
+
+        ctx.fillStyle = "rgba(255,255,255,0.80)";
+        ctx.font = `1000 ${Math.max(20, r*0.18)}px ui-sans-serif, system-ui, -apple-system`;
+        ctx.fillText(fmtPct(this.currentValue()), 0, r*0.14);
+
+        // center bolt
+        ctx.beginPath();
+        ctx.arc(0,0,r*0.06,0,Math.PI*2);
+        ctx.fillStyle = "rgba(255,233,74,0.85)";
+        ctx.fill();
+        ctx.restore();
       }
     }
-    presentBtn.addEventListener("click", toggleFullscreen);
-    document.addEventListener("fullscreenchange", () => {
-      const on = !!document.fullscreenElement;
-      document.body.classList.toggle("fullscreen", on);
-      presentBtn.textContent = on ? "Exit Fullscreen" : "Presenter Fullscreen";
-    });
 
-    /***************
-      Inputs wiring
-    ***************/
-    [uMonthlyEarly, uEscEarly, uAnnualKwhEarly].forEach(inp => inp.addEventListener("input", syncEarlyToCalc));
-    [uMonthly, uEsc, uAnnualKwh].forEach(inp => inp.addEventListener("input", syncCalcToEarly));
-    [aMonthly,aEsc,aNotes,bMonthly,bEsc,bNotes].forEach(inp => inp.addEventListener("input", recalc));
-    utilitySelect.addEventListener("change", () => applyUtility(utilitySelect.value));
-
-    /***************
-      Synced scroll event listeners
-    ***************/
-    [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{
-      if (!el) return;
-      el.addEventListener("scroll", () => syncScrollTo(el), {passive:true});
-    });
-
-    /***************
-      Reset
-    ***************/
-    function resetInputs(){
-      uMonthlyEarly.value = ""; uEscEarly.value = ""; uAnnualKwhEarly.value = "";
-      uMonthly.value = ""; uEsc.value = ""; uAnnualKwh.value = "";
-      aMonthly.value = ""; aEsc.value = ""; aNotes.value = "";
-      bMonthly.value = ""; bEsc.value = ""; bNotes.value = "";
-
-      // reset scroll positions together
-      [uYearScroll,aYearScroll,bYearScroll].forEach(el=>{ if(el) el.scrollTop = 0; });
-
-      recalc();
-      updateKPIs();
+    // Create 3 wheels with color themes
+    function rgbaFromCssVar(varName, alpha){
+      const v = getStyleVar(varName);
+      // assume hex like #rrggbb
+      if(v.startsWith("#") && v.length === 7){
+        const r = parseInt(v.slice(1,3),16);
+        const g = parseInt(v.slice(3,5),16);
+        const b = parseInt(v.slice(5,7),16);
+        return `rgba(${r},${g},${b},${alpha})`;
+      }
+      return `rgba(255,255,255,${alpha})`;
     }
-    resetBtn.addEventListener("click", resetInputs);
 
-    /***************
-      Init
-    ***************/
-    buildDots();
-    applyUtility("sce");
-    setMode("presentation");
+    const wheelU = new SpinWheel("wheelU","wheelValU", rgbaFromCssVar("--red", 0.22));
+    const wheelO1 = new SpinWheel("wheelO1","wheelValO1", rgbaFromCssVar("--green", 0.22));
+    const wheelO2 = new SpinWheel("wheelO2","wheelValO2", rgbaFromCssVar("--cyan", 0.22));
 
-    // mini visuals
-    svgTouMini(touMiniSvg);
-    svgVppMini(vppMiniSvg);
+    // Sync wheel value → input field
+    wheelU.onValue = (v) => { $('uEsc').value = v.toFixed(1); render(); };
+    wheelO1.onValue = (v) => { $('o1Esc').value = v.toFixed(1); render(); };
+    wheelO2.onValue = (v) => { $('o2Esc').value = v.toFixed(1); render(); };
 
-    recalc();
-    updateDeckUI();
+    function syncWheelsFromInputs(immediate=false){
+      wheelU.setValue(toNumber($('uEsc').value), immediate);
+      wheelO1.setValue(toNumber($('o1Esc').value), immediate);
+      wheelO2.setValue(toNumber($('o2Esc').value), immediate);
+    }
+
+    // Buttons
+    $('spinAll').addEventListener('click', () => {
+      wheelU.spinRandom();
+      wheelO1.spinRandom();
+      wheelO2.spinRandom();
+    });
+    $('setTypical').addEventListener('click', () => {
+      // typical storytelling defaults: utility high, option1 small, option2 fixed
+      wheelU.setValue(9.0);
+      wheelO1.setValue(3.5);
+      wheelO2.setValue(0.0);
+    });
+
+    // Initial sync
+    syncWheelsFromInputs(true);
+    render();
   </script>
 </body>
 </html>
