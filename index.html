@@ -12,7 +12,6 @@
       --text: rgba(255,255,255,.94);
       --muted: rgba(255,255,255,.72);
       --muted2: rgba(255,255,255,.56);
-      --border: rgba(255,255,255,.14);
       --shadow: 0 18px 70px rgba(0,0,0,.48);
 
       --sun2:#ff7a00;
@@ -342,7 +341,7 @@
     .totals{
       padding:12px;
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap:10px;
       border-top:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.12);
@@ -362,7 +361,7 @@
     .metric .v{
       margin-top:6px;
       font-weight:1000;
-      font-size:18px;
+      font-size:20px;
       letter-spacing:-.02em;
     }
 
@@ -519,36 +518,6 @@
     }
     .savingsLine .sVal{color: var(--green); font-size:18px;}
 
-    .tableWrap{
-      margin-top:12px;
-      border:1px solid rgba(255,255,255,.14);
-      border-radius: var(--r);
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      background: rgba(0,0,0,.16);
-    }
-    table{
-      width:100%;
-      min-width: 680px;
-      border-collapse:collapse;
-      font-size:13px;
-    }
-    thead th{
-      text-align:left;
-      padding:10px 10px;
-      color:var(--muted);
-      background: rgba(255,255,255,.06);
-      border-bottom:1px solid rgba(255,255,255,.10);
-      position:sticky; top:0;
-    }
-    tbody td{
-      padding:9px 10px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      color: rgba(255,255,255,.88);
-      white-space: nowrap;
-    }
-    tr.activeYear td{ background: rgba(0,194,255,.10); }
-
     /* Timeline slide */
     .timeline{
       display:grid;
@@ -602,6 +571,12 @@
       width:100%;
       background: var(--grad);
       opacity:.9;
+    }
+    .linkRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
     .lightbox{
@@ -674,8 +649,8 @@
         <a class="btn" href="#tou">TOU</a>
         <a class="btn" href="#vpp">VPP</a>
         <a class="btn" href="#outage">Outage</a>
-        <a class="btn" href="#compare">Compare</a>
-        <a class="btn primary" href="#timeline">Timeline</a>
+        <a class="btn primary" href="#compare">Compare</a>
+        <a class="btn" href="#timeline">Timeline</a>
         <button class="btn" id="btnReset" type="button">Reset</button>
       </div>
     </div>
@@ -805,8 +780,10 @@
               <label><span>Annual increase (%)</span><input id="uEsc" value="9" inputmode="decimal"></label>
             </div>
             <div class="totals">
-              <div class="metric"><div class="k">25-Year total</div><div class="v" style="color:var(--red)" id="uTotal">$0</div></div>
-              <div class="metric"><div class="k">Year 25 monthly</div><div class="v" id="uY25">$0</div></div>
+              <div class="metric">
+                <div class="k">25-Year utility spend</div>
+                <div class="v" style="color:var(--red)" id="uTotal">$0</div>
+              </div>
             </div>
           </div>
 
@@ -823,8 +800,10 @@
               <label><span>Annual escalator (%)</span><input id="o1Esc" value="3.5" inputmode="decimal"></label>
             </div>
             <div class="totals">
-              <div class="metric"><div class="k">25-Year total</div><div class="v" id="o1Total">$0</div></div>
-              <div class="metric"><div class="k">Savings vs utility</div><div class="v" style="color:var(--green)" id="o1Save">$0</div></div>
+              <div class="metric">
+                <div class="k">25-Year total savings vs utility</div>
+                <div class="v" style="color:var(--green)" id="o1Save25">$0</div>
+              </div>
             </div>
           </div>
 
@@ -841,12 +820,15 @@
               <label><span>Annual escalator (%)</span><input id="o2Esc" value="0" inputmode="decimal"></label>
             </div>
             <div class="totals">
-              <div class="metric"><div class="k">25-Year total</div><div class="v" id="o2Total">$0</div></div>
-              <div class="metric"><div class="k">Savings vs utility</div><div class="v" style="color:var(--green)" id="o2Save">$0</div></div>
+              <div class="metric">
+                <div class="k">25-Year total savings vs utility</div>
+                <div class="v" style="color:var(--green)" id="o2Save25">$0</div>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Wheel + annual comparison ONLY (no 25-year payment list/table) -->
         <div class="pickerWrap">
           <div class="pickerHead">
             <div class="title">
@@ -893,27 +875,16 @@
           </div>
         </div>
 
-        <div class="tableWrap" aria-label="25-year table">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:70px">Year</th>
-                <th>Utility Monthly</th>
-                <th>Option 1 Monthly</th>
-                <th>Option 2 Monthly</th>
-              </tr>
-            </thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
       </div>
     </section>
 
     <section class="section" id="timeline">
       <div class="sectionHead">
         <h2><span class="spark"></span> Project Timeline</h2>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="btn" href="#compare">Back to compare</a>
+        <div class="linkRow">
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.sunup-energy.com">SunUp Energy</a>
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33aL_iPZUyUpu_SzVI30rKWvofbcNHLRJ4VaxEepZ7V0Em9qWKB4eJ7S79uZ8SMddoiF83pzp_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&biw=1366&bih=896&dpr=2&aic=0&sei=ApmCaZe1G_aK8L0PpL7O2Ak&dlnr=1">Reviews</a>
+          <a class="btn primary" target="_blank" rel="noreferrer" href="https://fulfillpower.com">Fulfill Power</a>
         </div>
       </div>
 
@@ -1054,10 +1025,6 @@
       selectedYear = clamp(year, 1, 25);
       $('yearLabel').textContent = String(selectedYear);
 
-      document.querySelectorAll('#rows tr').forEach(tr => tr.classList.remove('activeYear'));
-      const tr = document.querySelector(`#rows tr[data-year="${selectedYear}"]`);
-      if(tr) tr.classList.add('activeYear');
-
       const idx = selectedYear - 1;
       const uM = cache.uSeries[idx] ?? 0;
       const o1M = cache.o1Series[idx] ?? 0;
@@ -1095,31 +1062,14 @@
       const o2Total = total25yr(o2Pay, o2Esc);
 
       $('uTotal').textContent = money0(uTotal);
-      $('o1Total').textContent = money0(o1Total);
-      $('o2Total').textContent = money0(o2Total);
 
-      const s1 = uTotal - o1Total;
-      const s2 = uTotal - o2Total;
-      $('o1Save').textContent = money0(s1);
-      $('o2Save').textContent = money0(s2);
-      $('o1Save').style.color = s1 >= 0 ? 'var(--green)' : 'var(--red)';
-      $('o2Save').style.color = s2 >= 0 ? 'var(--green)' : 'var(--red)';
+      const s25_1 = uTotal - o1Total;
+      const s25_2 = uTotal - o2Total;
+      $('o1Save25').textContent = money0(s25_1);
+      $('o2Save25').textContent = money0(s25_2);
+      $('o1Save25').style.color = s25_1 >= 0 ? 'var(--green)' : 'var(--red)';
+      $('o2Save25').style.color = s25_2 >= 0 ? 'var(--green)' : 'var(--red)';
 
-      $('uY25').textContent = money2(cache.uSeries[24]);
-
-      const tbody = $('rows');
-      tbody.innerHTML = '';
-      for(let y=1; y<=25; y++){
-        const tr = document.createElement('tr');
-        tr.dataset.year = String(y);
-        tr.innerHTML = `
-          <td>${y}</td>
-          <td>${money2(cache.uSeries[y-1])}</td>
-          <td>${money2(cache.o1Series[y-1])}</td>
-          <td>${money2(cache.o2Series[y-1])}</td>
-        `;
-        tbody.appendChild(tr);
-      }
       updateYearPanel(selectedYear);
     }
 
@@ -1127,7 +1077,6 @@
     const viewport = $('yearViewport');
     function buildWheel(){
       viewport.innerHTML = '';
-      // top spacer
       for(let i=0;i<2;i++){
         const sp = document.createElement('div');
         sp.className = 'wheelItem';
@@ -1142,7 +1091,6 @@
         div.addEventListener('click', () => scrollToYear(y));
         viewport.appendChild(div);
       }
-      // bottom spacer
       for(let i=0;i<2;i++){
         const sp = document.createElement('div');
         sp.className = 'wheelItem';
@@ -1212,7 +1160,6 @@
     // Init
     buildWheel();
     render();
-    // position at year 1 after layout
     requestAnimationFrame(()=>scrollToYear(1));
   </script>
 </body>
