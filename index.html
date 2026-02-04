@@ -8,20 +8,26 @@
 
 <style>
   :root{
+    /* Brand palette (logo energy) */
     --navy:#0b1017;
     --navy2:#06122a;
     --gold:#FBC909;
     --teal:#3AADBB;
 
-    --utility:#ff3b30;
-    --opt1:#34c759;
-    --opt2:#00c2ff;
+    /* Column colors */
+    --utility:#ff3b30; /* red */
+    --opt1:#34c759;    /* green */
+    --opt2:#00c2ff;    /* cyan */
 
     --text:rgba(255,255,255,.96);
     --muted:rgba(255,255,255,.72);
     --muted2:rgba(255,255,255,.56);
+    --border:rgba(255,255,255,.14);
 
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
+    --shadow: 0 18px 70px rgba(0,0,0,.45);
+
+    --r:16px;
     --r2:22px;
 
     --safeT: env(safe-area-inset-top);
@@ -37,24 +43,23 @@
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
     background:
-      radial-gradient(900px 460px at 14% 10%, rgba(251,201,9,.14), transparent 60%),
-      radial-gradient(900px 460px at 86% 12%, rgba(58,173,187,.12), transparent 60%),
+      radial-gradient(900px 460px at 14% 10%, rgba(251,201,9,.18), transparent 60%),
+      radial-gradient(900px 460px at 86% 12%, rgba(58,173,187,.16), transparent 60%),
       linear-gradient(180deg, var(--navy2), var(--navy));
-    overflow:hidden;
+    overflow:hidden; /* presentation mode */
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
-
-  button, a, input { -webkit-tap-highlight-color: transparent; }
   a{color:#cfe8ff;text-decoration:none}
   a:hover{text-decoration:underline}
+  button, a, input { -webkit-tap-highlight-color: transparent; }
 
-  /* Top bar */
+  /* ===== Top Bar ===== */
   .topbar{
     position:fixed; inset:0 0 auto 0;
     z-index:100;
     padding-top:var(--safeT);
-    background: rgba(10,16,24,.92);
+    background: rgba(10,16,24,.90);
     border-bottom:1px solid rgba(255,255,255,.12);
   }
   .topbarInner{
@@ -70,11 +75,24 @@
     flex-wrap:wrap;
   }
   .brand{display:flex; align-items:center; gap:12px; min-width:260px;}
-  .brand img{height:40px; width:auto; display:block; filter: drop-shadow(0 12px 28px rgba(0,0,0,.25));}
+  .brand img{
+    height:40px; width:auto; display:block;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,.30));
+  }
   .brandTitle{display:flex; flex-direction:column; line-height:1.1}
-  .brandTitle .name{font-weight:1000; letter-spacing:-.02em; display:flex; align-items:center; gap:10px;}
-  .dot{width:10px;height:10px;border-radius:999px;background:var(--grad);}
-  .brandTitle .sub{font-size:12px; color:var(--muted2); margin-top:3px; letter-spacing:.02em;}
+  .brandTitle .name{
+    font-weight:1000; letter-spacing:-.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:999px;
+    background:var(--grad);
+    box-shadow: 0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18);
+  }
+  .brandTitle .sub{
+    font-size:12px; color:var(--muted2);
+    margin-top:3px; letter-spacing:.02em;
+  }
 
   .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
   .btn{
@@ -92,7 +110,12 @@
     gap:8px;
     user-select:none;
   }
-  .btn.primary{background:var(--grad); color:#07121b; border-color: rgba(255,255,255,.18);}
+  .btn.primary{
+    background: var(--grad);
+    color:#07121b;
+    border-color: rgba(255,255,255,.18);
+    box-shadow: 0 18px 58px rgba(58,173,187,.14), 0 18px 58px rgba(251,201,9,.10);
+  }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
 
   .progressWrap{
@@ -102,12 +125,13 @@
     padding-right: calc(16px + var(--safeR));
   }
   .progress{
-    height:7px;border-radius:999px;
+    height:7px;
+    border-radius:999px;
     background: rgba(255,255,255,.08);
     border:1px solid rgba(255,255,255,.10);
     overflow:hidden;
   }
-  .progress > div{height:100%; width:0%; background:var(--grad); transition: width .12s linear;}
+  .progress > div{height:100%; width:0%; background:var(--grad); transition: width .16s ease;}
 
   .badge{
     position:fixed;
@@ -124,11 +148,19 @@
   }
   .badge .t{font-weight:1000; color: rgba(255,255,255,.90); font-size:13px; letter-spacing:-.02em;}
 
-  /* Deck */
+  /* ===== Fullscreen button ===== */
+  .fsBtn{
+    position:fixed;
+    top: calc(12px + var(--safeT));
+    left: 12px;
+    z-index:130;
+  }
+
+  /* ===== Deck ===== */
   .deck{
     height:100%;
     padding-top: calc(96px + var(--safeT));
-    padding-bottom: calc(80px + var(--safeB)); /* extra for new mobile nav */
+    padding-bottom: calc(92px + var(--safeB)); /* room for bottom dock */
     display:flex;
     align-items:stretch;
     justify-content:center;
@@ -151,20 +183,20 @@
     background: rgba(255,255,255,.05);
     overflow:hidden;
     opacity:0;
-    transform: translateY(8px);
+    transform: translateY(10px) scale(.99);
     pointer-events:none;
-    transition: opacity .12s linear, transform .12s linear;
+    transition: opacity .16s ease, transform .16s ease;
+    box-shadow: var(--shadow);
   }
   .slide.active{
     opacity:1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events:auto;
   }
-
   .slideHead{
     padding:16px 18px;
     border-bottom:1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.05);
+    background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -180,28 +212,27 @@
     align-items:center;
     gap:10px;
   }
-  .spark{width:10px;height:10px;border-radius:999px;background:var(--grad);}
-
+  .spark{width:10px;height:10px;border-radius:999px;background:var(--grad); box-shadow:0 0 22px rgba(251,201,9,.14), 0 0 22px rgba(58,173,187,.12);}
   .slideBody{
     padding:18px;
     height: calc(100% - 58px);
     overflow:auto;
     -webkit-overflow-scrolling: touch;
   }
+  .slideBody::-webkit-scrollbar{ width: 10px; }
+  .slideBody::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.14); border-radius:999px; }
 
-  /* ===== New mobile-first nav (better location) ===== */
+  /* ===== Bottom dock (better on mobile) ===== */
   .presentBar{
     position:fixed;
     left: 12px;
     right: 12px;
-    bottom: calc(10px + var(--safeB));
-    z-index:130;
-    pointer-events:none;
+    bottom: calc(12px + var(--safeB));
+    z-index:140;
     display:flex;
     justify-content:center;
   }
   .dock{
-    pointer-events:auto;
     width:min(980px, 100%);
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -213,15 +244,63 @@
     box-shadow: 0 18px 60px rgba(0,0,0,.35);
   }
   .dock .btn{width:100%;}
-  .dock .btn.primary{font-weight:1000;}
   @media (min-width:981px){
     .dock{grid-template-columns: 140px 1fr 140px;}
   }
 
-  /* Layout */
+  /* ===== Layout helpers ===== */
   .grid{display:grid; gap:14px;}
   .grid2{grid-template-columns: 1.05fr .95fr;}
-  @media (max-width:980px){ .grid2{grid-template-columns:1fr;} }
+  .grid2eq{grid-template-columns:1fr 1fr;}
+  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
+
+  .pill{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:10px 12px;
+    font-weight:950;
+    color: rgba(255,255,255,.88);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    white-space:nowrap;
+  }
+
+  .card{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    overflow:hidden;
+  }
+
+  /* Media lock box (prevents images from "disappearing" / reflowing on mobile) */
+  .mediaFrame{
+    width:100%;
+    height: clamp(240px, 46vh, 560px);
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .mediaFrame img, .mediaFrame video{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#000;
+  }
+  .cap{
+    padding:12px 14px;
+    border-top:1px solid rgba(255,255,255,.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    background: rgba(0,0,0,.14);
+    font-weight:1000;
+  }
+  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
 
   /* Big centered input */
   .focusWrap{height:100%; display:flex; align-items:center; justify-content:center;}
@@ -277,66 +356,13 @@
   .bigHint{margin-top:10px; color:rgba(255,255,255,.78); font-weight:900; line-height:1.35; font-size:13px;}
   .bigActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; justify-content:flex-end;}
 
-  /* Media cards */
-  .card{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    overflow:hidden;
+  /* Problem slide big link buttons */
+  .ctaGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:12px;
+    margin-top:14px;
   }
-  .mediaFrame{
-    width:100%;
-    height: clamp(240px, 42vh, 520px);
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .mediaFrame img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    cursor:pointer;
-  }
-  .cap{
-    padding:12px 14px;
-    border-top:1px solid rgba(255,255,255,.10);
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:center;
-    background: rgba(0,0,0,.12);
-    font-weight:1000;
-  }
-  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
-
-  .panel{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    padding:16px;
-  }
-  .panel .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .panel .h{margin-top:10px; font-weight:1000; letter-spacing:-.04em; font-size: clamp(22px, 3vw, 38px); line-height:1.05;}
-  .panel p{margin:10px 0 0; color:var(--muted); font-weight:900; line-height:1.5; font-size:14px;}
-
-  .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
-  .pill{
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    border-radius:999px;
-    padding:10px 12px;
-    font-weight:950;
-    color: rgba(255,255,255,.88);
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    white-space:nowrap;
-  }
-
-  /* Big link buttons */
-  .ctaGrid{display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px;}
   @media (max-width:980px){ .ctaGrid{grid-template-columns:1fr;} }
   .bigCTA{
     border:1px solid rgba(255,255,255,.16);
@@ -345,27 +371,65 @@
     padding:16px;
     cursor:pointer;
     text-align:left;
-    min-height:104px;
+    min-height:120px;
   }
-  .bigCTA .t{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
-  .bigCTA .title{font-weight:1000; letter-spacing:-.03em; font-size:20px; line-height:1.1;}
-  .bigCTA .badge2{
-    border:1px solid rgba(255,255,255,.16);
-    border-radius:999px;
-    padding:7px 10px;
-    font-weight:950;
-    font-size:12px;
-    background: rgba(0,0,0,.18);
-    color: rgba(255,255,255,.88);
-    white-space:nowrap;
+  .bigCTA:hover{ background: rgba(255,255,255,.09); }
+  .ctaLabel{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-weight:1000;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:11px;
+    color: rgba(255,255,255,.86);
+    margin-bottom:8px;
   }
-  .bigCTA .desc{margin-top:10px; color: var(--muted); font-weight:900; line-height:1.4; font-size:13.5px;}
-  .bigCTA.primary{
-    background: linear-gradient(135deg, rgba(251,201,9,.18), rgba(58,173,187,.14));
-    border-color: rgba(251,201,9,.20);
+  .ctaLabel .dotMini{width:9px;height:9px;border-radius:999px;background:var(--grad);}
+  .ctaTitle{
+    font-weight:1000;
+    letter-spacing:-.02em;
+    font-size:18px;
+    line-height:1.15;
+    margin:0;
+  }
+  .ctaDesc{
+    margin-top:10px;
+    color: var(--muted);
+    font-weight:900;
+    line-height:1.35;
+    font-size:13.5px;
   }
 
-  /* Compare */
+  /* Outage bullets */
+  .headline{
+    font-weight:1000;
+    letter-spacing:-.04em;
+    font-size: clamp(22px, 3vw, 38px);
+    margin:0 0 10px;
+    line-height:1.05;
+  }
+  .catch{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid rgba(251,201,9,.22);
+    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
+    padding:10px 12px;
+    border-radius:999px;
+    font-weight:1000;
+  }
+  .backupGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top:12px;}
+  @media (max-width:980px){ .backupGrid{grid-template-columns:1fr 1fr;} }
+  .backupTile{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.16);
+    border-radius:16px;
+    padding:12px;
+    font-weight:1000;
+  }
+
+  /* Compare tool */
   .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
   @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
   .col{
@@ -397,23 +461,33 @@
   }
   .colBody{padding:14px; display:grid; gap:10px;}
   .klabel{
-    display:block;color:var(--muted2);
-    font-weight:1000;font-size:11px;
-    letter-spacing:.12em;text-transform:uppercase;
+    display:block;
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
     margin-bottom:6px;
   }
   input{
-    width:100%; padding:12px 12px;
+    width:100%;
+    padding:12px 12px;
     border-radius:14px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.22);
     color: rgba(255,255,255,.96);
-    font-weight:1000; font-size:16px;
-    outline:none; min-height:44px;
+    font-weight:1000;
+    font-size:16px;
+    outline:none;
+    min-height:44px;
+  }
+  input:focus{
+    border-color: rgba(58,173,187,.72);
+    box-shadow: 0 0 0 6px rgba(58,173,187,.12);
   }
   .metric{
     border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.14);
+    background: rgba(0,0,0,.16);
     border-radius:14px;
     padding:10px 12px;
     display:flex;
@@ -425,6 +499,7 @@
   .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
   .metric .mv{font-weight:1000; font-size:18px;}
 
+  /* Year wheel */
   .yearPanel{
     margin-top:14px;
     border:1px solid rgba(255,255,255,.14);
@@ -435,7 +510,7 @@
   .yearHead{
     padding:14px 16px;
     border-bottom:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.12);
+    background: linear-gradient(135deg, rgba(251,201,9,.11), rgba(58,173,187,.09));
     display:flex;
     justify-content:space-between;
     gap:12px;
@@ -466,7 +541,7 @@
 
   .wheelBox{
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.14);
+    background: rgba(0,0,0,.18);
     border-radius:18px;
     padding:14px;
     display:grid;
@@ -485,18 +560,20 @@
     min-height:44px;
     cursor:pointer;
   }
+
   .wheel{
     position:relative;
     height:220px;
     border-radius:16px;
     border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.18);
+    background: rgba(0,0,0,.20);
     overflow:hidden;
   }
   .wheel::before{
     content:"";
-    position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(11,16,23,.92), transparent 28%, transparent 72%, rgba(11,16,23,.92));
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(11,16,23,.92), transparent 26%, transparent 74%, rgba(11,16,23,.92));
     pointer-events:none;
     z-index:2;
   }
@@ -511,6 +588,7 @@
     pointer-events:none;
     z-index:3;
   }
+
   .wheelList{
     height:100%;
     overflow-y:auto;
@@ -519,7 +597,7 @@
     padding: 88px 0;
     margin:0;
   }
-  .wheelList::-webkit-scrollbar{ width:0; height:0; }
+  .wheelList::-webkit-scrollbar{ width: 0; height:0; }
   .wheelItem{
     height:44px;
     display:flex;
@@ -532,11 +610,14 @@
     color: rgba(255,255,255,.72);
     user-select:none;
   }
-  .wheelItem.active{ color: rgba(255,255,255,.96); }
+  .wheelItem.active{
+    color: rgba(255,255,255,.96);
+    text-shadow: 0 10px 32px rgba(0,0,0,.35);
+  }
 
   .yearCompare{
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.14);
+    background: rgba(0,0,0,.18);
     border-radius:18px;
     padding:14px;
     display:grid;
@@ -544,6 +625,7 @@
   }
   .bigMoneyGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px;}
   @media (max-width:980px){ .bigMoneyGrid{grid-template-columns:1fr;} }
+
   .bigTile{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.04);
@@ -578,7 +660,12 @@
     letter-spacing:-.035em;
     line-height:1;
   }
-  .bigTile .a{margin-top:8px; color:var(--muted); font-weight:900; font-size:13px;}
+  .bigTile .a{
+    margin-top:8px;
+    color:var(--muted);
+    font-weight:900;
+    font-size:13px;
+  }
   .yearSavings{
     border:1px solid rgba(52,199,89,.28);
     background: rgba(52,199,89,.10);
@@ -593,73 +680,16 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Video + outage items */
-  .videoShell{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    overflow:hidden;
-    background: rgba(0,0,0,.18);
-  }
-  .videoFrame{
-    width:100%;
-    height: clamp(260px, 48vh, 620px);
-    background:#000;
-  }
-  .videoFrame video{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    background:#000;
-  }
-  .headline{
-    font-weight:1000;
-    letter-spacing:-.04em;
-    font-size: clamp(22px, 3vw, 38px);
-    margin:0 0 10px;
-    line-height:1.05;
-  }
-  .catch{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    border:1px solid rgba(251,201,9,.22);
-    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
-    padding:10px 12px;
-    border-radius:999px;
-    font-weight:1000;
-  }
-  .bullets{
-    margin-top:12px;
-    display:grid;
-    gap:10px;
-  }
-  .b{
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.14);
-    border-radius:16px;
-    padding:12px;
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-  }
-  .ico{
-    width:34px;height:34px;border-radius:12px;
-    background: var(--grad);
-    color:#07121b;
-    font-weight:1000;
-    display:flex;align-items:center;justify-content:center;
-    flex:0 0 auto;
-  }
-  .b strong{font-weight:1000;}
-  .b span{display:block;margin-top:4px;color:var(--muted);font-weight:900;line-height:1.35;font-size:13.5px;}
-
   /* Timeline */
-  .timeline{display:grid; grid-template-columns: repeat(6,1fr); gap:10px;}
+  .timeline{
+    display:grid;
+    grid-template-columns: repeat(6,1fr);
+    gap:10px;
+  }
   @media (max-width:980px){ .timeline{grid-template-columns:1fr;} }
   .step{
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.14);
+    background: rgba(0,0,0,.16);
     border-radius:18px;
     padding:14px;
     min-height:112px;
@@ -676,52 +706,15 @@
   }
   .step .t{font-weight:1000; letter-spacing:-.02em;}
   .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900;}
-
-  /* Modal zoom */
-  .modal{
-    position:fixed; inset:0;
-    background: rgba(0,0,0,.72);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding: 18px;
-    padding-top: calc(18px + var(--safeT));
-    padding-bottom: calc(18px + var(--safeB));
-    z-index:999;
-  }
-  .modal.show{display:flex;}
-  .modalCard{
-    width:min(1100px, 100%);
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(10,16,24,.92);
-    border-radius: 18px;
-    overflow:hidden;
-  }
-  .modalHead{
-    display:flex; justify-content:space-between; align-items:center;
-    gap:10px;
-    padding:12px 14px;
-    border-bottom:1px solid rgba(255,255,255,.10);
-    font-weight:1000;
-  }
-  .modalImgWrap{
-    background:#000;
-    height: min(78vh, 760px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .modalImgWrap img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-  }
 </style>
 </head>
 
 <body>
 
+<!-- Fullscreen -->
+<button class="btn fsBtn" id="btnFS" type="button">Fullscreen</button>
+
+<!-- Topbar -->
 <div class="topbar">
   <div class="topbarInner">
     <div class="brand">
@@ -751,7 +744,7 @@
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1: BIG RED INPUT -->
+    <!-- SLIDE 1: START INPUT -->
     <section class="slide active" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Customer Starting Point</h2>
@@ -773,22 +766,22 @@
 
             <div class="bigActions">
               <button class="btn" type="button" onclick="go(1)">See Rate Problem</button>
-              <button class="btn primary" type="button" onclick="go(3)">Outage Demo</button>
+              <button class="btn primary" type="button" onclick="go(2)">Outage Demo</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2: NORMAL BILL (NO SOLAR) -->
+    <!-- SLIDE 2: PROBLEM + LINKS (TOU / 13% / LA FIRES) -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Peak pricing drives the pain</span>
-          <span class="pill"><span class="dot"></span> $0.17 → $0.42 / kWh (15 yrs)</span>
+          <span class="pill"><span class="dot"></span> Rates: $0.17 → $0.42 / kWh</span>
         </div>
       </div>
+
       <div class="slideBody">
         <div class="grid grid2">
           <div class="card">
@@ -797,39 +790,37 @@
             </div>
             <div class="cap">
               <div>Bill example (no solar)</div>
-              <small>Tap to zoom</small>
+              <small>Locked for presentation</small>
             </div>
           </div>
 
-          <div class="panel">
-            <div class="k">What TOU means</div>
-            <div class="h">It’s not only <span class="gradText">how much</span> power you use — it’s <span class="gradText">when</span> you buy it.</div>
-            <p>
-              Under Time-of-Use pricing, electricity costs more when the grid is stressed.
-              Even with the same kWh, buying more during peak makes bills jump.
-            </p>
-
-            <div class="pillRow">
-              <span class="pill"><span class="dot"></span> Peak = most expensive</span>
-              <span class="pill"><span class="dot"></span> Off-peak = cheaper</span>
-              <span class="pill"><span class="dot"></span> Delivery + fees still exist</span>
+          <div class="card" style="padding:16px;">
+            <div style="color:var(--muted2);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;">Why it’s expensive</div>
+            <div style="margin-top:10px;font-weight:1000;font-size:clamp(22px,3vw,38px);letter-spacing:-.045em;line-height:1.06;">
+              It’s not only <span class="gradText">how much</span> — it’s <span class="gradText">when</span>.
+            </div>
+            <div style="margin-top:10px;color:var(--muted);font-weight:900;line-height:1.5;font-size:14.5px;">
+              Time-of-Use (TOU) pricing charges more when the grid is stressed. That “peak window” is where bills explode.
+              Batteries change the game by shifting energy away from peak purchases.
             </div>
 
             <div class="ctaGrid">
-              <div class="bigCTA primary" id="btnSCE">
-                <div class="t">
-                  <div class="title">SCE: Updates to your bill</div>
-                  <div class="badge2">Popup</div>
-                </div>
-                <div class="desc">Official SCE explanation of residential bill/rate updates and why charges change over time.</div>
+              <div class="bigCTA" onclick="popupArticle(ASSETS.linkTOU)">
+                <div class="ctaLabel"><span class="dotMini"></span> TOU</div>
+                <div class="ctaTitle">SCE Time-of-Use Rates</div>
+                <div class="ctaDesc">See official TOU rate plans and how prices change by time of day.</div>
               </div>
 
-              <div class="bigCTA" id="btnLAT">
-                <div class="t">
-                  <div class="title">LA Times: Edison rate case</div>
-                  <div class="badge2">Popup</div>
-                </div>
-                <div class="desc">News context on Edison’s rate case and drivers behind continued increases.</div>
+              <div class="bigCTA" onclick="popupArticle(ASSETS.linkSCE)">
+                <div class="ctaLabel"><span class="dotMini"></span> 13% increase</div>
+                <div class="ctaTitle">SCE: Understanding bill updates</div>
+                <div class="ctaDesc">Official SCE page explaining updates and why charges change over time.</div>
+              </div>
+
+              <div class="bigCTA" onclick="popupArticle(ASSETS.linkLAT)">
+                <div class="ctaLabel"><span class="dotMini"></span> L.A fires</div>
+                <div class="ctaTitle">LA Times: Edison rate case</div>
+                <div class="ctaDesc">News context on the rate case and continued drivers behind increases.</div>
               </div>
             </div>
 
@@ -838,44 +829,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 3: SOLAR BILL ($28) -->
-    <section class="slide" data-slide>
-      <div class="slideHead">
-        <h2><span class="spark"></span> Proof</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Solar + Storage Net Bill</span>
-        </div>
-      </div>
-      <div class="slideBody">
-        <div class="grid grid2">
-          <div class="card">
-            <div class="mediaFrame">
-              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" />
-            </div>
-            <div class="cap">
-              <div>Bill example (solar + storage)</div>
-              <small>Tap to zoom</small>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="k">Why it can drop this low</div>
-            <div class="h">Solar runs the day. Batteries protect the <span class="gradText">expensive</span> hours.</div>
-            <p>
-              Solar offsets daytime purchases. Batteries cover the peak window—so you avoid buying at peak pricing.
-              The utility becomes backup instead of primary.
-            </p>
-            <div class="pillRow">
-              <span class="pill"><span class="dot"></span> Daytime offset</span>
-              <span class="pill"><span class="dot"></span> Peak avoidance</span>
-              <span class="pill"><span class="dot"></span> Grid as backup</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: OUTAGE VIDEO (MOVED BEFORE CALCULATOR) -->
+    <!-- SLIDE 3: OUTAGE DEMO (BEFORE CALCULATOR) + VPP LINKS HERE -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Outage Demo</h2>
@@ -886,47 +840,87 @@
 
       <div class="slideBody">
         <div class="grid grid2">
-          <div class="videoShell">
-            <div class="videoFrame">
-              <video id="outageVid" controls playsinline preload="metadata">
-                <source src="Outagevideo.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
+          <div class="card">
+            <div class="mediaFrame">
+              <video id="outageVid" controls playsinline preload="metadata"></video>
             </div>
             <div class="cap">
-              <div>Home powered during outage (storage)</div>
+              <div>Home powered during outage</div>
               <small>Plays inline on iPhone</small>
             </div>
           </div>
 
-          <div class="panel">
-            <div class="k">What you can back up</div>
-            <div class="headline">Keep life normal when the grid goes down.</div>
-
-            <div class="bullets">
-              <div class="b"><div class="ico">🏠</div><div><strong>Lights + outlets</strong><span>Stay powered for everyday living—no candles, no chaos.</span></div></div>
-              <div class="b"><div class="ico">📶</div><div><strong>Wi-Fi + internet</strong><span>Work, school, and security systems keep running.</span></div></div>
-              <div class="b"><div class="ico">🧊</div><div><strong>Refrigerator / freezer</strong><span>Protect groceries and avoid spoilage during outages.</span></div></div>
-              <div class="b"><div class="ico">🔒</div><div><strong>Security + cameras</strong><span>Maintain monitoring and protection when neighbors go dark.</span></div></div>
-              <div class="b"><div class="ico">🚪</div><div><strong>Garage door</strong><span>Keep access and convenience (especially during emergencies).</span></div></div>
-              <div class="b"><div class="ico">🌡️</div><div><strong>Selective HVAC</strong><span>Depending on design—support essentials or partial climate control.</span></div></div>
+          <div class="card" style="padding:16px;">
+            <div class="headline">Major things you can back up</div>
+            <div style="color:var(--muted);font-weight:900;line-height:1.45;">
+              The same batteries that cut peak costs also keep essentials running during outages.
             </div>
 
-            <div class="ctaGrid" style="margin-top:14px;">
-              <div class="bigCTA primary" onclick="openExternal('https://www.tesla.com/support/energy/virtual-power-plant/sce')">
-                <div class="t">
-                  <div class="title">Tesla Virtual Power Plant (SCE)</div>
-                  <div class="badge2">Open</div>
-                </div>
-                <div class="desc">How the VPP works: grid support events + compensation details (official Tesla page).</div>
-              </div>
+            <div class="backupGrid">
+              <div class="backupTile">Lights + outlets</div>
+              <div class="backupTile">Wi-Fi + internet</div>
+              <div class="backupTile">Refrigerator / freezer</div>
+              <div class="backupTile">Security + cameras</div>
+              <div class="backupTile">Garage door</div>
+              <div class="backupTile">Selective HVAC</div>
+            </div>
 
-              <div class="bigCTA" onclick="openExternal('https://www.tesla.com/powerwall')">
-                <div class="t">
-                  <div class="title">Powerwall Overview</div>
-                  <div class="badge2">Open</div>
-                </div>
-                <div class="desc">Backup behavior, features, and what Powerwall can do during outages.</div>
+            <div style="display:grid;gap:10px;margin-top:14px;">
+              <button class="btn primary" type="button" onclick="openExternal(ASSETS.linkTeslaVPP)">
+                Tesla Virtual Power Plant
+              </button>
+              <button class="btn" type="button" onclick="openExternal(ASSETS.linkTeslaVPP_SCE)">
+                Tesla VPP (SCE page)
+              </button>
+              <button class="btn" type="button" onclick="openExternal(ASSETS.linkPowerwall)">
+                Powerwall overview
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: PROOF ($28 BILL) -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Proof</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Solar + Storage Net Bill</span>
+        </div>
+      </div>
+
+      <div class="slideBody">
+        <div class="grid grid2">
+          <div class="card">
+            <div class="mediaFrame">
+              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" />
+            </div>
+            <div class="cap">
+              <div>Bill example (solar + storage)</div>
+              <small>Locked for presentation</small>
+            </div>
+          </div>
+
+          <div class="card" style="padding:16px;">
+            <div style="color:var(--muted2);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;">Why it can be low</div>
+            <div style="margin-top:10px;font-weight:1000;font-size:clamp(22px,3vw,38px);letter-spacing:-.045em;line-height:1.06;">
+              Solar runs the day. Batteries protect the <span class="gradText">expensive</span> hours.
+            </div>
+            <div style="margin-top:10px;color:var(--muted);font-weight:900;line-height:1.5;font-size:14.5px;">
+              Solar offsets daytime purchases. Batteries discharge during peak hours so you buy less at the highest prices.
+              The grid becomes backup instead of primary.
+            </div>
+
+            <div style="display:grid;gap:10px;margin-top:14px;">
+              <div class="metric">
+                <div class="mk">Simple way to say it</div>
+                <div class="mv" style="color:var(--opt1);">Less peak buying = lower net bill</div>
+              </div>
+              <div class="metric">
+                <div class="mk">What remains on most bills</div>
+                <div class="mv">Minimum charges + small net usage</div>
               </div>
             </div>
 
@@ -935,7 +929,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: CALCULATOR + YEAR WHEEL (UNCHANGED) -->
+    <!-- SLIDE 5: COMPARE TOOL (3 OPTIONS + YEAR WHEEL) -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -949,39 +943,60 @@
 
       <div class="slideBody">
         <div class="compareTop">
+          <!-- Utility -->
           <div class="col">
-            <div class="colHead" style="background:rgba(255,59,48,.12);">
-              <div><div class="label">Utility</div><div class="title">Edison</div></div>
+            <div class="colHead" style="background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,255,255,.05));">
+              <div>
+                <div class="label">Utility</div>
+                <div class="title">Edison</div>
+              </div>
               <span class="tag">Red</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
-              <div class="metric"><div class="mk">25-year utility spend</div><div class="mv" id="uTotal" style="color:var(--utility)">$0</div></div>
+              <div class="metric">
+                <div class="mk">25-year utility spend</div>
+                <div class="mv" id="uTotal" style="color:var(--utility)">$0</div>
+              </div>
             </div>
           </div>
 
+          <!-- Option 1 -->
           <div class="col">
-            <div class="colHead" style="background:rgba(52,199,89,.12);">
-              <div><div class="label">Option 1</div><div class="title">Proposal A</div></div>
+            <div class="colHead" style="background:linear-gradient(180deg, rgba(52,199,89,.16), rgba(255,255,255,.05));">
+              <div>
+                <div class="label">Option 1</div>
+                <div class="title">Proposal A</div>
+              </div>
               <span class="tag">Green</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
-              <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="0"></label>
-              <div class="metric"><div class="mk">Total savings over 25 years</div><div class="mv" id="aSave25" style="color:var(--opt1)">$0</div></div>
+              <label><span class="klabel">Annual escalator (%)</span><input id="aEsc" inputmode="decimal" value="0"></label>
+              <div class="metric">
+                <div class="mk">Total savings over 25 years</div>
+                <div class="mv" id="aSave25" style="color:var(--opt1)">$0</div>
+              </div>
             </div>
           </div>
 
+          <!-- Option 2 -->
           <div class="col">
-            <div class="colHead" style="background:rgba(0,194,255,.12);">
-              <div><div class="label">Option 2</div><div class="title">Proposal B</div></div>
+            <div class="colHead" style="background:linear-gradient(180deg, rgba(0,194,255,.16), rgba(255,255,255,.05));">
+              <div>
+                <div class="label">Option 2</div>
+                <div class="title">Proposal B</div>
+              </div>
               <span class="tag">Cyan</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
-              <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="0"></label>
-              <div class="metric"><div class="mk">Total savings over 25 years</div><div class="mv" id="bSave25" style="color:var(--opt2)">$0</div></div>
+              <label><span class="klabel">Annual escalator (%)</span><input id="bEsc" inputmode="decimal" value="0"></label>
+              <div class="metric">
+                <div class="mk">Total savings over 25 years</div>
+                <div class="mv" id="bSave25" style="color:var(--opt2)">$0</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1007,7 +1022,7 @@
               </div>
 
               <div style="color:var(--muted); font-weight:900; font-size:13px;">
-                Scroll wheel or tap +/−. Updates all 3 options together.
+                Scroll the year wheel. All 3 options update together.
               </div>
             </div>
 
@@ -1070,7 +1085,7 @@
   </div>
 </div>
 
-<!-- Mobile-first dock nav -->
+<!-- Bottom dock controls -->
 <div class="presentBar">
   <div class="dock">
     <button class="btn" id="btnPrev" type="button">Prev</button>
@@ -1079,34 +1094,31 @@
   </div>
 </div>
 
-<!-- Modal zoom -->
-<div class="modal" id="modal">
-  <div class="modalCard">
-    <div class="modalHead">
-      <div id="modalTitle">Preview</div>
-      <button class="btn danger" id="modalClose" type="button">Close</button>
-    </div>
-    <div class="modalImgWrap">
-      <img id="modalImg" alt="Zoomed preview"/>
-    </div>
-  </div>
-</div>
-
 <script>
-/* Local files (same folder as index.html)
-   - Outagevideo.mp4
-   - Scebill.jpeg  (or EXACT filename you used)
-   - IMG_9100.jpeg
-   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png
+/*
+  Put these files in the SAME folder as index.html:
+
+  - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png   (logo)
+  - Outagevideo.mp4
+  - Scebill.jpeg    (exact name, no extra spaces)
+  - IMG_9100.jpeg
 */
+
 const ASSETS = {
   logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
   billNoSolar: "Scebill.jpeg",
   billSolar: "IMG_9100.jpeg",
   outageVideo: "Outagevideo.mp4",
 
+  // Problem slide links
+  linkTOU: "https://www.sce.com/residential/rates/Time-Of-Use-Residential-Rate-Plans",
   linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
-  linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case"
+  linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
+
+  // Outage slide Tesla links
+  linkTeslaVPP: "https://www.tesla.com/support/energy/virtual-power-plant",
+  linkTeslaVPP_SCE: "https://www.tesla.com/support/energy/virtual-power-plant/sce",
+  linkPowerwall: "https://www.tesla.com/powerwall"
 };
 
 const $ = (id)=>document.getElementById(id);
@@ -1114,14 +1126,12 @@ const $ = (id)=>document.getElementById(id);
 /* Slides */
 let slides = [];
 let idx = 0;
-const progressFill = $("progressFill");
-const slideCounter = $("slideCounter");
 
 function refreshSlides(){ slides = Array.from(document.querySelectorAll("[data-slide]")); }
 function updateHUD(){
-  slideCounter.textContent = `Slide ${idx+1} / ${slides.length}`;
+  $("slideCounter").textContent = `Slide ${idx+1} / ${slides.length}`;
   const pct = (idx / Math.max(1, slides.length-1)) * 100;
-  progressFill.style.width = `${pct}%`;
+  $("progressFill").style.width = `${pct}%`;
 }
 function activate(i){
   refreshSlides();
@@ -1136,15 +1146,13 @@ function prev(){ activate(idx-1); }
 function go(i){ activate(i); }
 window.go = go;
 
+/* Top + dock controls */
 $("btnNext").addEventListener("click", next);
 $("btnPrev").addEventListener("click", prev);
 $("btnNextTop").addEventListener("click", next);
 $("btnPrevTop").addEventListener("click", prev);
 $("btnHome").addEventListener("click", ()=>activate(0));
-
 $("btnStartDock").addEventListener("click", ()=>activate(0));
-$("btnNext").addEventListener("click", next);
-$("btnPrev").addEventListener("click", prev);
 
 document.addEventListener("keydown", (e)=>{
   if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
@@ -1153,45 +1161,44 @@ document.addEventListener("keydown", (e)=>{
   if(e.key === "End"){ e.preventDefault(); activate(slides.length-1); }
 });
 
+/* Fullscreen */
+function toggleFS(){
+  const el = document.documentElement;
+  if(!document.fullscreenElement){
+    el.requestFullscreen?.();
+  }else{
+    document.exitFullscreen?.();
+  }
+}
+$("btnFS").addEventListener("click", toggleFS);
+
 /* External open */
 function openExternal(url){
   window.open(url, "_blank", "noopener,noreferrer");
 }
+window.openExternal = openExternal;
 
-/* Popup for SCE / LA Times */
+/* Popup */
 function popupArticle(url){
-  const w = Math.min(1100, screen.width * 0.92);
-  const h = Math.min(820, screen.height * 0.88);
-  const left = (screen.width - w) / 2;
-  const top = (screen.height - h) / 2;
-  const win = window.open(url, "LOS_ARTICLE",
-    `popup=yes,scrollbars=yes,resizable=yes,width=${w},height=${h},left=${left},top=${top}`
-  );
-  if(win) win.focus(); else window.location.href = url;
+  const w = Math.min(1100, Math.floor(screen.width * 0.92));
+  const h = Math.min(820,  Math.floor(screen.height * 0.88));
+  const left = Math.max(0, Math.floor((screen.width - w) / 2));
+  const top  = Math.max(0, Math.floor((screen.height - h) / 2));
+  const win = window.open(url, "LOS_POP", `popup=yes,scrollbars=yes,resizable=yes,width=${w},height=${h},left=${left},top=${top}`);
+  if(win) win.focus();
+  else openExternal(url);
 }
+window.popupArticle = popupArticle;
 
-/* Modal zoom */
-function openModal(title, src){
-  $("modalTitle").textContent = title;
-  $("modalImg").src = src;
-  $("modal").classList.add("show");
-}
-function closeModal(){
-  $("modal").classList.remove("show");
-  $("modalImg").src = "";
-}
-$("modalClose").addEventListener("click", closeModal);
-$("modal").addEventListener("click", (e)=>{ if(e.target.id === "modal") closeModal(); });
-
-/* Start slide -> Calculator sync */
+/* Start slide -> Utility bill sync */
 function syncStartBillToCalculator(){
   const v = $("startBill").value;
   $("uPay").value = v;
   recalc();
 }
-$("startBill").addEventListener("input", syncStartBillToCalculator);
+$("startBill").addEventListener("input", syncStartBillToCalculator, {passive:true});
 
-/* Calculator + Wheel */
+/* Calculator + wheel */
 let year = 1;
 let cache = { u:[], a:[], b:[], uTotal:0, aTotal:0, bTotal:0 };
 
@@ -1201,6 +1208,7 @@ function toNumber(v){
 }
 function money0(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
 function money2(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+
 function monthlySeries(baseMonthly, escPct, years=25){
   const r = escPct/100;
   const out = [];
@@ -1304,9 +1312,7 @@ function buildYearWheel(){
 
   ["uPay","uEsc","aPay","aEsc","bPay","bEsc"].forEach(id=>{
     const el = $(id);
-    if(el){
-      el.addEventListener("input", recalc, {passive:true});
-    }
+    el.addEventListener("input", recalc, {passive:true});
   });
 
   $("uPay").value = $("startBill").value;
@@ -1331,22 +1337,13 @@ $("btnReset").addEventListener("click", ()=>{
 
   $("logoImg").src = ASSETS.logo;
 
-  const noSolar = $("imgBillNoSolar");
-  const solar = $("imgBillSolar");
+  // Bills
+  $("imgBillNoSolar").src = ASSETS.billNoSolar;
+  $("imgBillSolar").src = ASSETS.billSolar;
 
-  noSolar.src = ASSETS.billNoSolar;
-  solar.src = ASSETS.billSolar;
-
-  noSolar.addEventListener("click", ()=>openModal("Bill (No Solar)", ASSETS.billNoSolar));
-  solar.addEventListener("click", ()=>openModal("Bill (Solar + Storage)", ASSETS.billSolar));
-
-  // SCE + LA Times links only on Problem slide
-  $("btnSCE").onclick = ()=>popupArticle(ASSETS.linkSCE);
-  $("btnLAT").onclick = ()=>popupArticle(ASSETS.linkLAT);
-
-  // Outage video source
+  // Outage video
   const v = $("outageVid");
-  v.querySelector("source").src = ASSETS.outageVideo;
+  v.src = ASSETS.outageVideo;
   v.load();
 
   buildYearWheel();
