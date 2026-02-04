@@ -3,35 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>Leverage Our Sun • Solar + Storage Presentation</title>
-  <meta name="description" content="TOU problem + real bills + Tesla VPP links + outage demo + 25-year comparison with a year-selection wheel (Price-is-Right style)." />
-
-  <!--
-    ✅ SINGLE FILE: index.html
-    ✅ Uses YOUR assets (logo + bills) via GitHub RAW URLs
-    ✅ iPhone-friendly: no input zoom, swipe table, tap-to-zoom bills, inline video
-
-    CONFIRMED ASSETS:
-    Logo:
-    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png
-
-    Utility-only bill:
-    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg
-
-    Solar Net Billing bill:
-    https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg
-
-    Your video filename:
-    RecordIt-1770162136.mov
-    (We attempt MOV + optional MP4 fallback—see settings)
-
-    GitHub Pages:
-    Repo → Settings → Pages → Deploy from branch → main → /(root)
-  -->
+  <title>Leverage Our Sun • Solar + Storage</title>
 
   <style>
     :root{
-      /* Night/base */
       --night:#06122a;
       --night2:#040b1c;
       --text: rgba(255,255,255,.94);
@@ -40,14 +15,11 @@
       --border: rgba(255,255,255,.14);
       --shadow: 0 18px 70px rgba(0,0,0,.48);
 
-      /* Logo energy */
       --sun2:#ff7a00;
-      --sun:#ffb000;
       --lime:#8cff3f;
       --cyan:#00c2ff;
       --bolt:#ffe94a;
 
-      /* Semantics */
       --red:#ff3b30;
       --green:#34c759;
       --blue:#00c2ff;
@@ -76,7 +48,6 @@
     a:hover{text-decoration:underline}
     a, button { -webkit-tap-highlight-color: transparent; }
 
-    /* Topbar */
     .topbar{
       position:fixed; inset:0 0 auto 0;
       background:rgba(4,10,22,.62);
@@ -143,7 +114,6 @@
       padding-right: calc(18px + env(safe-area-inset-right));
     }
 
-    /* Hero */
     .hero{
       border:1px solid rgba(255,255,255,.14);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
@@ -167,32 +137,10 @@
       filter: blur(2px);
     }
     .hero > *{position:relative; z-index:1;}
-    h1{margin:0; font-size: clamp(22px, 3.2vw, 36px); letter-spacing:-.035em; line-height:1.08;}
+    h1{margin:0; font-size: clamp(22px, 3.2vw, 38px); letter-spacing:-.04em; line-height:1.06;}
     .gradText{background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:1000;}
     .hero p{margin:10px 0 0; color:var(--muted); line-height:1.45; max-width: 820px;}
-
-    .pills{margin-top:14px; display:flex; flex-wrap:wrap; gap:10px;}
-    .pill{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      padding:8px 10px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: 13px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .pill .dot{width:8px;height:8px;border-radius:999px;background: var(--grad); box-shadow: 0 0 18px rgba(0,194,255,.22);}
     .heroActions{margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;}
-    .note{
-      margin-top:14px;
-      color: var(--muted2);
-      font-size: 12.5px;
-      border-left: 3px solid rgba(0,194,255,.55);
-      padding-left: 10px;
-      line-height: 1.45;
-    }
 
     .card{
       border:1px solid rgba(255,255,255,.14);
@@ -220,14 +168,13 @@
       font-weight: 900;
       outline:none;
       min-height:44px;
-      font-size:16px; /* iPhone no-zoom */
+      font-size:16px;
     }
     input:focus{
       border-color: rgba(0,194,255,.65);
       box-shadow: 0 0 0 6px rgba(0,194,255,.14);
     }
 
-    /* Sections */
     .section{
       margin-top: 18px;
       border:1px solid rgba(255,255,255,.14);
@@ -235,7 +182,6 @@
       border-radius: var(--r2);
       box-shadow: var(--shadow);
       overflow:hidden;
-      scroll-margin-top: 96px;
     }
     .sectionHead{
       padding:16px 18px;
@@ -245,15 +191,14 @@
       justify-content:space-between;
       gap:14px;
       flex-wrap:wrap;
-      align-items:flex-start;
+      align-items:center;
     }
-    .sectionHead h2{margin:0; font-size:16px; display:flex; align-items:center; gap:10px;}
+    .sectionHead h2{margin:0; font-size:15px; display:flex; align-items:center; gap:10px;}
     .spark{
       width:10px;height:10px;border-radius:999px;
       background: var(--grad);
       box-shadow: 0 0 22px rgba(255,122,0,.18), 0 0 22px rgba(0,194,255,.16);
     }
-    .sectionHead p{margin:6px 0 0; color:var(--muted); max-width:840px; font-size:13.5px; line-height:1.35;}
     .sectionBody{padding:18px;}
 
     .grid12{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;}
@@ -262,38 +207,6 @@
     .span7{grid-column: span 7;}
     .span12{grid-column: span 12;}
 
-    .badgeRow{display:flex; gap:10px; flex-wrap:wrap;}
-    .badge{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size: 12.5px;
-      color: var(--muted);
-      font-weight: 900;
-    }
-    .badge.problem{border-color: rgba(255,59,48,.40); background: rgba(255,59,48,.10);}
-    .badge.solution{border-color: rgba(52,199,89,.40); background: rgba(52,199,89,.10);}
-    .badge.energy{border-color: rgba(0,194,255,.35); background: rgba(0,194,255,.10);}
-
-    .callout{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.20);
-      border-radius: var(--r);
-      padding:12px;
-      line-height:1.4;
-    }
-    .callout h3{
-      margin:0 0 8px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--muted);
-    }
-    .callout ul{margin:0; padding-left: 18px; color: rgba(255,255,255,.88);}
-    .callout li{margin:8px 0;}
-
-    /* Bills */
     figure.bill{
       margin:0;
       border:1px solid rgba(255,255,255,.14);
@@ -310,32 +223,7 @@
       -webkit-user-select:none;
       user-select:none;
     }
-    .billCaption{
-      padding:10px 12px;
-      border-top:1px solid rgba(255,255,255,.10);
-      color: var(--muted2);
-      font-size: 12.5px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .tag{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      color: var(--muted);
-      font-weight:900;
-      font-size: 12px;
-    }
-    .tag .mini{width:8px;height:8px;border-radius:999px;background: var(--grad);}
 
-    /* Video */
     .videoWrap{
       border-radius: var(--r);
       overflow:hidden;
@@ -344,17 +232,7 @@
       box-shadow: 0 18px 70px rgba(0,0,0,.35);
     }
     video{width:100%; height:auto; display:block; background:#000;}
-    .videoError{
-      margin-top:12px;
-      border:1px solid rgba(255,59,48,.30);
-      background: rgba(255,59,48,.10);
-      border-radius: var(--r);
-      padding:12px;
-      color: rgba(255,255,255,.90);
-      display:none;
-    }
 
-    /* Calculator */
     .columns{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;}
     .col{
       border:1px solid rgba(255,255,255,.14);
@@ -442,11 +320,9 @@
       color: rgba(255,255,255,.88);
       white-space: nowrap;
     }
-    tr.activeYear td{
-      background: rgba(0,194,255,.10);
-    }
+    tr.activeYear td{ background: rgba(0,194,255,.10); }
 
-    /* Year Wheel */
+    /* BIG YEAR WHEEL */
     .yearWheelWrap{
       margin-top:14px;
       border:1px solid rgba(255,255,255,.14);
@@ -462,14 +338,40 @@
       justify-content:space-between;
       flex-wrap:wrap;
       gap:10px;
-      align-items:flex-start;
+      align-items:center;
     }
-    .yearWheelHead .title{font-weight:1000; letter-spacing:-.02em;}
-    .yearWheelHead .sub{margin-top:6px; color: var(--muted); font-size:13px; line-height:1.35; max-width:820px;}
+    .yearWheelHead .title{
+      font-weight:1000;
+      letter-spacing:-.02em;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .yearPill{
+      display:inline-flex; align-items:center; gap:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius:999px;
+      padding:8px 10px;
+      font-weight:1000;
+    }
+    .yearPill .dot{width:10px;height:10px;border-radius:999px;background: var(--grad);}
+    .miniBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor:pointer;
+      min-height: 44px;
+      line-height:1;
+    }
+
     .yearWheelBody{
       padding:16px;
       display:grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 0.95fr 1.05fr;
       gap:12px;
       align-items:stretch;
     }
@@ -503,29 +405,7 @@
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.55));
       pointer-events:none;
     }
-    .wheelRow{
-      display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
-    }
-    .yearBadge{
-      display:inline-flex; align-items:center; gap:10px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      border-radius:999px;
-      padding:8px 10px;
-      font-weight:1000;
-    }
-    .yearBadge .pillDot{width:10px;height:10px;border-radius:999px;background: var(--grad);}
-    .miniBtn{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding:10px 12px;
-      border-radius: 12px;
-      font-weight: 900;
-      cursor:pointer;
-      min-height: 44px;
-      line-height:1;
-    }
+
     .comparePanel{
       border:1px solid rgba(255,255,255,.14);
       border-radius: var(--r);
@@ -534,11 +414,7 @@
       display:grid;
       gap:12px;
     }
-    .compareGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
+    .compareGrid{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;}
     .bigTile{
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
@@ -555,7 +431,7 @@
       justify-content:space-between;
       gap:10px;
     }
-    .bigTile .labelChip{
+    .labelChip{
       border:1px solid rgba(255,255,255,.14);
       border-radius:999px;
       padding:6px 10px;
@@ -564,9 +440,10 @@
       color: rgba(255,255,255,.86);
       white-space:nowrap;
     }
+
     .moneyBig{
-      margin-top:8px;
-      font-size: clamp(28px, 4.6vw, 46px);
+      margin-top:10px;
+      font-size: clamp(34px, 5.2vw, 56px);
       font-weight: 1000;
       letter-spacing:-.03em;
       line-height:1.0;
@@ -574,14 +451,15 @@
     .moneyBig.red{color:var(--red)}
     .moneyBig.green{color:var(--green)}
     .moneyBig.blue{color:var(--blue)}
+
     .subLine{
-      margin-top:6px;
+      margin-top:8px;
       color: var(--muted);
       font-size: 13px;
-      line-height:1.35;
+      line-height:1.25;
     }
+
     .savingsLine{
-      margin-top:10px;
       border:1px solid rgba(52,199,89,.30);
       background: rgba(52,199,89,.10);
       border-radius: 14px;
@@ -593,10 +471,8 @@
       align-items:center;
       font-weight:1000;
     }
-    .savingsLine .sLabel{color: rgba(255,255,255,.86);}
     .savingsLine .sVal{color: var(--green); font-size:18px;}
 
-    /* Lightbox */
     .lightbox{
       position:fixed; inset:0;
       background: rgba(0,0,0,.80);
@@ -649,16 +525,6 @@
       .yearWheelBody{grid-template-columns: 1fr;}
       .compareGrid{grid-template-columns: 1fr;}
     }
-
-    @media print{
-      .topbar{display:none !important;}
-      body{background:#fff; color:#000;}
-      .section, .hero, .card, figure.bill, .tableWrap, .yearWheelWrap{box-shadow:none !important; background:#fff !important; border-color:#ddd !important;}
-      a{color:#000; text-decoration:underline;}
-      .btn, .miniBtn{display:none !important;}
-      .billCaption{color:#333 !important;}
-      .videoError{display:none !important;}
-    }
   </style>
 </head>
 
@@ -669,7 +535,7 @@
         <img id="brandLogo" src="" alt="Leverage Our Sun logo">
         <div class="brandText">
           <div class="brandTitle"><span class="brandGlow"></span> Leverage Our Sun</div>
-          <div class="brandSub">TOU problem → net billing → batteries → year-by-year comparison</div>
+          <div class="brandSub">Solar + Storage Presentation</div>
         </div>
       </div>
       <div class="nav">
@@ -677,275 +543,123 @@
         <a class="btn" href="#bills">Bills</a>
         <a class="btn" href="#vpp">VPP</a>
         <a class="btn" href="#outage">Outage</a>
-        <a class="btn primary" href="#calculator">Calculator</a>
-        <button class="btn" id="btnPrint" type="button">Print / Save PDF</button>
+        <a class="btn primary" href="#calculator">Compare</a>
+        <button class="btn" id="btnReset" type="button">Reset</button>
       </div>
     </div>
   </div>
 
   <main class="container">
-    <!-- HERO -->
     <section class="hero">
       <div>
         <h1>Win the day. <span class="gradText">Own the night.</span></h1>
-        <p>
-          This page uses your real SCE bills to show the problem and the solution, then compares payments year-by-year.
-          Use the <b>Year Wheel</b> to jump to Year 2, 3, 4… and instantly see the monthly payments for each option.
-        </p>
-
-        <div class="pills">
-          <div class="pill"><span class="dot"></span><b>Real Proof:</b> your bills (tap to zoom)</div>
-          <div class="pill"><span class="dot"></span><b>Simple Story:</b> TOU → Net Billing → Battery</div>
-          <div class="pill"><span class="dot"></span><b>Close Strong:</b> Year Wheel comparison</div>
-        </div>
-
+        <p>Time-of-Use pricing + Net Billing makes batteries the difference.</p>
         <div class="heroActions">
-          <a class="btn primary" href="#bills">Start with the bills</a>
-          <a class="btn" href="#calculator">Jump to Year Wheel</a>
-        </div>
-
-        <div class="note">
-          iPhone: tap bill images to zoom. Swipe the 25-year table left/right. Drag the Year Wheel to change year.
+          <a class="btn primary" href="#calculator">Show the savings</a>
+          <a class="btn" href="#outage">Show backup power</a>
         </div>
       </div>
 
       <div class="card">
-        <h3 style="margin:0 0 10px;">Appointment quick notes</h3>
         <div class="fieldGrid">
-          <label><span>Homeowner name</span><input id="custName" placeholder="John & Jane"></label>
-          <label><span>City</span><input id="custCity" placeholder="Murrieta, CA"></label>
-          <label><span>Major loads</span><input id="custLoads" placeholder="EV / pool / A/C"></label>
-          <label><span>Goal</span><input id="custGoal" placeholder="Lower bill + backup power"></label>
-        </div>
-        <div style="margin-top:12px;color:var(--muted2);font-size:12.5px;line-height:1.45;">
-          Use Print/PDF for a clean recap after the appointment.
+          <label><span>Homeowner</span><input id="custName" placeholder="John & Jane"></label>
+          <label><span>City</span><input id="custCity" placeholder="Murrieta"></label>
+          <label><span>Goal</span><input id="custGoal" placeholder="Lower bill + backup"></label>
+          <label><span>Notes</span><input id="custNotes" placeholder="EV / pool / A/C"></label>
         </div>
       </div>
     </section>
 
-    <!-- TOU -->
     <section class="section" id="tou">
       <div class="sectionHead">
-        <div>
-          <h2><span class="spark"></span> 1) Time-of-Use: the “when” problem</h2>
-          <p>
-            Edison prices change by time of day. The expensive window is when most families are home.
-            Use these official links for current TOU information and rate changes.
-          </p>
-        </div>
-        <div class="badgeRow">
-          <span class="badge problem">Problem: Peak pricing</span>
-          <span class="badge energy">Credibility: official links</span>
+        <h2><span class="spark"></span> Time-of-Use</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">SCE TOU Plans</a>
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.sce.com/save-money/rates-financing/sce-rate-advisory">SCE Rate Changes</a>
         </div>
       </div>
-
       <div class="sectionBody grid12">
-        <div class="span5">
-          <div class="callout">
-            <h3>Talk track</h3>
-            <ul>
-              <li><b>Not just how much</b> you use — <b>when</b> you use it</li>
-              <li><b>Evening peak</b> is the expensive window</li>
-              <li><b>Batteries</b> shift usage away from peak</li>
-            </ul>
-          </div>
-
-          <div class="card" style="margin-top:12px;">
-            <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
-              Official Edison links
-            </div>
-            <div style="display:grid;gap:10px;">
-              <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
-                 href="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">
-                SCE Residential TOU Plans (current)
-              </a>
-              <a class="btn" style="text-align:left;" target="_blank" rel="noreferrer"
-                 href="https://www.sce.com/save-money/rates-financing/sce-rate-advisory">
-                SCE Rates Advisory (rate changes)
-              </a>
-            </div>
-          </div>
-
-          <div class="note">
-            “Solar produces during the day. Batteries cover the expensive hours at night.”
-          </div>
-        </div>
-
         <div class="span7">
           <figure class="bill">
-            <img id="imgUtilityOnly" src="" alt="SCE utility-only bill (non-solar)"
-                 data-zoom-title="Utility-Only SCE Bill (No Solar)" />
-            <div class="billCaption">
-              <span class="tag"><span class="mini"></span> Tap to zoom</span>
-              <span class="tag"><span class="mini"></span> Proof of the problem</span>
-            </div>
+            <img id="imgUtilityOnly" src="" alt="SCE utility-only bill" data-zoom-title="Utility Bill (No Solar)" />
           </figure>
+        </div>
+        <div class="span5">
+          <div class="card" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+            <div style="font-weight:1000; font-size:20px; letter-spacing:-.02em;">Peak pricing hits when you're home.</div>
+            <div style="margin-top:10px; color:var(--muted); line-height:1.45;">Batteries shift energy away from peak and protect your home in outages.</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Bills -->
     <section class="section" id="bills">
       <div class="sectionHead">
-        <div>
-          <h2><span class="spark"></span> 2) Bills proof: Utility vs Solar Net Billing</h2>
-          <p>
-            Solar helps, but Net Billing can still leave you exposed in the evening. Storage changes the outcome.
-          </p>
-        </div>
-        <div class="badgeRow">
-          <span class="badge problem">Utility (red)</span>
-          <span class="badge energy">Net Billing</span>
-          <span class="badge solution">Storage impact</span>
+        <h2><span class="spark"></span> Net Billing</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn" href="#calculator">Compare payments</a>
         </div>
       </div>
-
       <div class="sectionBody grid12">
-        <div class="span6">
-          <div class="callout" style="border-color:rgba(255,59,48,.26);background:rgba(255,59,48,.10);">
-            <h3>Utility-only (problem)</h3>
-            <ul>
-              <li>High exposure to TOU peaks</li>
-              <li>Rate increases compound</li>
-              <li>No backup power</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="span6">
-          <div class="callout" style="border-color:rgba(0,194,255,.26);background:rgba(0,194,255,.10);">
-            <h3>Solar Net Billing (reality)</h3>
-            <ul>
-              <li>Solar offsets daytime usage</li>
-              <li>Evening power is still expensive</li>
-              <li>Storage is what “wins the night”</li>
-            </ul>
-          </div>
-        </div>
-
         <div class="span12">
           <figure class="bill">
-            <img id="imgSolarNetBilling" src="" alt="SCE solar net billing bill"
-                 data-zoom-title="Solar Only – Net Billing (Still TOU Exposed)" />
-            <div class="billCaption">
-              <span class="tag"><span class="mini"></span> Tap to zoom</span>
-              <span class="tag"><span class="mini"></span> Net Billing proof</span>
-            </div>
+            <img id="imgSolarNetBilling" src="" alt="SCE solar net billing bill" data-zoom-title="Solar Net Billing Bill" />
           </figure>
         </div>
       </div>
     </section>
 
-    <!-- VPP Links only -->
     <section class="section" id="vpp">
       <div class="sectionHead">
-        <div>
-          <h2><span class="spark"></span> 3) Tesla Virtual Power Plant (VPP)</h2>
-          <p>
-            Use these official Tesla links to explain what VPP is, eligibility, and how incentives work.
-          </p>
-        </div>
-        <div class="badgeRow">
-          <span class="badge energy">Tesla</span>
-          <span class="badge solution">Extra value</span>
+        <h2><span class="spark"></span> Tesla Virtual Power Plant</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/support/energy/virtual-power-plant/sce">Tesla VPP (SCE)</a>
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/support/energy/powerwall/learn/incentives">Incentives</a>
         </div>
       </div>
-
-      <div class="sectionBody grid12">
-        <div class="card span6">
-          <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
-            Official Tesla VPP (SCE)
-          </div>
-          <a class="btn" style="width:100%; text-align:left;" target="_blank" rel="noreferrer"
-             href="https://www.tesla.com/support/energy/virtual-power-plant/sce">
-            Tesla VPP with SCE (official)
-          </a>
-          <div class="note" style="margin-top:12px;">
-            “When eligible, the battery can support the grid during events — and incentives may apply.”
-          </div>
-        </div>
-
-        <div class="card span6">
-          <div style="color:var(--muted2);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">
-            Incentives overview
-          </div>
-          <a class="btn" style="width:100%; text-align:left;" target="_blank" rel="noreferrer"
-             href="https://www.tesla.com/support/energy/powerwall/learn/incentives">
-            Tesla Powerwall incentives overview (official)
-          </a>
-          <div class="note" style="margin-top:12px;">
-            “Savings + backup power are the core value. VPP can be bonus value.”
-          </div>
+      <div class="sectionBody">
+        <div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <div style="font-weight:1000; font-size:18px; letter-spacing:-.02em;">Extra value on top of savings + backup.</div>
+          <a class="btn primary" target="_blank" rel="noreferrer" href="https://www.tesla.com/support/energy/virtual-power-plant/sce">See VPP Details</a>
         </div>
       </div>
     </section>
 
-    <!-- Outage Video -->
     <section class="section" id="outage">
       <div class="sectionHead">
-        <div>
-          <h2><span class="spark"></span> 4) Outage demo video</h2>
-          <p>
-            The battery powers the home when the grid goes down. This video is configured to play inline on iPhones.
-          </p>
-        </div>
-        <div class="badgeRow">
-          <span class="badge energy">Backup</span>
-          <span class="badge solution">Confidence</span>
+        <h2><span class="spark"></span> Outage Demo</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn" href="#calculator">Back to compare</a>
         </div>
       </div>
-
       <div class="sectionBody">
         <div class="videoWrap">
           <video id="outageVideo" controls playsinline preload="metadata" muted>
-            <!-- MP4 first if provided -->
-            <source id="outageMp4" src="" type="video/mp4">
-            <!-- MOV fallback -->
             <source id="outageMov" src="" type="video/quicktime">
             Your browser can’t play this video.
           </video>
         </div>
-
-        <div class="videoError" id="videoError">
-          <b>Video didn’t load.</b><br/>
-          GitHub RAW sometimes fails to serve <b>.mov</b> in a way that browsers accept. Best fix:
-          export the same clip as <b>.mp4 (H.264)</b>, upload it to the repo, then paste that mp4 RAW link into <b>OUTAGE_VIDEO_URL_MP4</b> in SETTINGS.
-        </div>
-
-        <div class="note">
-          If your MOV loads on desktop but not iPhone, an MP4 copy is the reliable solution.
-        </div>
       </div>
     </section>
 
-    <!-- Calculator -->
     <section class="section" id="calculator">
       <div class="sectionHead">
-        <div>
-          <h2><span class="spark"></span> 5) 25-Year comparison calculator</h2>
-          <p>
-            Enter monthly payment + escalator for each option. Then use the <b>Year Wheel</b> to compare Year 2, 3, 4…
-          </p>
-        </div>
-        <div class="badgeRow">
-          <span class="badge problem">Utility (red)</span>
-          <span class="badge.solution badge">Option 1 (green)</span>
-          <span class="badge energy">Option 2 (blue)</span>
+        <h2><span class="spark"></span> Compare</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn" id="btnYearSpin" type="button">Spin Year</button>
+          <button class="btn" id="btnYear1" type="button">Year 1</button>
+          <button class="btn" id="btnYear5" type="button">Year 5</button>
+          <button class="btn" id="btnYear10" type="button">Year 10</button>
+          <button class="btn" id="btnYear25" type="button">Year 25</button>
         </div>
       </div>
 
       <div class="sectionBody">
-        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
-          <div style="color:var(--muted);font-size:13px;">Live updates as you type.</div>
-          <button class="btn" id="btnReset" type="button">Reset example</button>
-        </div>
-
         <div class="columns">
-          <!-- Utility -->
           <div class="col utility">
             <div class="colHead">
               <div>
-                <div class="colLabel">Current Utility</div>
+                <div class="colLabel">Utility</div>
                 <div class="colTitle">Edison</div>
               </div>
               <div class="chip">Red</div>
@@ -960,7 +674,6 @@
             </div>
           </div>
 
-          <!-- Option 1 -->
           <div class="col opt1">
             <div class="colHead">
               <div>
@@ -979,7 +692,6 @@
             </div>
           </div>
 
-          <!-- Option 2 -->
           <div class="col opt2">
             <div class="colHead">
               <div>
@@ -999,38 +711,13 @@
           </div>
         </div>
 
-        <div class="tableWrap" aria-label="25-year table (swipe left/right on phones)">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:70px">Year</th>
-                <th>Utility Monthly</th>
-                <th>Option 1 Monthly</th>
-                <th>Option 2 Monthly</th>
-              </tr>
-            </thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
-
-        <!-- YEAR WHEEL (the one you asked for) -->
-        <div class="yearWheelWrap" id="yearwheel">
+        <div class="yearWheelWrap" style="margin-top:14px;">
           <div class="yearWheelHead">
-            <div>
-              <div class="title">Year Wheel Comparison</div>
-              <div class="sub">
-                Drag and spin to pick <b>Year 1–25</b>. The panel shows that year’s <b>monthly payment</b> for Utility (red),
-                Option 1 (green), Option 2 (blue) — plus savings vs utility.
-              </div>
+            <div class="title">
+              <span style="width:10px;height:10px;border-radius:999px;background:var(--grad);display:inline-block;box-shadow:0 0 22px rgba(0,194,255,.16);"></span>
+              Annual Comparison
             </div>
-            <div class="wheelRow">
-              <div class="yearBadge"><span class="pillDot"></span> Selected: <span id="selectedYearText">Year 1</span></div>
-              <button class="miniBtn" id="spinYear">Spin</button>
-              <button class="miniBtn" id="jumpYear1">Year 1</button>
-              <button class="miniBtn" id="jumpYear5">Year 5</button>
-              <button class="miniBtn" id="jumpYear10">Year 10</button>
-              <button class="miniBtn" id="jumpYear25">Year 25</button>
-            </div>
+            <div class="yearPill"><span class="dot"></span> Year <span id="yearLabel">1</span></div>
           </div>
 
           <div class="yearWheelBody">
@@ -1038,9 +725,6 @@
               <div class="wheelCanvasWrap">
                 <div class="wheelPointer"></div>
                 <canvas class="wheel" id="yearWheel"></canvas>
-              </div>
-              <div class="note" style="margin-top:0;">
-                Tip: This is a killer close — “Let’s look at Year 5… now Year 10… now Year 25.”
               </div>
             </div>
 
@@ -1066,26 +750,31 @@
               </div>
 
               <div class="savingsLine">
-                <div class="sLabel">Savings vs Utility (Selected Year)</div>
+                <div>Savings (Best Option vs Utility)</div>
                 <div class="sVal" id="yearSavings">$0</div>
-              </div>
-
-              <div class="note" style="margin-top:0;">
-                If savings is negative, it turns red (good for honest comparisons).
               </div>
             </div>
           </div>
         </div>
 
-        <div class="note" style="margin-top:14px;">
-          Closing line: “If it saves you money now and keeps your home powered later, the question becomes — why keep renting power from the utility?”
+        <div class="tableWrap" aria-label="25-year table">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:70px">Year</th>
+                <th>Utility Monthly</th>
+                <th>Option 1 Monthly</th>
+                <th>Option 2 Monthly</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
     <div class="lightbox-inner">
       <div class="lightbox-bar">
         <div id="lightboxTitle">Preview</div>
@@ -1096,29 +785,14 @@
   </div>
 
   <script>
-    // =============================
-    // SETTINGS (your assets)
-    // =============================
-    const LOGO_URL =
-      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png";
+    const LOGO_URL = "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png";
+    const UTILITY_ONLY_BILL_URL = "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg";
+    const SOLAR_NET_BILLING_BILL_URL = "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg";
 
-    const UTILITY_ONLY_BILL_URL =
-      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg";
+    const OUTAGE_VIDEO_URL_MOV = "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/RecordIt-1770162136.mov";
 
-    const SOLAR_NET_BILLING_BILL_URL =
-      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg";
-
-    // You provided: RecordIt-1770162136.mov
-    // We try MOV. For maximum compatibility, set OUTAGE_VIDEO_URL_MP4 to an MP4 RAW link if you upload one.
-    const OUTAGE_VIDEO_URL_MOV =
-      "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/RecordIt-1770162136.mov";
-    const OUTAGE_VIDEO_URL_MP4 = ""; // e.g. "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/RecordIt-1770162136.mp4"
-
-    // =============================
-    // Helpers
-    // =============================
     const $ = (id) => document.getElementById(id);
-
+    const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
     function toNumber(val){
       const n = parseFloat(String(val).replace(/[^0-9.\-]/g,''));
       return Number.isFinite(n) ? n : 0;
@@ -1131,41 +805,30 @@
       const x = Number.isFinite(n) ? n : 0;
       return x.toLocaleString(undefined, { style:'currency', currency:'USD', maximumFractionDigits: 2 });
     }
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
-    // =============================
-    // Wire assets
-    // =============================
     $('brandLogo').src = LOGO_URL;
     $('imgUtilityOnly').src = UTILITY_ONLY_BILL_URL;
     $('imgSolarNetBilling').src = SOLAR_NET_BILLING_BILL_URL;
 
-    // Video sources
-    $('outageMp4').src = OUTAGE_VIDEO_URL_MP4 || "";
-    $('outageMov').src = OUTAGE_VIDEO_URL_MOV || "";
+    $('outageMov').src = OUTAGE_VIDEO_URL_MOV;
+    $('outageVideo').load();
 
-    const video = $('outageVideo');
-    const videoError = $('videoError');
-
-    // Some servers return a content-type that browsers reject; show a friendly error.
-    video.addEventListener('error', () => {
-      videoError.style.display = "block";
+    // Lightbox
+    const lb = $('lightbox'), lbImg = $('lightboxImg'), lbTitle = $('lightboxTitle');
+    function openLightbox(src, title){ lbImg.src = src; lbTitle.textContent = title || 'Preview'; lb.classList.add('open'); }
+    function closeLightbox(){ lb.classList.remove('open'); lbImg.src = ''; }
+    document.querySelectorAll('img[data-zoom-title]').forEach(img => {
+      img.addEventListener('click', () => img.src && openLightbox(img.src, img.dataset.zoomTitle));
     });
-    // Also show if source fails to load
-    video.querySelectorAll('source').forEach(s => {
-      s.addEventListener?.('error', () => { videoError.style.display = "block"; });
-    });
-    video.load();
+    $('lightboxClose').addEventListener('click', closeLightbox);
+    lb.addEventListener('click', (e)=>{ if(e.target===lb) closeLightbox(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeLightbox(); });
 
-    // =============================
-    // Calculator
-    // =============================
+    // Calculator math
     function monthlyByYear(baseMonthly, annualEscPct, years=25){
       const esc = annualEscPct / 100;
       const arr = [];
-      for(let y=1; y<=years; y++){
-        arr.push(baseMonthly * Math.pow(1+esc, y-1));
-      }
+      for(let y=1; y<=years; y++) arr.push(baseMonthly * Math.pow(1+esc, y-1));
       return arr;
     }
     function total25yr(baseMonthly, annualEscPct){
@@ -1173,22 +836,13 @@
       return series.reduce((sum, m) => sum + (m*12), 0);
     }
 
-    // cached series for Year Wheel panel
-    let cache = {
-      uSeries: Array(25).fill(0),
-      o1Series: Array(25).fill(0),
-      o2Series: Array(25).fill(0)
-    };
+    let cache = { uSeries:Array(25).fill(0), o1Series:Array(25).fill(0), o2Series:Array(25).fill(0) };
+    let selectedYear = 1;
 
     function render(){
-      const uPay = toNumber($('uPay').value);
-      const uEsc = toNumber($('uEsc').value);
-
-      const o1Pay = toNumber($('o1Pay').value);
-      const o1Esc = toNumber($('o1Esc').value);
-
-      const o2Pay = toNumber($('o2Pay').value);
-      const o2Esc = toNumber($('o2Esc').value);
+      const uPay = toNumber($('uPay').value), uEsc = toNumber($('uEsc').value);
+      const o1Pay = toNumber($('o1Pay').value), o1Esc = toNumber($('o1Esc').value);
+      const o2Pay = toNumber($('o2Pay').value), o2Esc = toNumber($('o2Esc').value);
 
       cache.uSeries = monthlyByYear(uPay, uEsc, 25);
       cache.o1Series = monthlyByYear(o1Pay, o1Esc, 25);
@@ -1204,16 +858,13 @@
 
       const s1 = uTotal - o1Total;
       const s2 = uTotal - o2Total;
-
       $('o1Save').textContent = money0(s1);
       $('o2Save').textContent = money0(s2);
-
       $('o1Save').style.color = s1 >= 0 ? 'var(--green)' : 'var(--red)';
       $('o2Save').style.color = s2 >= 0 ? 'var(--green)' : 'var(--red)';
 
       $('uY25').textContent = money2(cache.uSeries[24]);
 
-      // table
       const tbody = $('rows');
       tbody.innerHTML = '';
       for(let y=1; y<=25; y++){
@@ -1227,62 +878,24 @@
         `;
         tbody.appendChild(tr);
       }
-
-      // keep year panel consistent
       updateYearPanel(selectedYear);
     }
 
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', render));
 
-    $('btnPrint').addEventListener('click', () => window.print());
     $('btnReset').addEventListener('click', () => {
-      $('uPay').value = '458';
-      $('uEsc').value = '9';
-      $('o1Pay').value = '295';
-      $('o1Esc').value = '3.5';
-      $('o2Pay').value = '310';
-      $('o2Esc').value = '0';
+      $('uPay').value = '458'; $('uEsc').value = '9';
+      $('o1Pay').value = '295'; $('o1Esc').value = '3.5';
+      $('o2Pay').value = '310'; $('o2Esc').value = '0';
       selectedYear = 1;
       yearWheel.setYear(1, true);
       render();
     });
 
-    // =============================
-    // Lightbox zoom
-    // =============================
-    const lb = $('lightbox');
-    const lbImg = $('lightboxImg');
-    const lbTitle = $('lightboxTitle');
-    function openLightbox(src, title){
-      lbImg.src = src;
-      lbTitle.textContent = title || 'Preview';
-      lb.classList.add('open');
-    }
-    function closeLightbox(){
-      lb.classList.remove('open');
-      lbImg.src = '';
-    }
-    document.querySelectorAll('img[data-zoom-title]').forEach(img => {
-      img.addEventListener('click', () => {
-        if(!img.src) return;
-        openLightbox(img.src, img.dataset.zoomTitle);
-      });
-    });
-    $('lightboxClose').addEventListener('click', closeLightbox);
-    lb.addEventListener('click', (e) => { if(e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
-
-    window.addEventListener('hashchange', () => setTimeout(() => window.scrollBy(0, -6), 0));
-
-    // =============================
-    // Year Wheel (Price-is-Right vibe)
-    // =============================
+    // BIG YEAR WHEEL — synced for all 3 (single wheel controls year selection)
     const YEARS = Array.from({length:25}, (_,i)=>i+1);
-    let selectedYear = 1;
 
-    function getStyleVar(name){
-      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    }
+    function getStyleVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
     function rgbaFromHex(hex, alpha){
       if(hex.startsWith("#") && hex.length === 7){
         const r = parseInt(hex.slice(1,3),16);
@@ -1293,7 +906,7 @@
       return `rgba(255,255,255,${alpha})`;
     }
 
-    class YearWheel {
+    class YearWheel{
       constructor(canvasId){
         this.canvas = $(canvasId);
         this.ctx = this.canvas.getContext('2d');
@@ -1302,14 +915,12 @@
         this.dragging = false;
         this.lastPointer = null;
         this.lastT = 0;
-
         this.resize();
         window.addEventListener('resize', () => this.resize());
         this.bind();
         this.draw();
         requestAnimationFrame((t)=>this.tick(t));
       }
-
       resize(){
         const rect = this.canvas.getBoundingClientRect();
         const dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -1318,16 +929,15 @@
         this.ctx.setTransform(dpr,0,0,dpr,0,0);
         this.draw();
       }
-
       bind(){
-        const onDown = (e) => {
+        const onDown = (e)=>{
           this.dragging = true;
           this.omega = 0;
           this.lastPointer = this.getPointer(e);
           this.lastT = performance.now();
           this.canvas.setPointerCapture?.(e.pointerId);
         };
-        const onMove = (e) => {
+        const onMove = (e)=>{
           if(!this.dragging) return;
           const p = this.getPointer(e);
           const c = this.center();
@@ -1345,7 +955,7 @@
           this.lastPointer = p;
           this.snapEmit();
         };
-        const onUp = () => {
+        const onUp = ()=>{
           if(!this.dragging) return;
           this.dragging = false;
           this.omega = clamp(this.omega, -14, 14);
@@ -1354,10 +964,8 @@
         this.canvas.addEventListener('pointerdown', onDown);
         window.addEventListener('pointermove', onMove, { passive:false });
         window.addEventListener('pointerup', onUp);
-
-        this.canvas.addEventListener('dblclick', () => this.spin());
+        this.canvas.addEventListener('dblclick', ()=>this.spin());
       }
-
       getPointer(e){
         const rect = this.canvas.getBoundingClientRect();
         return { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -1366,10 +974,7 @@
         const rect = this.canvas.getBoundingClientRect();
         return { x: rect.width/2, y: rect.height/2 };
       }
-
-      seg(){
-        return (Math.PI*2) / YEARS.length;
-      }
+      seg(){ return (Math.PI*2)/YEARS.length; }
       angleToYear(){
         let a = this.theta % (Math.PI*2);
         if(a < 0) a += Math.PI*2;
@@ -1384,7 +989,6 @@
         const shifted = idx*seg + seg/2;
         return shifted - Math.PI/2;
       }
-
       setYear(year, immediate=false){
         const target = this.yearToAngle(year);
         const twoPi = Math.PI*2;
@@ -1398,12 +1002,9 @@
           this.snapEmit();
           return;
         }
-        const start = this.theta;
-        const delta = a - start;
-        const startTime = performance.now();
-        const dur = 260;
-
-        const anim = (t) => {
+        const start = this.theta, delta = a - start;
+        const startTime = performance.now(), dur = 240;
+        const anim = (t)=>{
           const p = clamp((t - startTime)/dur, 0, 1);
           const ease = 1 - Math.pow(1-p, 3);
           this.theta = start + delta*ease;
@@ -1413,19 +1014,15 @@
         };
         requestAnimationFrame(anim);
       }
-
       spin(){
-        const dir = Math.random() < 0.5 ? -1 : 1;
-        this.omega = dir * (9 + Math.random()*9);
+        const dir = Math.random()<0.5 ? -1 : 1;
+        this.omega = dir*(9 + Math.random()*9);
       }
-
       snapEmit(){
-        // draw + emit selected year
         this.draw();
         const y = this.angleToYear();
         if(this.onYear) this.onYear(y);
       }
-
       tick(t){
         const dt = this.lastTick ? (t - this.lastTick)/1000 : 0;
         this.lastTick = t;
@@ -1439,7 +1036,6 @@
             this.theta += this.omega * dt;
             this.snapEmit();
           } else {
-            // gentle snap to nearest year
             const y = this.angleToYear();
             const target = this.yearToAngle(y);
             let diff = target - this.theta;
@@ -1451,24 +1047,21 @@
         }
         requestAnimationFrame((tt)=>this.tick(tt));
       }
-
       draw(){
         const ctx = this.ctx;
         const rect = this.canvas.getBoundingClientRect();
         const w = rect.width, h = rect.height;
         const cx = w/2, cy = h/2;
         const r = Math.min(w,h)*0.46;
-
         ctx.clearRect(0,0,w,h);
         ctx.save();
         ctx.translate(cx,cy);
 
         const seg = this.seg();
-        const red = rgbaFromHex(getStyleVar("--red"), 0.20);
-        const green = rgbaFromHex(getStyleVar("--green"), 0.20);
-        const blue = rgbaFromHex(getStyleVar("--cyan"), 0.20);
+        const red = rgbaFromHex(getStyleVar("--red"), 0.22);
+        const green = rgbaFromHex(getStyleVar("--green"), 0.22);
+        const blue = rgbaFromHex(getStyleVar("--cyan"), 0.22);
 
-        // outer ring
         ctx.beginPath();
         ctx.arc(0,0,r*1.08,0,Math.PI*2);
         ctx.fillStyle = "rgba(255,255,255,0.02)";
@@ -1483,35 +1076,31 @@
           ctx.arc(0,0,r,a0,a1);
           ctx.closePath();
 
-          // alternating base shade
           ctx.fillStyle = (i%2===0) ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)";
           ctx.fill();
 
-          // color accents in a repeating pattern (gives game-show energy)
-          if(i % 3 === 0){ ctx.globalAlpha = 1; ctx.fillStyle = red; ctx.fill(); }
-          if(i % 3 === 1){ ctx.globalAlpha = 1; ctx.fillStyle = green; ctx.fill(); }
-          if(i % 3 === 2){ ctx.globalAlpha = 1; ctx.fillStyle = blue; ctx.fill(); }
+          if(i % 3 === 0){ ctx.fillStyle = red; ctx.fill(); }
+          if(i % 3 === 1){ ctx.fillStyle = green; ctx.fill(); }
+          if(i % 3 === 2){ ctx.fillStyle = blue; ctx.fill(); }
 
           ctx.strokeStyle = "rgba(255,255,255,0.08)";
           ctx.lineWidth = 1;
           ctx.stroke();
 
-          // labels
           const mid = (a0+a1)/2;
           const tx = Math.cos(mid) * (r*0.78);
           const ty = Math.sin(mid) * (r*0.78);
           ctx.save();
           ctx.translate(tx,ty);
           ctx.rotate(mid + Math.PI/2);
-          ctx.fillStyle = "rgba(255,255,255,0.88)";
-          ctx.font = `1000 ${Math.max(10, r*0.085)}px ui-sans-serif, system-ui, -apple-system`;
+          ctx.fillStyle = "rgba(255,255,255,0.90)";
+          ctx.font = `1000 ${Math.max(11, r*0.092)}px ui-sans-serif, system-ui, -apple-system`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(String(YEARS[i]), 0, 0);
           ctx.restore();
         }
 
-        // inner circle
         ctx.beginPath();
         ctx.arc(0,0,r*0.58,0,Math.PI*2);
         ctx.fillStyle = "rgba(0,0,0,0.34)";
@@ -1520,7 +1109,6 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // center text
         const y = this.angleToYear();
         ctx.fillStyle = "rgba(255,255,255,0.92)";
         ctx.font = `900 ${Math.max(16, r*0.15)}px ui-sans-serif, system-ui, -apple-system`;
@@ -1529,10 +1117,9 @@
         ctx.fillText("YEAR", 0, -r*0.06);
 
         ctx.fillStyle = "rgba(255,255,255,0.84)";
-        ctx.font = `1000 ${Math.max(22, r*0.22)}px ui-sans-serif, system-ui, -apple-system`;
+        ctx.font = `1000 ${Math.max(24, r*0.24)}px ui-sans-serif, system-ui, -apple-system`;
         ctx.fillText(String(y), 0, r*0.16);
 
-        // center bolt
         ctx.beginPath();
         ctx.arc(0,0,r*0.06,0,Math.PI*2);
         ctx.fillStyle = "rgba(255,233,74,0.85)";
@@ -1544,9 +1131,8 @@
 
     function updateYearPanel(year){
       selectedYear = clamp(year, 1, 25);
-      $('selectedYearText').textContent = `Year ${selectedYear}`;
+      $('yearLabel').textContent = String(selectedYear);
 
-      // highlight table row
       document.querySelectorAll('#rows tr').forEach(tr => tr.classList.remove('activeYear'));
       const tr = document.querySelector(`#rows tr[data-year="${selectedYear}"]`);
       if(tr) tr.classList.add('activeYear');
@@ -1564,7 +1150,6 @@
       $('o1YearAnnual').textContent = `Annual: ${money0(o1M*12)}`;
       $('o2YearAnnual').textContent = `Annual: ${money0(o2M*12)}`;
 
-      // savings vs utility for this year: choose best of options (lower monthly)
       const best = Math.min(o1M, o2M);
       const savings = (uM - best) * 12;
       $('yearSavings').textContent = money0(savings);
@@ -1572,15 +1157,28 @@
     }
 
     const yearWheel = new YearWheel("yearWheel");
-    yearWheel.onYear = (y) => updateYearPanel(y);
+    yearWheel.onYear = (y)=>updateYearPanel(y);
 
-    $('spinYear').addEventListener('click', () => yearWheel.spin());
-    $('jumpYear1').addEventListener('click', () => yearWheel.setYear(1));
-    $('jumpYear5').addEventListener('click', () => yearWheel.setYear(5));
-    $('jumpYear10').addEventListener('click', () => yearWheel.setYear(10));
-    $('jumpYear25').addEventListener('click', () => yearWheel.setYear(25));
+    // Sync ALL THREE "annual increase" inputs when ANY one changes
+    function syncEscFrom(sourceId){
+      const v = toNumber($(sourceId).value);
+      $('uEsc').value = String(v);
+      $('o1Esc').value = String(v);
+      $('o2Esc').value = String(v);
+      render();
+    }
+    $('uEsc').addEventListener('input', ()=>syncEscFrom('uEsc'));
+    $('o1Esc').addEventListener('input', ()=>syncEscFrom('o1Esc'));
+    $('o2Esc').addEventListener('input', ()=>syncEscFrom('o2Esc'));
 
-    // Initial render
+    // Buttons
+    $('btnYearSpin').addEventListener('click', ()=>yearWheel.spin());
+    $('btnYear1').addEventListener('click', ()=>yearWheel.setYear(1));
+    $('btnYear5').addEventListener('click', ()=>yearWheel.setYear(5));
+    $('btnYear10').addEventListener('click', ()=>yearWheel.setYear(10));
+    $('btnYear25').addEventListener('click', ()=>yearWheel.setYear(25));
+
+    // Init
     yearWheel.setYear(1, true);
     render();
   </script>
