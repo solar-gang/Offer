@@ -8,26 +8,21 @@
 
 <style>
   :root{
-    /* Brand palette (logo energy) */
     --navy:#0b1017;
     --navy2:#06122a;
     --gold:#FBC909;
     --teal:#3AADBB;
 
-    /* Column colors */
-    --utility:#ff3b30; /* red */
-    --opt1:#34c759;    /* green */
-    --opt2:#00c2ff;    /* cyan */
+    --utility:#ff3b30;
+    --opt1:#34c759;
+    --opt2:#00c2ff;
 
     --text:rgba(255,255,255,.96);
     --muted:rgba(255,255,255,.72);
     --muted2:rgba(255,255,255,.56);
-    --border:rgba(255,255,255,.14);
-
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
     --shadow: 0 18px 70px rgba(0,0,0,.45);
 
-    --r:16px;
     --r2:22px;
 
     --safeT: env(safe-area-inset-top);
@@ -46,7 +41,7 @@
       radial-gradient(900px 460px at 14% 10%, rgba(251,201,9,.18), transparent 60%),
       radial-gradient(900px 460px at 86% 12%, rgba(58,173,187,.16), transparent 60%),
       linear-gradient(180deg, var(--navy2), var(--navy));
-    overflow:hidden; /* presentation mode */
+    overflow:hidden;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
@@ -74,7 +69,7 @@
     justify-content:space-between;
     flex-wrap:wrap;
   }
-  .brand{display:flex; align-items:center; gap:12px; min-width:260px;}
+  .brand{display:flex; align-items:center; gap:12px; min-width:240px;}
   .brand img{
     height:40px; width:auto; display:block;
     filter:drop-shadow(0 12px 28px rgba(0,0,0,.30));
@@ -118,6 +113,37 @@
   }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
 
+  /* ===== Mobile compact topbar: hide big nav, keep only hamburger ===== */
+  .hamburger{display:none}
+  .mobileControls{display:none}
+  @media (max-width: 720px){
+    .topbarInner{
+      padding:10px 12px;
+      gap:10px;
+    }
+    .brand img{height:34px}
+    .brandTitle .sub{display:none}
+    .nav{display:none} /* hide big row */
+    .hamburger{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:1000;
+      cursor:pointer;
+    }
+    .mobileControls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+  }
+
   .progressWrap{
     max-width:1280px; margin:0 auto;
     padding: 0 16px 10px;
@@ -155,15 +181,25 @@
     left: 12px;
     z-index:130;
   }
+  @media (max-width:720px){
+    .fsBtn{display:none;} /* keep UI clean on phones; fullscreen still accessible in menu */
+    .badge{display:none;} /* reduce clutter on phones */
+  }
 
   /* ===== Deck ===== */
   .deck{
     height:100%;
     padding-top: calc(96px + var(--safeT));
-    padding-bottom: calc(102px + var(--safeB)); /* room for bottom dock */
+    padding-bottom: calc(92px + var(--safeB));
     display:flex;
     align-items:stretch;
     justify-content:center;
+  }
+  @media (max-width:720px){
+    .deck{
+      padding-top: calc(70px + var(--safeT));
+      padding-bottom: calc(82px + var(--safeB));
+    }
   }
   .stage{
     width:min(1280px, 100vw);
@@ -172,6 +208,9 @@
     padding-left: calc(16px + var(--safeL));
     padding-right: calc(16px + var(--safeR));
     position:relative;
+  }
+  @media (max-width:720px){
+    .stage{ padding: 10px 12px; }
   }
   .slide{
     position:absolute;
@@ -188,11 +227,14 @@
     transition: opacity .16s ease, transform .16s ease;
     box-shadow: var(--shadow);
   }
-  .slide.active{
-    opacity:1;
-    transform: translateY(0) scale(1);
-    pointer-events:auto;
+  @media (max-width:720px){
+    .slide{
+      inset:10px 12px;
+      inset-left: calc(12px + var(--safeL));
+      inset-right: calc(12px + var(--safeR));
+    }
   }
+  .slide.active{opacity:1; transform: translateY(0) scale(1); pointer-events:auto;}
   .slideHead{
     padding:16px 18px;
     border-bottom:1px solid rgba(255,255,255,.10);
@@ -202,6 +244,9 @@
     justify-content:space-between;
     gap:12px;
     flex-wrap:wrap;
+  }
+  @media (max-width:720px){
+    .slideHead{ padding:12px 12px; }
   }
   .slideHead h2{
     margin:0;
@@ -219,15 +264,16 @@
     overflow:auto;
     -webkit-overflow-scrolling: touch;
   }
-  .slideBody::-webkit-scrollbar{ width: 10px; }
-  .slideBody::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.14); border-radius:999px; }
+  @media (max-width:720px){
+    .slideBody{ padding:12px; }
+  }
 
-  /* ===== Bottom dock (NO OVERLAP, safe on mobile) ===== */
+  /* ===== Bottom dock (phones: just Prev/Next, big, easy) ===== */
   .presentBar{
     position:fixed;
-    left: max(12px, var(--safeL));
-    right: max(12px, var(--safeR));
-    bottom: calc(12px + var(--safeB));
+    left: max(10px, var(--safeL));
+    right: max(10px, var(--safeR));
+    bottom: calc(10px + var(--safeB));
     z-index:140;
     display:flex;
     justify-content:center;
@@ -251,8 +297,81 @@
     font-size:15px;
     font-weight:1000;
   }
-  @media (max-width:640px){
-    .dock{ grid-template-columns:1fr; }
+
+  @media (max-width:720px){
+    .dock{
+      grid-template-columns: 1fr 1fr; /* prev/next only */
+      gap:10px;
+      padding:10px;
+    }
+    .dock .btn{
+      min-height:54px;
+      font-size:16px;
+    }
+    #btnStartDock{display:none;}
+  }
+
+  /* ===== Slide menu drawer (mobile) ===== */
+  .drawerOverlay{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,.55);
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .16s ease;
+  }
+  .drawerOverlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed;
+    left: 12px;
+    right: 12px;
+    top: calc(12px + var(--safeT));
+    bottom: calc(12px + var(--safeB));
+    z-index:210;
+    transform: translateY(14px);
+    opacity:0;
+    pointer-events:none;
+    transition: transform .16s ease, opacity .16s ease;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(10,16,24,.96);
+    box-shadow: 0 24px 90px rgba(0,0,0,.55);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .drawer.open{opacity:1; pointer-events:auto; transform: translateY(0);}
+  .drawerHead{
+    padding:14px 14px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .drawerTitle{
+    font-weight:1000;
+    letter-spacing:-.02em;
+  }
+  .drawerBody{
+    padding:12px;
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+    display:grid;
+    gap:10px;
+  }
+  .slideLink{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    border-radius:16px;
+    padding:12px;
+    cursor:pointer;
+  }
+  .slideLink strong{display:block; font-weight:1000; letter-spacing:-.01em;}
+  .slideLink span{display:block; margin-top:6px; color:var(--muted); font-weight:900; font-size:13px; line-height:1.3;}
+  .slideLink.active{
+    border-color: rgba(251,201,9,.45);
+    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
   }
 
   /* ===== Layout helpers ===== */
@@ -283,7 +402,7 @@
   /* Media lock box */
   .mediaFrame{
     width:100%;
-    height: clamp(240px, 46vh, 560px);
+    height: clamp(220px, 42vh, 560px);
     background:#000;
     display:flex;
     align-items:center;
@@ -320,7 +439,7 @@
   .focusTitle{
     font-weight:1000;
     letter-spacing:-.04em;
-    font-size: clamp(26px, 3.2vw, 44px);
+    font-size: clamp(24px, 3.2vw, 44px);
     margin:0 0 10px;
     line-height:1.05;
   }
@@ -353,7 +472,7 @@
     background: rgba(0,0,0,.20);
     color: rgba(255,255,255,.98);
     font-weight:1000;
-    font-size: clamp(26px, 4.5vw, 48px);
+    font-size: clamp(24px, 4.5vw, 48px);
     padding:16px 16px;
     outline:none;
     min-height:64px;
@@ -724,7 +843,7 @@
 
 <body>
 
-<!-- Fullscreen -->
+<!-- Fullscreen (desktop/tablet). Mobile uses menu. -->
 <button class="btn fsBtn" id="btnFS" type="button">Fullscreen</button>
 
 <!-- Topbar -->
@@ -737,6 +856,14 @@
         <div class="sub">Solar + Storage Closing Tool</div>
       </div>
     </div>
+
+    <!-- Mobile controls -->
+    <div class="mobileControls">
+      <button class="hamburger" id="btnMenu" type="button">Menu</button>
+      <button class="hamburger" id="btnResetMobile" type="button">Reset</button>
+    </div>
+
+    <!-- Desktop nav -->
     <div class="nav">
       <button class="btn" id="btnHome" type="button">Start</button>
       <button class="btn" id="btnPrevTop" type="button">Prev</button>
@@ -754,11 +881,24 @@
   <span class="t" id="slideCounter">Slide 1 / 1</span>
 </div>
 
+<!-- Mobile slide drawer -->
+<div class="drawerOverlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawerHead">
+    <div class="drawerTitle">Presentation Menu</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" id="btnFSMenu" type="button">Fullscreen</button>
+      <button class="btn danger" id="btnCloseMenu" type="button">Close</button>
+    </div>
+  </div>
+  <div class="drawerBody" id="drawerBody"></div>
+</div>
+
 <div class="deck">
   <div class="stage" id="stage">
 
     <!-- SLIDE 1: START INPUT -->
-    <section class="slide active" data-slide>
+    <section class="slide active" data-slide data-title="Start" data-sub="Enter average bill to populate calculator">
       <div class="slideHead">
         <h2><span class="spark"></span> Customer Starting Point</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -786,8 +926,8 @@
       </div>
     </section>
 
-    <!-- SLIDE 2: PROBLEM + LINKS (TOU / 13% / LA FIRES) -->
-    <section class="slide" data-slide>
+    <!-- SLIDE 2: PROBLEM + LINKS -->
+    <section class="slide" data-slide data-title="Rate Problem" data-sub="TOU, 13% increase, LA fires (links)">
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -821,19 +961,19 @@
               <div class="bigCTA" onclick="popupArticle(ASSETS.linkTOU)">
                 <div class="ctaLabel"><span class="dotMini"></span> TOU</div>
                 <div class="ctaTitle">SCE Time-of-Use Rates</div>
-                <div class="ctaDesc">See official TOU rate plans and how prices change by time of day.</div>
+                <div class="ctaDesc">Official TOU rate plans and time-of-day pricing.</div>
               </div>
 
               <div class="bigCTA" onclick="popupArticle(ASSETS.linkSCE)">
                 <div class="ctaLabel"><span class="dotMini"></span> 13% increase</div>
                 <div class="ctaTitle">SCE: Understanding bill updates</div>
-                <div class="ctaDesc">Official SCE page explaining updates and why charges change over time.</div>
+                <div class="ctaDesc">Why charges change and what updates mean on the bill.</div>
               </div>
 
               <div class="bigCTA" onclick="popupArticle(ASSETS.linkLAT)">
                 <div class="ctaLabel"><span class="dotMini"></span> L.A fires</div>
                 <div class="ctaTitle">LA Times: Edison rate case</div>
-                <div class="ctaDesc">News context on the rate case and continued drivers behind increases.</div>
+                <div class="ctaDesc">Context on the rate case and drivers behind increases.</div>
               </div>
             </div>
 
@@ -842,8 +982,8 @@
       </div>
     </section>
 
-    <!-- SLIDE 3: OUTAGE DEMO (BEFORE CALCULATOR) + VPP LINKS HERE -->
-    <section class="slide" data-slide>
+    <!-- SLIDE 3: OUTAGE DEMO -->
+    <section class="slide" data-slide data-title="Outage Demo" data-sub="Backup essentials + Tesla VPP links">
       <div class="slideHead">
         <h2><span class="spark"></span> Outage Demo</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
@@ -895,8 +1035,8 @@
       </div>
     </section>
 
-    <!-- SLIDE 4: PROOF ($28 BILL) -->
-    <section class="slide" data-slide>
+    <!-- SLIDE 4: PROOF -->
+    <section class="slide" data-slide data-title="Proof ($28 Bill)" data-sub="Why the bill can be low with storage">
       <div class="slideHead">
         <h2><span class="spark"></span> Proof</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -942,8 +1082,8 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: COMPARE TOOL (3 OPTIONS + YEAR WHEEL) -->
-    <section class="slide" data-slide>
+    <!-- SLIDE 5: COMPARE TOOL -->
+    <section class="slide" data-slide data-title="Compare" data-sub="3 options + synced year wheel">
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -1072,15 +1212,15 @@
       </div>
     </section>
 
-    <!-- SLIDE 6: TIMELINE (INTERACTIVE HIGHLIGHT + EXPLANATION) -->
-    <section class="slide" data-slide>
+    <!-- SLIDE 6: TIMELINE -->
+    <section class="slide" data-slide data-title="Timeline" data-sub="Tap steps to explain process">
       <div class="slideHead">
         <h2><span class="spark"></span> Timeline</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <a class="btn" target="_blank" rel="noreferrer" href="https://www.sunup-energy.com">sunup-energy.com</a>
           <a class="btn" target="_blank" rel="noreferrer" href="https://fulfillpower.com">fulfillpower.com</a>
           <a class="btn primary" target="_blank" rel="noreferrer"
-             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33aL_iPZUyUpu_SzVI30rKWvofbcNHLRJ4VaxEepZ7V0Em9qWKB4eJ7S79uZ8SMddoiF83pzp_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
+             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33p_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
         </div>
       </div>
 
@@ -1094,27 +1234,7 @@
           <div class="step" data-step="5"><div class="num">6</div><div class="t">PTO</div><div class="d">30–60 days</div></div>
         </div>
 
-        <div class="card" style="margin-top:16px;padding:18px" id="timelineExplain">
-          <div style="font-weight:1000;font-size:clamp(20px,2.5vw,32px);letter-spacing:-.03em">
-            Site Survey
-          </div>
-          <p style="margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.45">
-            A quick visit to confirm roof condition, electrical layout, and equipment placement. This prevents surprises later and locks in an accurate design.
-          </p>
-          <div class="metric" style="margin-top:14px">
-            <div class="mk">Why this matters</div>
-            <div class="mv">Accuracy now = faster approvals later</div>
-          </div>
-
-          <div class="metric" style="margin-top:10px">
-            <div class="mk">Impactful note</div>
-            <div class="mv" style="color:var(--opt1)">Clear timelines reduce stress and protect your project</div>
-          </div>
-
-          <div style="margin-top:10px;color:rgba(255,255,255,.78);font-weight:900;line-height:1.4;font-size:13px;">
-            First payment is typically <strong>one month after PTO</strong> — not at install.
-          </div>
-        </div>
+        <div class="card" style="margin-top:16px;padding:18px" id="timelineExplain"></div>
       </div>
     </section>
 
@@ -1136,7 +1256,7 @@
 
   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png   (logo)
   - Outagevideo.mp4
-  - Scebill.jpeg    (exact name, no extra spaces)
+  - Scebill.jpeg
   - IMG_9100.jpeg
 */
 
@@ -1146,12 +1266,10 @@ const ASSETS = {
   billSolar: "IMG_9100.jpeg",
   outageVideo: "Outagevideo.mp4",
 
-  // Problem slide links
   linkTOU: "https://www.sce.com/residential/rates/Time-Of-Use-Residential-Rate-Plans",
   linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
   linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
 
-  // Outage slide Tesla links
   linkTeslaVPP: "https://www.tesla.com/support/energy/virtual-power-plant",
   linkTeslaVPP_SCE: "https://www.tesla.com/support/energy/virtual-power-plant/sce",
   linkPowerwall: "https://www.tesla.com/powerwall"
@@ -1164,11 +1282,15 @@ let slides = [];
 let idx = 0;
 
 function refreshSlides(){ slides = Array.from(document.querySelectorAll("[data-slide]")); }
+
 function updateHUD(){
-  $("slideCounter").textContent = `Slide ${idx+1} / ${slides.length}`;
   const pct = (idx / Math.max(1, slides.length-1)) * 100;
   $("progressFill").style.width = `${pct}%`;
+  const c = $("slideCounter");
+  if(c) c.textContent = `Slide ${idx+1} / ${slides.length}`;
+  buildDrawerList(); // keep menu in sync
 }
+
 function activate(i){
   refreshSlides();
   idx = Math.max(0, Math.min(slides.length-1, i));
@@ -1177,24 +1299,23 @@ function activate(i){
   const b = slides[idx].querySelector(".slideBody");
   if(b) b.scrollTop = 0;
 }
+
 function next(){ activate(idx+1); }
 function prev(){ activate(idx-1); }
-function go(i){ activate(i); }
+function go(i){ activate(i); closeDrawer(); }
 window.go = go;
 
-/* Top + dock controls */
-$("btnNext").addEventListener("click", next);
-$("btnPrev").addEventListener("click", prev);
-$("btnNextTop").addEventListener("click", next);
-$("btnPrevTop").addEventListener("click", prev);
-$("btnHome").addEventListener("click", ()=>activate(0));
-$("btnStartDock").addEventListener("click", ()=>activate(0));
+/* Top controls (desktop) */
+$("btnNext")?.addEventListener("click", next);
+$("btnPrev")?.addEventListener("click", prev);
+$("btnNextTop")?.addEventListener("click", next);
+$("btnPrevTop")?.addEventListener("click", prev);
+$("btnHome")?.addEventListener("click", ()=>activate(0));
+$("btnStartDock")?.addEventListener("click", ()=>activate(0));
 
 document.addEventListener("keydown", (e)=>{
   if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
   if(e.key === "ArrowLeft"  || e.key === "PageUp"){ e.preventDefault(); prev(); }
-  if(e.key === "Home"){ e.preventDefault(); activate(0); }
-  if(e.key === "End"){ e.preventDefault(); activate(slides.length-1); }
 });
 
 /* Fullscreen */
@@ -1206,7 +1327,8 @@ function toggleFS(){
     document.exitFullscreen?.();
   }
 }
-$("btnFS").addEventListener("click", toggleFS);
+$("btnFS")?.addEventListener("click", toggleFS);
+$("btnFSMenu")?.addEventListener("click", toggleFS);
 
 /* External open */
 function openExternal(url){
@@ -1347,8 +1469,7 @@ function buildYearWheel(){
   $("yearPlus").onclick  = ()=>setYear(year+1, true);
 
   ["uPay","uEsc","aPay","aEsc","bPay","bEsc"].forEach(id=>{
-    const el = $(id);
-    el.addEventListener("input", recalc, {passive:true});
+    $(id).addEventListener("input", recalc, {passive:true});
   });
 
   $("uPay").value = $("startBill").value;
@@ -1357,7 +1478,7 @@ function buildYearWheel(){
 }
 
 /* Reset */
-$("btnReset").addEventListener("click", ()=>{
+function hardReset(){
   $("startBill").value="458";
   $("uPay").value="458"; $("uEsc").value="9";
   $("aPay").value="295"; $("aEsc").value="0";
@@ -1365,40 +1486,18 @@ $("btnReset").addEventListener("click", ()=>{
   year = 1;
   recalc();
   activate(0);
-});
+}
+$("btnReset")?.addEventListener("click", hardReset);
+$("btnResetMobile")?.addEventListener("click", hardReset);
 
-/* ===== Timeline explanations ===== */
+/* Timeline explanations */
 const TIMELINE_TEXT = [
-  {
-    title: "Site Survey",
-    body: "A quick visit to confirm roof condition, electrical layout, and equipment placement. This ensures pricing and design accuracy before permits.",
-    why: "Prevents redesigns and delays later"
-  },
-  {
-    title: "Engineering",
-    body: "Engineers design the system to meet utility and city requirements. Structural, electrical, and fire safety rules are verified here.",
-    why: "Required for permits and utility approval"
-  },
-  {
-    title: "Permits",
-    body: "City and utility review the plans. Timing varies by jurisdiction — this is usually the longest step.",
-    why: "This step is out of the homeowner’s control, but it protects your investment"
-  },
-  {
-    title: "Installation",
-    body: "Panels, batteries, and electrical work are installed. Most homes are completed in 1–2 days once scheduled.",
-    why: "The visible transformation happens here"
-  },
-  {
-    title: "Inspection",
-    body: "City verifies the installation meets code. Minor corrections, if any, are handled quickly.",
-    why: "Final approval before utility permission"
-  },
-  {
-    title: "Permission to Operate (PTO)",
-    body: "The utility grants approval to turn the system on. First payment typically occurs one month after PTO.",
-    why: "This is when savings officially begin"
-  }
+  { title:"Site Survey", body:"A quick visit to confirm roof condition, electrical layout, and equipment placement. This ensures pricing and design accuracy before permits.", why:"Prevents redesigns and delays later" },
+  { title:"Engineering", body:"Engineers design the system to meet utility and city requirements. Structural, electrical, and fire safety rules are verified here.", why:"Required for permits and utility approval" },
+  { title:"Permits", body:"City and utility review the plans. Timing varies by jurisdiction — this is usually the longest step.", why:"This step is out of the homeowner’s control, but it protects your investment" },
+  { title:"Installation", body:"Panels, batteries, and electrical work are installed. Most homes are completed in 1–2 days once scheduled.", why:"The visible transformation happens here" },
+  { title:"Inspection", body:"City verifies the installation meets code. Minor corrections, if any, are handled quickly.", why:"Final approval before utility permission" },
+  { title:"Permission to Operate (PTO)", body:"The utility grants approval to turn the system on. First payment typically occurs one month after PTO.", why:"This is when savings officially begin" }
 ];
 
 function initTimeline(){
@@ -1406,48 +1505,92 @@ function initTimeline(){
   const box = $("timelineExplain");
   if(!steps.length || !box) return;
 
+  function render(i){
+    const data = TIMELINE_TEXT[i] || TIMELINE_TEXT[0];
+    box.innerHTML = `
+      <div style="font-weight:1000;font-size:clamp(20px,2.5vw,32px);letter-spacing:-.03em">
+        ${data.title}
+      </div>
+      <p style="margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.45">
+        ${data.body}
+      </p>
+      <div class="metric" style="margin-top:14px">
+        <div class="mk">Why this matters</div>
+        <div class="mv">${data.why}</div>
+      </div>
+      <div class="metric" style="margin-top:10px">
+        <div class="mk">Impactful note</div>
+        <div class="mv" style="color:var(--opt1)">Clear timelines reduce stress and protect your project</div>
+      </div>
+      <div style="margin-top:10px;color:rgba(255,255,255,.78);font-weight:900;line-height:1.4;font-size:13px;">
+        First payment is typically <strong>one month after PTO</strong> — not at install.
+      </div>
+    `;
+  }
+
+  render(0);
+
   steps.forEach(step=>{
     step.addEventListener("click", ()=>{
       steps.forEach(s=>s.classList.remove("active"));
       step.classList.add("active");
-
-      const i = Number(step.dataset.step);
-      const data = TIMELINE_TEXT[i] || TIMELINE_TEXT[0];
-
-      box.innerHTML = `
-        <div style="font-weight:1000;font-size:clamp(20px,2.5vw,32px);letter-spacing:-.03em">
-          ${data.title}
-        </div>
-        <p style="margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.45">
-          ${data.body}
-        </p>
-        <div class="metric" style="margin-top:14px">
-          <div class="mk">Why this matters</div>
-          <div class="mv">${data.why}</div>
-        </div>
-        <div class="metric" style="margin-top:10px">
-          <div class="mk">Impactful note</div>
-          <div class="mv" style="color:var(--opt1)">Clear timelines reduce stress and protect your project</div>
-        </div>
-        <div style="margin-top:10px;color:rgba(255,255,255,.78);font-weight:900;line-height:1.4;font-size:13px;">
-          First payment is typically <strong>one month after PTO</strong> — not at install.
-        </div>
-      `;
+      render(Number(step.dataset.step));
     });
   });
 }
+
+/* ===== Mobile Drawer Menu ===== */
+const drawer = $("drawer");
+const overlay = $("drawerOverlay");
+const drawerBody = $("drawerBody");
+
+function openDrawer(){
+  overlay.classList.add("open");
+  drawer.classList.add("open");
+  buildDrawerList();
+}
+function closeDrawer(){
+  overlay.classList.remove("open");
+  drawer.classList.remove("open");
+}
+function buildDrawerList(){
+  if(!drawerBody) return;
+  drawerBody.innerHTML = "";
+  slides.forEach((s, i)=>{
+    const title = s.getAttribute("data-title") || `Slide ${i+1}`;
+    const sub = s.getAttribute("data-sub") || "";
+    const item = document.createElement("div");
+    item.className = "slideLink" + (i===idx ? " active" : "");
+    item.innerHTML = `<strong>${title}</strong><span>${sub}</span>`;
+    item.addEventListener("click", ()=>go(i));
+    drawerBody.appendChild(item);
+  });
+  // quick actions
+  const hr = document.createElement("div");
+  hr.style.height="1px";
+  hr.style.background="rgba(255,255,255,.10)";
+  hr.style.margin="6px 0";
+  drawerBody.appendChild(hr);
+
+  const quick = document.createElement("div");
+  quick.className = "slideLink";
+  quick.innerHTML = `<strong>Reset Presentation</strong><span>Clear values and return to Start.</span>`;
+  quick.addEventListener("click", ()=>{ hardReset(); closeDrawer(); });
+  drawerBody.appendChild(quick);
+}
+
+$("btnMenu")?.addEventListener("click", openDrawer);
+$("btnCloseMenu")?.addEventListener("click", closeDrawer);
+overlay?.addEventListener("click", closeDrawer);
 
 /* Boot */
 (function init(){
   refreshSlides();
 
   $("logoImg").src = ASSETS.logo;
-
-  // Bills
   $("imgBillNoSolar").src = ASSETS.billNoSolar;
   $("imgBillSolar").src = ASSETS.billSolar;
 
-  // Outage video
   const v = $("outageVid");
   v.src = ASSETS.outageVideo;
   v.load();
