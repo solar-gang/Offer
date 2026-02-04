@@ -22,7 +22,6 @@
     --muted2:rgba(255,255,255,.56);
 
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
-    --r:16px;
     --r2:22px;
 
     --safeT: env(safe-area-inset-top);
@@ -129,7 +128,7 @@
   .deck{
     height:100%;
     padding-top: calc(96px + var(--safeT));
-    padding-bottom: calc(12px + var(--safeB));
+    padding-bottom: calc(80px + var(--safeB)); /* extra for new mobile nav */
     display:flex;
     align-items:stretch;
     justify-content:center;
@@ -190,26 +189,41 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* ===== New mobile-first nav (better location) ===== */
   .presentBar{
     position:fixed;
     left: 12px;
     right: 12px;
-    bottom: calc(12px + var(--safeB));
-    z-index:120;
+    bottom: calc(10px + var(--safeB));
+    z-index:130;
+    pointer-events:none;
     display:flex;
     justify-content:center;
-    gap:10px;
-    pointer-events:none;
   }
-  .presentBar .btn{pointer-events:auto;}
+  .dock{
+    pointer-events:auto;
+    width:min(980px, 100%);
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:10px;
+    padding:10px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(10,16,24,.78);
+    box-shadow: 0 18px 60px rgba(0,0,0,.35);
+  }
+  .dock .btn{width:100%;}
+  .dock .btn.primary{font-weight:1000;}
+  @media (min-width:981px){
+    .dock{grid-template-columns: 140px 1fr 140px;}
+  }
 
   /* Layout */
   .grid{display:grid; gap:14px;}
   .grid2{grid-template-columns: 1.05fr .95fr;}
-  .grid2eq{grid-template-columns:1fr 1fr;}
-  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
+  @media (max-width:980px){ .grid2{grid-template-columns:1fr;} }
 
-  /* Big centered input slide */
+  /* Big centered input */
   .focusWrap{height:100%; display:flex; align-items:center; justify-content:center;}
   .focusCard{
     width:min(980px, 100%);
@@ -263,7 +277,7 @@
   .bigHint{margin-top:10px; color:rgba(255,255,255,.78); font-weight:900; line-height:1.35; font-size:13px;}
   .bigActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; justify-content:flex-end;}
 
-  /* Locked media cards */
+  /* Media cards */
   .card{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
@@ -272,7 +286,7 @@
   }
   .mediaFrame{
     width:100%;
-    height: clamp(240px, 42vh, 520px); /* locked for presentation */
+    height: clamp(240px, 42vh, 520px);
     background:#000;
     display:flex;
     align-items:center;
@@ -351,7 +365,7 @@
     border-color: rgba(251,201,9,.20);
   }
 
-  /* ========= CALCULATOR + YEAR WHEEL ========= */
+  /* Compare */
   .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
   @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
   .col{
@@ -579,7 +593,7 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Video */
+  /* Video + outage items */
   .videoShell{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
@@ -588,7 +602,7 @@
   }
   .videoFrame{
     width:100%;
-    height: clamp(260px, 48vh, 620px); /* locked */
+    height: clamp(260px, 48vh, 620px);
     background:#000;
   }
   .videoFrame video{
@@ -598,6 +612,47 @@
     display:block;
     background:#000;
   }
+  .headline{
+    font-weight:1000;
+    letter-spacing:-.04em;
+    font-size: clamp(22px, 3vw, 38px);
+    margin:0 0 10px;
+    line-height:1.05;
+  }
+  .catch{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid rgba(251,201,9,.22);
+    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
+    padding:10px 12px;
+    border-radius:999px;
+    font-weight:1000;
+  }
+  .bullets{
+    margin-top:12px;
+    display:grid;
+    gap:10px;
+  }
+  .b{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.14);
+    border-radius:16px;
+    padding:12px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .ico{
+    width:34px;height:34px;border-radius:12px;
+    background: var(--grad);
+    color:#07121b;
+    font-weight:1000;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .b strong{font-weight:1000;}
+  .b span{display:block;margin-top:4px;color:var(--muted);font-weight:900;line-height:1.35;font-size:13.5px;}
 
   /* Timeline */
   .timeline{display:grid; grid-template-columns: repeat(6,1fr); gap:10px;}
@@ -622,7 +677,7 @@
   .step .t{font-weight:1000; letter-spacing:-.02em;}
   .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900;}
 
-  /* Modal zoom (in-presentation) */
+  /* Modal zoom */
   .modal{
     position:fixed; inset:0;
     background: rgba(0,0,0,.72);
@@ -718,7 +773,7 @@
 
             <div class="bigActions">
               <button class="btn" type="button" onclick="go(1)">See Rate Problem</button>
-              <button class="btn primary" type="button" onclick="go(3)">Go to Calculator</button>
+              <button class="btn primary" type="button" onclick="go(3)">Outage Demo</button>
             </div>
           </div>
         </div>
@@ -750,7 +805,7 @@
             <div class="k">What TOU means</div>
             <div class="h">It’s not only <span class="gradText">how much</span> power you use — it’s <span class="gradText">when</span> you buy it.</div>
             <p>
-              Under Time-of-Use pricing, electricity costs more when the grid is stressed (typically late afternoon/evening).
+              Under Time-of-Use pricing, electricity costs more when the grid is stressed.
               Even with the same kWh, buying more during peak makes bills jump.
             </p>
 
@@ -807,8 +862,7 @@
             <div class="k">Why it can drop this low</div>
             <div class="h">Solar runs the day. Batteries protect the <span class="gradText">expensive</span> hours.</div>
             <p>
-              This isn’t “free power.” It’s controlled power:
-              daytime production reduces what you buy, and batteries cover the peak window so you avoid purchasing at peak pricing.
+              Solar offsets daytime purchases. Batteries cover the peak window—so you avoid buying at peak pricing.
               The utility becomes backup instead of primary.
             </p>
             <div class="pillRow">
@@ -821,7 +875,67 @@
       </div>
     </section>
 
-    <!-- SLIDE 4: CALCULATOR + YEAR WHEEL -->
+    <!-- SLIDE 4: OUTAGE VIDEO (MOVED BEFORE CALCULATOR) -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Outage Demo</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <span class="catch"><span class="dot"></span> Win the day, own the night</span>
+        </div>
+      </div>
+
+      <div class="slideBody">
+        <div class="grid grid2">
+          <div class="videoShell">
+            <div class="videoFrame">
+              <video id="outageVid" controls playsinline preload="metadata">
+                <source src="Outagevideo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="cap">
+              <div>Home powered during outage (storage)</div>
+              <small>Plays inline on iPhone</small>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="k">What you can back up</div>
+            <div class="headline">Keep life normal when the grid goes down.</div>
+
+            <div class="bullets">
+              <div class="b"><div class="ico">🏠</div><div><strong>Lights + outlets</strong><span>Stay powered for everyday living—no candles, no chaos.</span></div></div>
+              <div class="b"><div class="ico">📶</div><div><strong>Wi-Fi + internet</strong><span>Work, school, and security systems keep running.</span></div></div>
+              <div class="b"><div class="ico">🧊</div><div><strong>Refrigerator / freezer</strong><span>Protect groceries and avoid spoilage during outages.</span></div></div>
+              <div class="b"><div class="ico">🔒</div><div><strong>Security + cameras</strong><span>Maintain monitoring and protection when neighbors go dark.</span></div></div>
+              <div class="b"><div class="ico">🚪</div><div><strong>Garage door</strong><span>Keep access and convenience (especially during emergencies).</span></div></div>
+              <div class="b"><div class="ico">🌡️</div><div><strong>Selective HVAC</strong><span>Depending on design—support essentials or partial climate control.</span></div></div>
+            </div>
+
+            <div class="ctaGrid" style="margin-top:14px;">
+              <div class="bigCTA primary" onclick="openExternal('https://www.tesla.com/support/energy/virtual-power-plant/sce')">
+                <div class="t">
+                  <div class="title">Tesla Virtual Power Plant (SCE)</div>
+                  <div class="badge2">Open</div>
+                </div>
+                <div class="desc">How the VPP works: grid support events + compensation details (official Tesla page).</div>
+              </div>
+
+              <div class="bigCTA" onclick="openExternal('https://www.tesla.com/powerwall')">
+                <div class="t">
+                  <div class="title">Powerwall Overview</div>
+                  <div class="badge2">Open</div>
+                </div>
+                <div class="desc">Backup behavior, features, and what Powerwall can do during outages.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: CALCULATOR + YEAR WHEEL (UNCHANGED) -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -892,7 +1006,7 @@
                 <div class="wheelList" id="yearWheel"></div>
               </div>
 
-              <div class="muted" style="font-weight:900;font-size:13px;">
+              <div style="color:var(--muted); font-weight:900; font-size:13px;">
                 Scroll wheel or tap +/−. Updates all 3 options together.
               </div>
             </div>
@@ -930,48 +1044,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: OUTAGE VIDEO (LOCAL MP4) -->
-    <section class="slide" data-slide>
-      <div class="slideHead">
-        <h2><span class="spark"></span> Outage Demo</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/support/energy/virtual-power-plant/sce">Tesla VPP (SCE)</a>
-          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/powerwall">Powerwall</a>
-        </div>
-      </div>
-      <div class="slideBody">
-        <div class="videoShell">
-          <div class="videoFrame">
-            <video id="outageVid" controls playsinline preload="metadata">
-              <source src="Outagevideo.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div class="cap">
-            <div>Home powered during outage (storage)</div>
-            <small>Plays inline on iPhone</small>
-          </div>
-        </div>
-
-        <div class="ctaGrid" style="margin-top:14px;">
-          <div class="bigCTA primary" id="btnSCE">
-            <div class="t">
-              <div class="title">SCE: Updates to your bill</div>
-              <div class="badge2">Popup</div>
-            </div>
-            <div class="desc">Official SCE explanation of billing/rate updates and why charges change.</div>
-          </div>
-          <div class="bigCTA" id="btnLAT">
-            <div class="t">
-              <div class="title">LA Times: Edison rate case</div>
-              <div class="badge2">Popup</div>
-            </div>
-            <div class="desc">News context on rate cases and why rates continue to rise.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- SLIDE 6: TIMELINE -->
     <section class="slide" data-slide>
       <div class="slideHead">
@@ -980,7 +1052,7 @@
           <a class="btn" target="_blank" rel="noreferrer" href="https://www.sunup-energy.com">sunup-energy.com</a>
           <a class="btn" target="_blank" rel="noreferrer" href="https://fulfillpower.com">fulfillpower.com</a>
           <a class="btn primary" target="_blank" rel="noreferrer"
-             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33p_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
+             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33aL_iPZUyUpu_SzVI30rKWvofbcNHLRJ4VaxEepZ7V0Em9qWKB4eJ7S79uZ8SMddoiF83pzp_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
         </div>
       </div>
       <div class="slideBody">
@@ -998,12 +1070,16 @@
   </div>
 </div>
 
+<!-- Mobile-first dock nav -->
 <div class="presentBar">
-  <button class="btn" id="btnPrev" type="button">Prev</button>
-  <button class="btn primary" id="btnNext" type="button">Next</button>
+  <div class="dock">
+    <button class="btn" id="btnPrev" type="button">Prev</button>
+    <button class="btn" id="btnStartDock" type="button">Start</button>
+    <button class="btn primary" id="btnNext" type="button">Next</button>
+  </div>
 </div>
 
-<!-- Modal (zoom) -->
+<!-- Modal zoom -->
 <div class="modal" id="modal">
   <div class="modalCard">
     <div class="modalHead">
@@ -1017,12 +1093,18 @@
 </div>
 
 <script>
-/* Local files (same folder as index.html) */
+/* Local files (same folder as index.html)
+   - Outagevideo.mp4
+   - Scebill.jpeg  (or EXACT filename you used)
+   - IMG_9100.jpeg
+   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png
+*/
 const ASSETS = {
   logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
   billNoSolar: "Scebill.jpeg",
   billSolar: "IMG_9100.jpeg",
   outageVideo: "Outagevideo.mp4",
+
   linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
   linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case"
 };
@@ -1060,6 +1142,10 @@ $("btnNextTop").addEventListener("click", next);
 $("btnPrevTop").addEventListener("click", prev);
 $("btnHome").addEventListener("click", ()=>activate(0));
 
+$("btnStartDock").addEventListener("click", ()=>activate(0));
+$("btnNext").addEventListener("click", next);
+$("btnPrev").addEventListener("click", prev);
+
 document.addEventListener("keydown", (e)=>{
   if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
   if(e.key === "ArrowLeft"  || e.key === "PageUp"){ e.preventDefault(); prev(); }
@@ -1067,7 +1153,12 @@ document.addEventListener("keydown", (e)=>{
   if(e.key === "End"){ e.preventDefault(); activate(slides.length-1); }
 });
 
-/* Popup links */
+/* External open */
+function openExternal(url){
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+/* Popup for SCE / LA Times */
 function popupArticle(url){
   const w = Math.min(1100, screen.width * 0.92);
   const h = Math.min(820, screen.height * 0.88);
@@ -1218,7 +1309,6 @@ function buildYearWheel(){
     }
   });
 
-  // init from Start slide
   $("uPay").value = $("startBill").value;
   recalc();
   setYear(1, true);
@@ -1239,35 +1329,27 @@ $("btnReset").addEventListener("click", ()=>{
 (function init(){
   refreshSlides();
 
-  // Assets
   $("logoImg").src = ASSETS.logo;
 
   const noSolar = $("imgBillNoSolar");
   const solar = $("imgBillSolar");
+
   noSolar.src = ASSETS.billNoSolar;
   solar.src = ASSETS.billSolar;
 
-  // Zoom in-modal (keeps presentation locked)
   noSolar.addEventListener("click", ()=>openModal("Bill (No Solar)", ASSETS.billNoSolar));
   solar.addEventListener("click", ()=>openModal("Bill (Solar + Storage)", ASSETS.billSolar));
 
-  // Links (bind once; reused on 2 slides)
-  const bindLinks = ()=>{
-    const a = document.querySelectorAll("#btnSCE");
-    const b = document.querySelectorAll("#btnLAT");
-    a.forEach(el=> el.onclick = ()=>popupArticle(ASSETS.linkSCE));
-    b.forEach(el=> el.onclick = ()=>popupArticle(ASSETS.linkLAT));
-  };
-  bindLinks();
+  // SCE + LA Times links only on Problem slide
+  $("btnSCE").onclick = ()=>popupArticle(ASSETS.linkSCE);
+  $("btnLAT").onclick = ()=>popupArticle(ASSETS.linkLAT);
 
-  // Video source local
+  // Outage video source
   const v = $("outageVid");
   v.querySelector("source").src = ASSETS.outageVideo;
   v.load();
 
-  // Wheel
   buildYearWheel();
-
   activate(0);
 })();
 </script>
