@@ -71,9 +71,13 @@
   }
   .brand{display:flex; align-items:center; gap:12px; min-width:240px;}
   .brand img{
-    height:40px; width:auto; display:block;
+    height:52px; width:auto; display:block; /* increased logo size */
     filter:drop-shadow(0 12px 28px rgba(0,0,0,.30));
   }
+  @media (max-width:720px){
+    .brand img{height:42px;}
+  }
+
   .brandTitle{display:flex; flex-direction:column; line-height:1.1}
   .brandTitle .name{
     font-weight:1000; letter-spacing:-.02em;
@@ -113,7 +117,7 @@
   }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
 
-  /* ===== Mobile compact topbar: hide big nav, keep only hamburger ===== */
+  /* ===== Mobile compact topbar ===== */
   .hamburger{display:none}
   .mobileControls{display:none}
   @media (max-width: 720px){
@@ -121,9 +125,8 @@
       padding:10px 12px;
       gap:10px;
     }
-    .brand img{height:34px}
     .brandTitle .sub{display:none}
-    .nav{display:none} /* hide big row */
+    .nav{display:none}
     .hamburger{
       display:inline-flex;
       align-items:center;
@@ -141,6 +144,7 @@
       display:flex;
       gap:10px;
       align-items:center;
+      margin-left:auto;
     }
   }
 
@@ -174,22 +178,23 @@
   }
   .badge .t{font-weight:1000; color: rgba(255,255,255,.90); font-size:13px; letter-spacing:-.02em;}
 
-  /* ===== Fullscreen button ===== */
+  /* ===== Fullscreen button: moved to the right so it never blocks the logo ===== */
   .fsBtn{
     position:fixed;
     top: calc(12px + var(--safeT));
-    left: 12px;
+    right: 12px;     /* moved */
+    left: auto;
     z-index:130;
   }
   @media (max-width:720px){
-    .fsBtn{display:none;} /* keep UI clean on phones; fullscreen still accessible in menu */
-    .badge{display:none;} /* reduce clutter on phones */
+    .fsBtn{display:none;}
+    .badge{display:none;}
   }
 
   /* ===== Deck ===== */
   .deck{
     height:100%;
-    padding-top: calc(96px + var(--safeT));
+    padding-top: calc(110px + var(--safeT)); /* more space for bigger logo */
     padding-bottom: calc(92px + var(--safeB));
     display:flex;
     align-items:stretch;
@@ -197,7 +202,7 @@
   }
   @media (max-width:720px){
     .deck{
-      padding-top: calc(70px + var(--safeT));
+      padding-top: calc(74px + var(--safeT));
       padding-bottom: calc(82px + var(--safeB));
     }
   }
@@ -268,7 +273,7 @@
     .slideBody{ padding:12px; }
   }
 
-  /* ===== Bottom dock (phones: just Prev/Next, big, easy) ===== */
+  /* ===== Bottom dock ===== */
   .presentBar{
     position:fixed;
     left: max(10px, var(--safeL));
@@ -297,10 +302,9 @@
     font-size:15px;
     font-weight:1000;
   }
-
   @media (max-width:720px){
     .dock{
-      grid-template-columns: 1fr 1fr; /* prev/next only */
+      grid-template-columns: 1fr 1fr;
       gap:10px;
       padding:10px;
     }
@@ -311,7 +315,7 @@
     #btnStartDock{display:none;}
   }
 
-  /* ===== Slide menu drawer (mobile) ===== */
+  /* ===== Drawer (mobile) ===== */
   .drawerOverlay{
     position:fixed; inset:0;
     background: rgba(0,0,0,.55);
@@ -838,6 +842,70 @@
   }
   .step .t{font-weight:1000; letter-spacing:-.02em;}
   .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900;}
+
+  /* ===== In-page modal viewer for bills + links (keeps everything inside this page) ===== */
+  .modalOverlay{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,.68);
+    z-index:300;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .16s ease;
+  }
+  .modalOverlay.open{opacity:1; pointer-events:auto;}
+  .modal{
+    position:fixed;
+    left: max(10px, var(--safeL));
+    right: max(10px, var(--safeR));
+    top: calc(10px + var(--safeT));
+    bottom: calc(10px + var(--safeB));
+    z-index:310;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(10,16,24,.96);
+    box-shadow: 0 26px 100px rgba(0,0,0,.65);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transform: translateY(14px);
+    opacity:0;
+    pointer-events:none;
+    transition: transform .16s ease, opacity .16s ease;
+  }
+  .modal.open{opacity:1; pointer-events:auto; transform: translateY(0);}
+  .modalHead{
+    padding:12px 12px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .modalTitle{
+    font-weight:1000;
+    letter-spacing:-.02em;
+  }
+  .modalBody{
+    flex:1;
+    background:#000;
+    position:relative;
+  }
+  .modalBody img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#000;
+  }
+  .modalBody iframe{
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+    background:#000;
+  }
+  .modalActions{display:flex; gap:10px; flex-wrap:wrap;}
 </style>
 </head>
 
@@ -894,6 +962,19 @@
   <div class="drawerBody" id="drawerBody"></div>
 </div>
 
+<!-- In-page Modal -->
+<div class="modalOverlay" id="modalOverlay"></div>
+<div class="modal" id="modal">
+  <div class="modalHead">
+    <div class="modalTitle" id="modalTitle">Preview</div>
+    <div class="modalActions">
+      <button class="btn" id="btnModalOpenExternal" type="button">Open External</button>
+      <button class="btn danger" id="btnModalClose" type="button">Close</button>
+    </div>
+  </div>
+  <div class="modalBody" id="modalBody"></div>
+</div>
+
 <div class="deck">
   <div class="stage" id="stage">
 
@@ -927,7 +1008,7 @@
     </section>
 
     <!-- SLIDE 2: PROBLEM + LINKS -->
-    <section class="slide" data-slide data-title="Rate Problem" data-sub="TOU, 13% increase, LA fires (links)">
+    <section class="slide" data-slide data-title="Rate Problem" data-sub="TOU, 13% increase, LA fires (in-page links)">
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -939,11 +1020,11 @@
         <div class="grid grid2">
           <div class="card">
             <div class="mediaFrame">
-              <img id="imgBillNoSolar" alt="Bill without solar (SCE)" />
+              <img id="imgBillNoSolar" alt="Bill without solar (SCE)" style="cursor:pointer" />
             </div>
             <div class="cap">
               <div>Bill example (no solar)</div>
-              <small>Locked for presentation</small>
+              <small>Tap to zoom</small>
             </div>
           </div>
 
@@ -954,26 +1035,26 @@
             </div>
             <div style="margin-top:10px;color:var(--muted);font-weight:900;line-height:1.5;font-size:14.5px;">
               Time-of-Use (TOU) pricing charges more when the grid is stressed. That “peak window” is where bills explode.
-              Batteries change the game by shifting energy away from peak purchases.
+              Batteries shift energy into peak and reduce expensive purchases.
             </div>
 
             <div class="ctaGrid">
-              <div class="bigCTA" onclick="popupArticle(ASSETS.linkTOU)">
+              <div class="bigCTA" onclick="openInPageLink('SCE Time-of-Use Rates (TOU)', ASSETS.linkTOU)">
                 <div class="ctaLabel"><span class="dotMini"></span> TOU</div>
                 <div class="ctaTitle">SCE Time-of-Use Rates</div>
                 <div class="ctaDesc">Official TOU rate plans and time-of-day pricing.</div>
               </div>
 
-              <div class="bigCTA" onclick="popupArticle(ASSETS.linkSCE)">
+              <div class="bigCTA" onclick="openInPageLink('SCE Bill Updates (13% Increase Context)', ASSETS.linkSCE)">
                 <div class="ctaLabel"><span class="dotMini"></span> 13% increase</div>
                 <div class="ctaTitle">SCE: Understanding bill updates</div>
                 <div class="ctaDesc">Why charges change and what updates mean on the bill.</div>
               </div>
 
-              <div class="bigCTA" onclick="popupArticle(ASSETS.linkLAT)">
+              <div class="bigCTA" onclick="openInPageLink('LA Times: Edison Rate Case (LA Fires Context)', ASSETS.linkLAT)">
                 <div class="ctaLabel"><span class="dotMini"></span> L.A fires</div>
                 <div class="ctaTitle">LA Times: Edison rate case</div>
-                <div class="ctaDesc">Context on the rate case and drivers behind increases.</div>
+                <div class="ctaDesc">Context on rate cases and drivers behind increases.</div>
               </div>
             </div>
 
@@ -983,11 +1064,13 @@
     </section>
 
     <!-- SLIDE 3: OUTAGE DEMO -->
-    <section class="slide" data-slide data-title="Outage Demo" data-sub="Backup essentials + Tesla VPP links">
+    <section class="slide" data-slide data-title="Outage Demo" data-sub="Backup essentials + Tesla VPP (in-page)">
       <div class="slideHead">
         <h2><span class="spark"></span> Outage Demo</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <span class="catch"><span class="dot"></span> Win the day, own the night</span>
+          <span style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(251,201,9,.22);background:linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));padding:10px 12px;border-radius:999px;font-weight:1000;">
+            <span class="dot"></span> Win the day, own the night
+          </span>
         </div>
       </div>
 
@@ -1006,7 +1089,7 @@
           <div class="card" style="padding:16px;">
             <div class="headline">Major things you can back up</div>
             <div style="color:var(--muted);font-weight:900;line-height:1.45;">
-              The same batteries that cut peak costs also keep essentials running during outages.
+              Batteries protect comfort and safety during outages — and they’re also the same tool that reduces peak costs.
             </div>
 
             <div class="backupGrid">
@@ -1019,17 +1102,13 @@
             </div>
 
             <div style="display:grid;gap:10px;margin-top:14px;">
-              <button class="btn primary" type="button" onclick="openExternal(ASSETS.linkTeslaVPP)">
+              <button class="btn primary" type="button" onclick="openInPageLink('Tesla Virtual Power Plant', ASSETS.linkTeslaVPP)">
                 Tesla Virtual Power Plant
               </button>
-              <button class="btn" type="button" onclick="openExternal(ASSETS.linkTeslaVPP_SCE)">
+              <button class="btn" type="button" onclick="openInPageLink('Tesla VPP (SCE Program Page)', ASSETS.linkTeslaVPP_SCE)">
                 Tesla VPP (SCE page)
               </button>
-              <button class="btn" type="button" onclick="openExternal(ASSETS.linkPowerwall)">
-                Powerwall overview
-              </button>
             </div>
-
           </div>
         </div>
       </div>
@@ -1048,11 +1127,11 @@
         <div class="grid grid2">
           <div class="card">
             <div class="mediaFrame">
-              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" />
+              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" style="cursor:pointer"/>
             </div>
             <div class="cap">
               <div>Bill example (solar + storage)</div>
-              <small>Locked for presentation</small>
+              <small>Tap to zoom</small>
             </div>
           </div>
 
@@ -1271,8 +1350,7 @@ const ASSETS = {
   linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
 
   linkTeslaVPP: "https://www.tesla.com/support/energy/virtual-power-plant",
-  linkTeslaVPP_SCE: "https://www.tesla.com/support/energy/virtual-power-plant/sce",
-  linkPowerwall: "https://www.tesla.com/powerwall"
+  linkTeslaVPP_SCE: "https://www.tesla.com/support/energy/virtual-power-plant/sce"
 };
 
 const $ = (id)=>document.getElementById(id);
@@ -1288,7 +1366,7 @@ function updateHUD(){
   $("progressFill").style.width = `${pct}%`;
   const c = $("slideCounter");
   if(c) c.textContent = `Slide ${idx+1} / ${slides.length}`;
-  buildDrawerList(); // keep menu in sync
+  buildDrawerList();
 }
 
 function activate(i){
@@ -1305,7 +1383,6 @@ function prev(){ activate(idx-1); }
 function go(i){ activate(i); closeDrawer(); }
 window.go = go;
 
-/* Top controls (desktop) */
 $("btnNext")?.addEventListener("click", next);
 $("btnPrev")?.addEventListener("click", prev);
 $("btnNextTop")?.addEventListener("click", next);
@@ -1330,23 +1407,61 @@ function toggleFS(){
 $("btnFS")?.addEventListener("click", toggleFS);
 $("btnFSMenu")?.addEventListener("click", toggleFS);
 
-/* External open */
-function openExternal(url){
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-window.openExternal = openExternal;
+/* ===== In-page modal (images + links) ===== */
+const modal = $("modal");
+const modalOverlay = $("modalOverlay");
+const modalBody = $("modalBody");
+const modalTitle = $("modalTitle");
+const btnModalClose = $("btnModalClose");
+const btnModalOpenExternal = $("btnModalOpenExternal");
 
-/* Popup */
-function popupArticle(url){
-  const w = Math.min(1100, Math.floor(screen.width * 0.92));
-  const h = Math.min(820,  Math.floor(screen.height * 0.88));
-  const left = Math.max(0, Math.floor((screen.width - w) / 2));
-  const top  = Math.max(0, Math.floor((screen.height - h) / 2));
-  const win = window.open(url, "LOS_POP", `popup=yes,scrollbars=yes,resizable=yes,width=${w},height=${h},left=${left},top=${top}`);
-  if(win) win.focus();
-  else openExternal(url);
+let modalExternalUrl = null;
+
+function openModal({title, type, src, externalUrl}){
+  modalTitle.textContent = title || "Preview";
+  modalBody.innerHTML = "";
+  modalExternalUrl = externalUrl || null;
+  btnModalOpenExternal.style.display = modalExternalUrl ? "inline-flex" : "none";
+
+  if(type === "image"){
+    const img = document.createElement("img");
+    img.alt = title || "Image";
+    img.src = src;
+    modalBody.appendChild(img);
+  }else if(type === "iframe"){
+    const iframe = document.createElement("iframe");
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "no-referrer";
+    iframe.src = src;
+    modalBody.appendChild(iframe);
+  }
+
+  modalOverlay.classList.add("open");
+  modal.classList.add("open");
 }
-window.popupArticle = popupArticle;
+
+function closeModal(){
+  modalOverlay.classList.remove("open");
+  modal.classList.remove("open");
+  // keep content for a beat to avoid iOS repaint flash
+  setTimeout(()=>{ modalBody.innerHTML=""; }, 180);
+}
+
+btnModalClose.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", closeModal);
+btnModalOpenExternal.addEventListener("click", ()=>{
+  if(modalExternalUrl) window.open(modalExternalUrl, "_blank", "noopener,noreferrer");
+});
+
+function openBillZoom(title, imgSrc){
+  openModal({ title, type:"image", src: imgSrc, externalUrl: null });
+}
+
+function openInPageLink(title, url){
+  // Attempt in-page iframe; if site blocks embedding, user can tap "Open External"
+  openModal({ title, type:"iframe", src: url, externalUrl: url });
+}
+window.openInPageLink = openInPageLink;
 
 /* Start slide -> Utility bill sync */
 function syncStartBillToCalculator(){
@@ -1518,10 +1633,6 @@ function initTimeline(){
         <div class="mk">Why this matters</div>
         <div class="mv">${data.why}</div>
       </div>
-      <div class="metric" style="margin-top:10px">
-        <div class="mk">Impactful note</div>
-        <div class="mv" style="color:var(--opt1)">Clear timelines reduce stress and protect your project</div>
-      </div>
       <div style="margin-top:10px;color:rgba(255,255,255,.78);font-weight:900;line-height:1.4;font-size:13px;">
         First payment is typically <strong>one month after PTO</strong> — not at install.
       </div>
@@ -1565,7 +1676,7 @@ function buildDrawerList(){
     item.addEventListener("click", ()=>go(i));
     drawerBody.appendChild(item);
   });
-  // quick actions
+
   const hr = document.createElement("div");
   hr.style.height="1px";
   hr.style.background="rgba(255,255,255,.10)";
@@ -1588,8 +1699,16 @@ overlay?.addEventListener("click", closeDrawer);
   refreshSlides();
 
   $("logoImg").src = ASSETS.logo;
-  $("imgBillNoSolar").src = ASSETS.billNoSolar;
-  $("imgBillSolar").src = ASSETS.billSolar;
+
+  const imgNo = $("imgBillNoSolar");
+  const imgSo = $("imgBillSolar");
+
+  imgNo.src = ASSETS.billNoSolar;
+  imgSo.src = ASSETS.billSolar;
+
+  // Tap-to-zoom bills inside the same window
+  imgNo.addEventListener("click", ()=>openBillZoom("Bill example (no solar)", ASSETS.billNoSolar));
+  imgSo.addEventListener("click", ()=>openBillZoom("Bill example (solar + storage)", ASSETS.billSolar));
 
   const v = $("outageVid");
   v.src = ASSETS.outageVideo;
