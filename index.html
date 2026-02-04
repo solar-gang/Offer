@@ -13,14 +13,13 @@
     --gold:#FBC909;
     --teal:#3AADBB;
 
-    --utility:#ff3b30;
-    --opt1:#34c759;
-    --opt2:#00c2ff;
+    --utility:#ff3b30; /* red */
+    --opt1:#34c759;    /* green */
+    --opt2:#00c2ff;    /* cyan */
 
     --text:rgba(255,255,255,.96);
     --muted:rgba(255,255,255,.72);
     --muted2:rgba(255,255,255,.56);
-    --border:rgba(255,255,255,.14);
 
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
     --r:16px;
@@ -38,15 +37,15 @@
     margin:0;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
-    background: linear-gradient(180deg, var(--navy2), var(--navy)); /* iPhone-safe */
+    background: linear-gradient(180deg, var(--navy2), var(--navy));
     overflow:hidden;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
 
+  button, a, input { -webkit-tap-highlight-color: transparent; }
   a{color:#cfe8ff;text-decoration:none}
   a:hover{text-decoration:underline}
-  button, a, input { -webkit-tap-highlight-color: transparent; }
 
   /* Top bar */
   .topbar{
@@ -203,10 +202,140 @@
 
   /* Layout */
   .grid{display:grid; gap:14px;}
-  .grid2{grid-template-columns: 1.05fr .95fr;}
-  .grid2eq{grid-template-columns:1fr 1fr;}
-  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
+  .grid2{grid-template-columns: 1.15fr .85fr;}
+  @media (max-width:980px){ .grid2{grid-template-columns:1fr;} }
 
+  /* Big centered input slide */
+  .focusWrap{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .focusCard{
+    width:min(980px, 100%);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    background: rgba(0,0,0,.16);
+    padding:18px;
+  }
+  .focusTitle{
+    font-weight:1000;
+    letter-spacing:-.04em;
+    font-size: clamp(26px, 3.2vw, 44px);
+    margin:0 0 10px;
+    line-height:1.05;
+  }
+  .focusSub{
+    color:var(--muted);
+    font-weight:900;
+    margin:0 0 16px;
+    line-height:1.45;
+  }
+  .bigRedBox{
+    border:1px solid rgba(255,59,48,.35);
+    background: rgba(255,59,48,.10);
+    border-radius:18px;
+    padding:14px;
+  }
+  .bigLabel{
+    color:rgba(255,255,255,.86);
+    font-weight:1000;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size:12px;
+  }
+  .bigInput{
+    margin-top:10px;
+    width:100%;
+    border-radius:18px;
+    border:1px solid rgba(255,59,48,.40);
+    background: rgba(0,0,0,.20);
+    color: rgba(255,255,255,.98);
+    font-weight:1000;
+    font-size: clamp(26px, 4.5vw, 48px);
+    padding:16px 16px;
+    outline:none;
+    min-height:64px;
+    text-align:center;
+  }
+  .bigHint{
+    margin-top:10px;
+    color:rgba(255,255,255,.78);
+    font-weight:900;
+    line-height:1.35;
+    font-size:13px;
+  }
+  .bigActions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:14px;
+    justify-content:flex-end;
+  }
+
+  /* TOU / Bill visual */
+  .card{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.14);
+    overflow:hidden;
+  }
+  .card img{
+    width:100%;
+    height: min(52vh, 540px);
+    object-fit: contain;
+    display:block;
+    background:#000;
+    cursor:pointer;
+  }
+  .cap{
+    padding:12px 14px;
+    border-top:1px solid rgba(255,255,255,.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    background: rgba(0,0,0,.12);
+    font-weight:1000;
+  }
+  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
+
+  .panel{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.14);
+    padding:16px;
+  }
+  .panel .k{
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .panel .h{
+    margin-top:10px;
+    font-weight:1000;
+    letter-spacing:-.04em;
+    font-size: clamp(22px, 3vw, 38px);
+    line-height:1.05;
+  }
+  .gradText{
+    background:var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-weight:1000;
+  }
+  .panel p{
+    margin:10px 0 0;
+    color:var(--muted);
+    font-weight:900;
+    line-height:1.5;
+    font-size:14px;
+  }
+  .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
   .pill{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.18);
@@ -220,99 +349,59 @@
     white-space:nowrap;
   }
 
-  .hero{
-    height:100%;
+  /* Big link buttons */
+  .ctaGrid{
     display:grid;
-    grid-template-columns: 1.18fr .82fr;
-    gap:14px;
-    align-items:stretch;
-  }
-  @media (max-width: 980px){ .hero{ grid-template-columns:1fr; } }
-
-  .heroCard{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    padding:18px;
-  }
-  .heroCard h1{
-    margin:0;
-    font-size: clamp(28px, 4.3vw, 58px);
-    letter-spacing:-.055em;
-    line-height:1.01;
-  }
-  .gradText{
-    background:var(--grad);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    font-weight:1000;
-  }
-  .heroCard p{margin:10px 0 0; color:var(--muted); font-size:15.5px; line-height:1.45;}
-  .heroRow{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-
-  .heroQuick{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    padding:18px;
-    display:grid;
+    grid-template-columns: 1fr 1fr;
     gap:12px;
+    margin-top:14px;
   }
-  .stat{
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:16px;
-    background: rgba(255,255,255,.04);
-    padding:12px;
-  }
-  .stat .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .stat .v{margin-top:8px; font-weight:1000; letter-spacing:-.02em; font-size: 20px;}
-  .stat .v span{ color: var(--utility); }
-  .stat .sub{margin-top:6px; color:var(--muted); font-weight:900; font-size: 13px; line-height:1.35;}
-
-  /* Cards with safe image sizing */
-  .card, .linkCard{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    overflow:hidden;
-  }
-  .card img, .linkCard img{
-    width:100%;
-    height: min(52vh, 520px);
-    object-fit: contain;
-    display:block;
-    background:#000;
+  @media (max-width:980px){ .ctaGrid{grid-template-columns:1fr;} }
+  .bigCTA{
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:20px;
+    background: rgba(255,255,255,.06);
+    padding:16px;
     cursor:pointer;
+    text-align:left;
+    min-height:104px;
   }
-  .cap, .linkCap{
-    padding:12px 14px;
-    border-top:1px solid rgba(255,255,255,.10);
+  .bigCTA .t{
     display:flex;
+    align-items:center;
     justify-content:space-between;
     gap:10px;
-    align-items:center;
-    background: rgba(0,0,0,.12);
+    flex-wrap:wrap;
+  }
+  .bigCTA .title{
     font-weight:1000;
+    letter-spacing:-.03em;
+    font-size:20px;
+    line-height:1.1;
   }
-  .cap small, .linkCap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
+  .bigCTA .badge2{
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;
+    padding:7px 10px;
+    font-weight:950;
+    font-size:12px;
+    background: rgba(0,0,0,.18);
+    color: rgba(255,255,255,.88);
+    white-space:nowrap;
+  }
+  .bigCTA .desc{
+    margin-top:10px;
+    color: var(--muted);
+    font-weight:900;
+    line-height:1.4;
+    font-size:13.5px;
+  }
+  .bigCTA.primary{
+    background: linear-gradient(135deg, rgba(251,201,9,.18), rgba(58,173,187,.14));
+    border-color: rgba(251,201,9,.20);
+  }
 
-  .rateBox{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.14);
-    padding:16px;
-  }
-  .rateBox .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .rateBox .v{margin-top:10px; font-weight:1000; font-size: clamp(24px, 3.2vw, 44px); letter-spacing:-.04em;}
-  .rateBox .delta{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-  .rateBox .delta strong{
-    color:#07121b;background:var(--grad);
-    border-radius:999px;padding:8px 10px;font-weight:1000;
-  }
-  .muted{color:var(--muted)}
-
-  /* Compare */
+  /* ========= CALCULATOR + YEAR WHEEL (UNCHANGED) ========= */
   .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
   @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
   .col{
@@ -358,7 +447,6 @@
     font-weight:1000; font-size:16px;
     outline:none; min-height:44px;
   }
-
   .metric{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.14);
@@ -373,7 +461,6 @@
   .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
   .metric .mv{font-weight:1000; font-size:18px;}
 
-  /* Year wheel (O(1) math, iPhone-safe) */
   .yearPanel{
     margin-top:14px;
     border:1px solid rgba(255,255,255,.14);
@@ -465,7 +552,7 @@
     overflow-y:auto;
     scroll-snap-type:y mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 88px 0; /* must match JS math */
+    padding: 88px 0;
     margin:0;
   }
   .wheelList::-webkit-scrollbar{ width:0; height:0; }
@@ -542,7 +629,7 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Video (loads on demand only) */
+  /* Video */
   .videoShell{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
@@ -592,6 +679,7 @@
 </head>
 
 <body>
+
 <div class="topbar">
   <div class="topbarInner">
     <div class="brand">
@@ -602,7 +690,7 @@
       </div>
     </div>
     <div class="nav">
-      <button class="btn" id="btnHome" type="button">Home</button>
+      <button class="btn" id="btnHome" type="button">Start</button>
       <button class="btn" id="btnPrevTop" type="button">Prev</button>
       <button class="btn primary" id="btnNextTop" type="button">Next</button>
       <button class="btn danger" id="btnReset" type="button">Reset</button>
@@ -621,127 +709,109 @@
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1 -->
+    <!-- SLIDE 1: BIG RED INPUT -->
     <section class="slide active" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Closing Tool</h2>
+        <h2><span class="spark"></span> Customer Starting Point</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Win the day • Own the night</span>
+          <span class="pill"><span class="dot"></span> This feeds the calculator</span>
         </div>
       </div>
       <div class="slideBody">
-        <div class="hero">
-          <div class="heroCard">
-            <h1>Win the day. <span class="gradText">Own the night.</span></h1>
-            <p>Show the problem, show proof, then compare payments year-by-year. Built for iPhone + laptop presentations.</p>
-            <div class="heroRow">
-              <button class="btn primary" type="button" onclick="go(1)">Start</button>
-              <button class="btn" type="button" onclick="go(4)">Compare</button>
-              <button class="btn" type="button" onclick="go(6)">Timeline</button>
+        <div class="focusWrap">
+          <div class="focusCard">
+            <h1 class="focusTitle">What is your <span class="gradText">average</span> monthly Edison bill?</h1>
+            <p class="focusSub">
+              Enter the customer’s average monthly payment. This automatically populates the Utility column in the comparison tool.
+            </p>
+
+            <div class="bigRedBox">
+              <div class="bigLabel">Average monthly utility payment (USD)</div>
+              <input class="bigInput" id="startBill" inputmode="decimal" value="458" aria-label="Average monthly utility bill"/>
+              <div class="bigHint">
+                Tip: If the customer’s bill varies, use the average of the last 12 months.
+              </div>
             </div>
-          </div>
-          <div class="heroQuick">
-            <div class="stat">
-              <div class="k">Rates (15 years)</div>
-              <div class="v"><span>$0.17</span> → <span>$0.42</span> / kWh</div>
-              <div class="sub">The “when” is what changed.</div>
-            </div>
-            <div class="stat">
-              <div class="k">Proof</div>
-              <div class="v">$28 bill example</div>
-              <div class="sub">Controlled peak buying.</div>
-            </div>
-            <div class="stat">
-              <div class="k">Close</div>
-              <div class="v">Year wheel</div>
-              <div class="sub">Year 1 → Year 25 instantly.</div>
+
+            <div class="bigActions">
+              <button class="btn" type="button" onclick="go(1)">See TOU Breakdown</button>
+              <button class="btn primary" type="button" onclick="go(2)">Go to Calculator</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2 -->
+    <!-- SLIDE 2: TOU / BILL VISUAL BREAKDOWN -->
     <section class="slide" data-slide data-hydrate="problem">
       <div class="slideHead">
-        <h2><span class="spark"></span> The Problem</h2>
+        <h2><span class="spark"></span> Why the bill is expensive (TOU)</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Edison rates keep rising</span>
+          <span class="pill"><span class="dot"></span> Peak-hours pricing drives the pain</span>
         </div>
       </div>
       <div class="slideBody">
-        <div class="grid grid2">
-          <div class="card">
-            <img id="imgUtilityBill" alt="Utility bill without solar" />
-            <div class="cap"><div>Today’s bill (no solar)</div><small>Tap to view</small></div>
-          </div>
-          <div class="rateBox">
-            <div class="k">Rates exploded</div>
-            <div class="v"><span style="color:var(--utility);">$0.17</span> → <span style="color:var(--utility);">$0.42</span> / kWh</div>
-            <div class="delta"><span>≈ 15 years</span><strong>+147%</strong></div>
-            <div class="muted" style="font-weight:900;font-size:13px;margin-top:10px;">TOU peak hours is where the pain is.</div>
-          </div>
-        </div>
-        <div class="grid grid2eq" style="margin-top:16px">
-          <div class="linkCard" id="thumbSCE">
-            <img id="imgThumbSCE" alt="SCE bill updates thumbnail"/>
-            <div class="linkCap"><span>SCE: Understanding bill updates</span><small>Open</small></div>
-          </div>
-          <div class="linkCard" id="thumbLAT">
-            <img id="imgThumbLAT" alt="LA Times Edison rate case thumbnail"/>
-            <div class="linkCap"><span>LA Times: Edison rate case</span><small>Open</small></div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- SLIDE 3 -->
-    <section class="slide" data-slide data-hydrate="proof">
-      <div class="slideHead">
-        <h2><span class="spark"></span> Proof</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Solar + Storage</span>
-        </div>
-      </div>
-      <div class="slideBody">
         <div class="grid grid2">
           <div class="card">
-            <img id="imgSolarBill" alt="Solar + storage bill example" />
-            <div class="cap"><div>Solar + storage bill example ($28)</div><small>Tap to view</small></div>
-          </div>
-          <div class="rateBox">
-            <div class="k">Why it can be low</div>
-            <div class="v"><span class="gradText">$28</span> month example</div>
-            <div class="muted" style="font-weight:900;margin-top:10px;line-height:1.45">
-              Solar covers daytime usage. Batteries cover peak hours. The utility becomes a backup supplier instead of the main supplier.
-              What remains is usually minimum charges + small net usage.
+            <img id="imgUtilityBill" alt="Utility bill without solar"/>
+            <div class="cap">
+              <div>Customer bill example (no solar)</div>
+              <small>Tap to zoom</small>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- SLIDE 4 -->
-    <section class="slide" data-slide>
-      <div class="slideHead">
-        <h2><span class="spark"></span> Time-of-Use Strategy</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Solar powers day • Batteries own peak</span>
-        </div>
-      </div>
-      <div class="slideBody">
-        <div class="rateBox">
-          <div class="k">The core idea</div>
-          <div class="v">Stop buying peak power.</div>
-          <div class="muted" style="font-weight:900;margin-top:10px;line-height:1.45">
-            TOU pricing is the battlefield. Produce during the day, store surplus, and discharge during peak hours.
-            Same batteries that save money also provide outage backup.
+          <div class="panel">
+            <div class="k">What TOU means in real life</div>
+            <div class="h">Your bill isn’t just how much you use — it’s <span class="gradText">when</span> you buy it.</div>
+
+            <p>
+              Under Time-of-Use rates, electricity costs more during “peak” hours when the grid is stressed.
+              Even if a home uses the same total kWh, buying more power during peak hours can make the bill jump.
+            </p>
+
+            <div class="pillRow">
+              <span class="pill"><span class="dot"></span> Peak = most expensive</span>
+              <span class="pill"><span class="dot"></span> Off-peak = cheaper</span>
+              <span class="pill"><span class="dot"></span> Delivery + fees still exist</span>
+            </div>
+
+            <p style="margin-top:14px">
+              The solution isn’t “use less power” — it’s: <b>stop buying peak power</b>.
+              Solar helps during the day. Batteries cover peak hours.
+            </p>
+
+            <div class="ctaGrid">
+              <div class="bigCTA primary" id="btnSCE">
+                <div class="t">
+                  <div class="title">SCE: Understanding updates to your bill</div>
+                  <div class="badge2">Opens in popup</div>
+                </div>
+                <div class="desc">
+                  Official SCE page explaining how residential rate plans and bill structures change,
+                  and why customers can see higher charges over time.
+                </div>
+              </div>
+
+              <div class="bigCTA" id="btnLAT">
+                <div class="t">
+                  <div class="title">LA Times: Edison general rate case</div>
+                  <div class="badge2">Opens in popup</div>
+                </div>
+                <div class="desc">
+                  A news breakdown on Edison’s rate case and cost pressures, giving customers context for
+                  why rates trend upward.
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- SLIDE 5 -->
+    <!-- SLIDE 3: CALCULATOR (DO NOT CHANGE) -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -850,7 +920,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 6 -->
+    <!-- SLIDE 4: VPP + OUTAGE DEMO -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Tesla VPP + Outage Demo</h2>
@@ -865,7 +935,7 @@
         <div class="videoShell">
           <div class="poster" id="demoPoster">
             <div class="pt">Outage Demo</div>
-            <div class="ps">Press <b>Load Outage Demo</b> to play here (loads only on demand to stay stable on iPhone).</div>
+            <div class="ps">Load only when needed (keeps iPhone stable).</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
               <button class="btn primary" type="button" id="btnLoadDemo">Load Outage Demo</button>
               <a class="btn" target="_blank" rel="noreferrer" href="https://www.canva.com/design/DAHAUW0lThM/7uWp2DvWgb6PSyIROmq5Rw/watch">Open in new tab</a>
@@ -878,7 +948,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 7 -->
+    <!-- SLIDE 5: TIMELINE -->
     <section class="slide" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Timeline</h2>
@@ -913,12 +983,12 @@
 /* ========= YOUR ASSETS ========= */
 const ASSETS = {
   logo: "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
-  utilityBill: "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_8578.jpeg",
-  solarBill:   "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9100.jpeg",
-  thumbSCE: "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9107.jpeg",
-  thumbLAT: "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/IMG_9106.jpeg",
+  // Updated bill image:
+  utilityBill: "https://raw.githubusercontent.com/solar-gang/Storage-presentation/main/Scebill.jpeg",
+
   linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
   linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
+
   canvaEmbed: "https://www.canva.com/design/DAHAUW0lThM/7uWp2DvWgb6PSyIROmq5Rw/watch?embed"
 };
 
@@ -977,7 +1047,7 @@ function popupArticle(url){
 }
 
 /* ========= HYDRATION (ONLY LOAD WHEN NEEDED) ========= */
-const hydrated = { logo:false, problem:false, proof:false, thumbs:false, wheel:false };
+const hydrated = { logo:false, problem:false, wheel:false };
 
 function hydrateForActiveSlide(){
   if(!hydrated.logo){
@@ -992,32 +1062,31 @@ function hydrateForActiveSlide(){
 
   if(tag === "problem" && !hydrated.problem){
     const u = $("imgUtilityBill");
-    // load only on slide open (still stable)
     u.loading="lazy"; u.decoding="async"; u.src = ASSETS.utilityBill;
     u.onclick = ()=>window.open(ASSETS.utilityBill, "_blank", "noopener,noreferrer");
 
-    $("imgThumbSCE").loading="lazy"; $("imgThumbSCE").decoding="async"; $("imgThumbSCE").src = ASSETS.thumbSCE;
-    $("imgThumbLAT").loading="lazy"; $("imgThumbLAT").decoding="async"; $("imgThumbLAT").src = ASSETS.thumbLAT;
-    $("thumbSCE").onclick = ()=>popupArticle(ASSETS.linkSCE);
-    $("thumbLAT").onclick = ()=>popupArticle(ASSETS.linkLAT);
+    $("btnSCE").onclick = ()=>popupArticle(ASSETS.linkSCE);
+    $("btnLAT").onclick = ()=>popupArticle(ASSETS.linkLAT);
 
     hydrated.problem = true;
   }
 
-  if(tag === "proof" && !hydrated.proof){
-    const s = $("imgSolarBill");
-    s.loading="lazy"; s.decoding="async"; s.src = ASSETS.solarBill;
-    s.onclick = ()=>window.open(ASSETS.solarBill, "_blank", "noopener,noreferrer");
-    hydrated.proof = true;
-  }
-
-  if(idx === 4 && !hydrated.wheel){
+  // Slide index 2 is calculator slide (0=start input, 1=TOU, 2=calculator)
+  if(idx === 2 && !hydrated.wheel){
     buildYearWheel();
     hydrated.wheel = true;
   }
 }
 
-/* ========= CALCULATOR + YEAR WHEEL ========= */
+/* ========= START SLIDE INPUT -> CALCULATOR SYNC ========= */
+function syncStartBillToCalculator(){
+  const v = $("startBill").value;
+  $("uPay").value = v;
+  recalc();
+}
+$("startBill").addEventListener("input", syncStartBillToCalculator);
+
+/* ========= CALCULATOR + YEAR WHEEL (UNCHANGED) ========= */
 let year = 1;
 let cache = { u:[], a:[], b:[], uTotal:0, aTotal:0, bTotal:0 };
 
@@ -1035,7 +1104,6 @@ function monthlySeries(baseMonthly, escPct, years=25){
   return out;
 }
 function totalSeries(series){ return series.reduce((s,m)=> s + (m*12), 0); }
-
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
 function recalc(){
@@ -1092,7 +1160,7 @@ function setYear(newYear, snapWheel){
       const target = items[i];
       if(target){
         const top = target.offsetTop - (wheel.clientHeight/2 - target.clientHeight/2);
-        wheel.scrollTo({ top, behavior: "auto" }); /* iPhone-safe */
+        wheel.scrollTo({ top, behavior: "auto" });
       }
     }
   }
@@ -1110,9 +1178,8 @@ function buildYearWheel(){
     wheel.appendChild(div);
   }
 
-  // O(1) year calc based on fixed sizes
   const ITEM_H = 44;
-  const PAD = 88; // must match CSS padding on .wheelList
+  const PAD = 88;
 
   let ticking = false;
   wheel.addEventListener("scroll", ()=>{
@@ -1120,9 +1187,7 @@ function buildYearWheel(){
     ticking = true;
     requestAnimationFrame(()=>{
       ticking = false;
-      // center line inside wheel list
       const center = wheel.scrollTop + (wheel.clientHeight/2);
-      // remove padding and align to item centers
       const pos = center - PAD - (ITEM_H/2);
       const idx = clamp(Math.round(pos / ITEM_H), 0, 24);
       const newYear = idx + 1;
@@ -1141,6 +1206,7 @@ function buildYearWheel(){
     }
   });
 
+  $("uPay").value = $("startBill").value;
   recalc();
   setYear(1, true);
 }
@@ -1159,9 +1225,13 @@ $("btnLoadDemo").addEventListener("click", ()=>{
 
 /* ========= RESET ========= */
 $("btnReset").addEventListener("click", ()=>{
-  $("uPay").value="458"; $("uEsc").value="9";
-  $("aPay").value="295"; $("aEsc").value="0";
-  $("bPay").value="325"; $("bEsc").value="0";
+  $("startBill").value="458";
+  if($("uPay")) $("uPay").value="458";
+  if($("uEsc")) $("uEsc").value="9";
+  if($("aPay")) $("aPay").value="295";
+  if($("aEsc")) $("aEsc").value="0";
+  if($("bPay")) $("bPay").value="325";
+  if($("bEsc")) $("bEsc").value="0";
   year = 1;
   if(cache.u.length) recalc();
   activate(0);
