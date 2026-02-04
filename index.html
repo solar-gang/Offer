@@ -1,397 +1,1275 @@
-<!-- index.html (script replacement) -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Solar + Storage Closing Tool</title>
+<meta name="theme-color" content="#0b1017"/>
+
+<style>
+  :root{
+    --navy:#0b1017;
+    --navy2:#06122a;
+    --gold:#FBC909;
+    --teal:#3AADBB;
+
+    --utility:#ff3b30;
+    --opt1:#34c759;
+    --opt2:#00c2ff;
+
+    --text:rgba(255,255,255,.96);
+    --muted:rgba(255,255,255,.72);
+    --muted2:rgba(255,255,255,.56);
+
+    --grad:linear-gradient(135deg,var(--gold),var(--teal));
+    --r:16px;
+    --r2:22px;
+
+    --safeT: env(safe-area-inset-top);
+    --safeB: env(safe-area-inset-bottom);
+    --safeL: env(safe-area-inset-left);
+    --safeR: env(safe-area-inset-right);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(900px 460px at 14% 10%, rgba(251,201,9,.14), transparent 60%),
+      radial-gradient(900px 460px at 86% 12%, rgba(58,173,187,.12), transparent 60%),
+      linear-gradient(180deg, var(--navy2), var(--navy));
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  button, a, input { -webkit-tap-highlight-color: transparent; }
+  a{color:#cfe8ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Top bar */
+  .topbar{
+    position:fixed; inset:0 0 auto 0;
+    z-index:100;
+    padding-top:var(--safeT);
+    background: rgba(10,16,24,.92);
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .topbarInner{
+    max-width:1280px;
+    margin:0 auto;
+    padding:12px 16px;
+    padding-left: calc(16px + var(--safeL));
+    padding-right: calc(16px + var(--safeR));
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:12px; min-width:260px;}
+  .brand img{height:40px; width:auto; display:block; filter: drop-shadow(0 12px 28px rgba(0,0,0,.25));}
+  .brandTitle{display:flex; flex-direction:column; line-height:1.1}
+  .brandTitle .name{font-weight:1000; letter-spacing:-.02em; display:flex; align-items:center; gap:10px;}
+  .dot{width:10px;height:10px;border-radius:999px;background:var(--grad);}
+  .brandTitle .sub{font-size:12px; color:var(--muted2); margin-top:3px; letter-spacing:.02em;}
+
+  .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+  .btn{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color:var(--text);
+    padding:11px 14px;
+    border-radius:14px;
+    font-weight:950;
+    cursor:pointer;
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    user-select:none;
+  }
+  .btn.primary{background:var(--grad); color:#07121b; border-color: rgba(255,255,255,.18);}
+  .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
+
+  .progressWrap{
+    max-width:1280px; margin:0 auto;
+    padding: 0 16px 10px;
+    padding-left: calc(16px + var(--safeL));
+    padding-right: calc(16px + var(--safeR));
+  }
+  .progress{
+    height:7px;border-radius:999px;
+    background: rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.10);
+    overflow:hidden;
+  }
+  .progress > div{height:100%; width:0%; background:var(--grad); transition: width .12s linear;}
+
+  .badge{
+    position:fixed;
+    top: calc(12px + var(--safeT));
+    right: 12px;
+    z-index:120;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.24);
+    border-radius:999px;
+    padding:10px 12px;
+  }
+  .badge .t{font-weight:1000; color: rgba(255,255,255,.90); font-size:13px; letter-spacing:-.02em;}
+
+  /* Deck */
+  .deck{
+    height:100%;
+    padding-top: calc(96px + var(--safeT));
+    padding-bottom: calc(12px + var(--safeB));
+    display:flex;
+    align-items:stretch;
+    justify-content:center;
+  }
+  .stage{
+    width:min(1280px, 100vw);
+    height:100%;
+    padding: 14px 16px;
+    padding-left: calc(16px + var(--safeL));
+    padding-right: calc(16px + var(--safeR));
+    position:relative;
+  }
+  .slide{
+    position:absolute;
+    inset:14px 16px;
+    inset-left: calc(16px + var(--safeL));
+    inset-right: calc(16px + var(--safeR));
+    border:1px solid rgba(255,255,255,.14);
+    border-radius: var(--r2);
+    background: rgba(255,255,255,.05);
+    overflow:hidden;
+    opacity:0;
+    transform: translateY(8px);
+    pointer-events:none;
+    transition: opacity .12s linear, transform .12s linear;
+  }
+  .slide.active{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+  }
+
+  .slideHead{
+    padding:16px 18px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.05);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .slideHead h2{
+    margin:0;
+    font-size: 15px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .spark{width:10px;height:10px;border-radius:999px;background:var(--grad);}
+
+  .slideBody{
+    padding:18px;
+    height: calc(100% - 58px);
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .presentBar{
+    position:fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + var(--safeB));
+    z-index:120;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    pointer-events:none;
+  }
+  .presentBar .btn{pointer-events:auto;}
+
+  /* Layout */
+  .grid{display:grid; gap:14px;}
+  .grid2{grid-template-columns: 1.05fr .95fr;}
+  .grid2eq{grid-template-columns:1fr 1fr;}
+  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
+
+  /* Big centered input slide */
+  .focusWrap{height:100%; display:flex; align-items:center; justify-content:center;}
+  .focusCard{
+    width:min(980px, 100%);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    background: rgba(0,0,0,.16);
+    padding:18px;
+  }
+  .focusTitle{
+    font-weight:1000;
+    letter-spacing:-.04em;
+    font-size: clamp(26px, 3.2vw, 44px);
+    margin:0 0 10px;
+    line-height:1.05;
+  }
+  .gradText{
+    background:var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-weight:1000;
+  }
+  .focusSub{color:var(--muted); font-weight:900; margin:0 0 16px; line-height:1.45;}
+  .bigRedBox{
+    border:1px solid rgba(255,59,48,.35);
+    background: rgba(255,59,48,.10);
+    border-radius:18px;
+    padding:14px;
+  }
+  .bigLabel{
+    color:rgba(255,255,255,.86);
+    font-weight:1000;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size:12px;
+  }
+  .bigInput{
+    margin-top:10px;
+    width:100%;
+    border-radius:18px;
+    border:1px solid rgba(255,59,48,.40);
+    background: rgba(0,0,0,.20);
+    color: rgba(255,255,255,.98);
+    font-weight:1000;
+    font-size: clamp(26px, 4.5vw, 48px);
+    padding:16px 16px;
+    outline:none;
+    min-height:64px;
+    text-align:center;
+  }
+  .bigHint{margin-top:10px; color:rgba(255,255,255,.78); font-weight:900; line-height:1.35; font-size:13px;}
+  .bigActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; justify-content:flex-end;}
+
+  /* Locked media cards */
+  .card{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.14);
+    overflow:hidden;
+  }
+  .mediaFrame{
+    width:100%;
+    height: clamp(240px, 42vh, 520px); /* locked for presentation */
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .mediaFrame img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    cursor:pointer;
+  }
+  .cap{
+    padding:12px 14px;
+    border-top:1px solid rgba(255,255,255,.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    background: rgba(0,0,0,.12);
+    font-weight:1000;
+  }
+  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
+
+  .panel{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.14);
+    padding:16px;
+  }
+  .panel .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .panel .h{margin-top:10px; font-weight:1000; letter-spacing:-.04em; font-size: clamp(22px, 3vw, 38px); line-height:1.05;}
+  .panel p{margin:10px 0 0; color:var(--muted); font-weight:900; line-height:1.5; font-size:14px;}
+
+  .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+  .pill{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:10px 12px;
+    font-weight:950;
+    color: rgba(255,255,255,.88);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    white-space:nowrap;
+  }
+
+  /* Big link buttons */
+  .ctaGrid{display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px;}
+  @media (max-width:980px){ .ctaGrid{grid-template-columns:1fr;} }
+  .bigCTA{
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:20px;
+    background: rgba(255,255,255,.06);
+    padding:16px;
+    cursor:pointer;
+    text-align:left;
+    min-height:104px;
+  }
+  .bigCTA .t{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .bigCTA .title{font-weight:1000; letter-spacing:-.03em; font-size:20px; line-height:1.1;}
+  .bigCTA .badge2{
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;
+    padding:7px 10px;
+    font-weight:950;
+    font-size:12px;
+    background: rgba(0,0,0,.18);
+    color: rgba(255,255,255,.88);
+    white-space:nowrap;
+  }
+  .bigCTA .desc{margin-top:10px; color: var(--muted); font-weight:900; line-height:1.4; font-size:13.5px;}
+  .bigCTA.primary{
+    background: linear-gradient(135deg, rgba(251,201,9,.18), rgba(58,173,187,.14));
+    border-color: rgba(251,201,9,.20);
+  }
+
+  /* ========= CALCULATOR + YEAR WHEEL ========= */
+  .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
+  @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
+  .col{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(255,255,255,.04);
+    overflow:hidden;
+  }
+  .colHead{
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+  }
+  .colHead .label{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .colHead .title{margin-top:2px; font-weight:1000; font-size:18px; letter-spacing:-.02em;}
+  .tag{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:950;
+    font-size:12px;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
+  }
+  .colBody{padding:14px; display:grid; gap:10px;}
+  .klabel{
+    display:block;color:var(--muted2);
+    font-weight:1000;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  input{
+    width:100%; padding:12px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.22);
+    color: rgba(255,255,255,.96);
+    font-weight:1000; font-size:16px;
+    outline:none; min-height:44px;
+  }
+  .metric{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .metric .mv{font-weight:1000; font-size:18px;}
+
+  .yearPanel{
+    margin-top:14px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    background: rgba(255,255,255,.04);
+    overflow:hidden;
+  }
+  .yearHead{
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.12);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .yearHead .t{font-weight:1000; letter-spacing:-.02em; display:flex; align-items:center; gap:10px;}
+  .yearPill{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:8px 10px;
+    font-weight:1000;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    white-space:nowrap;
+  }
+  .yearPill .dot2{width:10px;height:10px;border-radius:999px;background:var(--grad);}
+
+  .yearBody{
+    padding:16px;
+    display:grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap:12px;
+  }
+  @media (max-width:980px){ .yearBody{grid-template-columns:1fr;} }
+
+  .wheelBox{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.14);
+    border-radius:18px;
+    padding:14px;
+    display:grid;
+    gap:12px;
+  }
+  .wheelTop{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+  .yearBig{font-size: clamp(46px, 6.6vw, 78px); font-weight:1000; letter-spacing:-.05em; line-height:1;}
+  .dialBtns{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .miniBtn{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 12px;
+    font-weight:950;
+    min-height:44px;
+    cursor:pointer;
+  }
+  .wheel{
+    position:relative;
+    height:220px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.18);
+    overflow:hidden;
+  }
+  .wheel::before{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(11,16,23,.92), transparent 28%, transparent 72%, rgba(11,16,23,.92));
+    pointer-events:none;
+    z-index:2;
+  }
+  .wheel::after{
+    content:"";
+    position:absolute;
+    left:10px; right:10px;
+    top: calc(50% - 22px);
+    height:44px;
+    border-radius:14px;
+    border:1px solid rgba(251,201,9,.24);
+    pointer-events:none;
+    z-index:3;
+  }
+  .wheelList{
+    height:100%;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 88px 0;
+    margin:0;
+  }
+  .wheelList::-webkit-scrollbar{ width:0; height:0; }
+  .wheelItem{
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    scroll-snap-align:center;
+    font-weight:1000;
+    font-size:20px;
+    letter-spacing:-.01em;
+    color: rgba(255,255,255,.72);
+    user-select:none;
+  }
+  .wheelItem.active{ color: rgba(255,255,255,.96); }
+
+  .yearCompare{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.14);
+    border-radius:18px;
+    padding:14px;
+    display:grid;
+    gap:12px;
+  }
+  .bigMoneyGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px;}
+  @media (max-width:980px){ .bigMoneyGrid{grid-template-columns:1fr;} }
+  .bigTile{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    border-radius:18px;
+    padding:12px;
+  }
+  .bigTile .bk{
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .chip{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:950;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
+    font-size:12px;
+  }
+  .bigTile .m{
+    margin-top:10px;
+    font-size: clamp(34px, 5.4vw, 58px);
+    font-weight:1000;
+    letter-spacing:-.035em;
+    line-height:1;
+  }
+  .bigTile .a{margin-top:8px; color:var(--muted); font-weight:900; font-size:13px;}
+  .yearSavings{
+    border:1px solid rgba(52,199,89,.28);
+    background: rgba(52,199,89,.10);
+    border-radius:16px;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-weight:1000;
+  }
+  .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
+
+  /* Video */
+  .videoShell{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    overflow:hidden;
+    background: rgba(0,0,0,.18);
+  }
+  .videoFrame{
+    width:100%;
+    height: clamp(260px, 48vh, 620px); /* locked */
+    background:#000;
+  }
+  .videoFrame video{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#000;
+  }
+
+  /* Timeline */
+  .timeline{display:grid; grid-template-columns: repeat(6,1fr); gap:10px;}
+  @media (max-width:980px){ .timeline{grid-template-columns:1fr;} }
+  .step{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.14);
+    border-radius:18px;
+    padding:14px;
+    min-height:112px;
+  }
+  .num{
+    width:30px;height:30px;border-radius:12px;
+    background: var(--grad);
+    color:#07121b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:1000;
+    margin-bottom:10px;
+  }
+  .step .t{font-weight:1000; letter-spacing:-.02em;}
+  .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900;}
+
+  /* Modal zoom (in-presentation) */
+  .modal{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,.72);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding: 18px;
+    padding-top: calc(18px + var(--safeT));
+    padding-bottom: calc(18px + var(--safeB));
+    z-index:999;
+  }
+  .modal.show{display:flex;}
+  .modalCard{
+    width:min(1100px, 100%);
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(10,16,24,.92);
+    border-radius: 18px;
+    overflow:hidden;
+  }
+  .modalHead{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    font-weight:1000;
+  }
+  .modalImgWrap{
+    background:#000;
+    height: min(78vh, 760px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .modalImgWrap img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbarInner">
+    <div class="brand">
+      <img id="logoImg" alt="Logo"/>
+      <div class="brandTitle">
+        <div class="name"><span class="dot"></span> Leverage Our Sun</div>
+        <div class="sub">Solar + Storage Closing Tool</div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn" id="btnHome" type="button">Start</button>
+      <button class="btn" id="btnPrevTop" type="button">Prev</button>
+      <button class="btn primary" id="btnNextTop" type="button">Next</button>
+      <button class="btn danger" id="btnReset" type="button">Reset</button>
+    </div>
+  </div>
+  <div class="progressWrap">
+    <div class="progress"><div id="progressFill"></div></div>
+  </div>
+</div>
+
+<div class="badge">
+  <span class="dot"></span>
+  <span class="t" id="slideCounter">Slide 1 / 1</span>
+</div>
+
+<div class="deck">
+  <div class="stage" id="stage">
+
+    <!-- SLIDE 1: BIG RED INPUT -->
+    <section class="slide active" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Customer Starting Point</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Feeds the calculator</span>
+        </div>
+      </div>
+      <div class="slideBody">
+        <div class="focusWrap">
+          <div class="focusCard">
+            <h1 class="focusTitle">What is your <span class="gradText">average</span> monthly Edison bill?</h1>
+            <p class="focusSub">Enter the customer’s average monthly payment. This automatically populates the Utility column in the comparison tool.</p>
+
+            <div class="bigRedBox">
+              <div class="bigLabel">Average monthly utility payment (USD)</div>
+              <input class="bigInput" id="startBill" inputmode="decimal" value="458" aria-label="Average monthly utility bill"/>
+              <div class="bigHint">Use the average of the last 12 months if it varies.</div>
+            </div>
+
+            <div class="bigActions">
+              <button class="btn" type="button" onclick="go(1)">See Rate Problem</button>
+              <button class="btn primary" type="button" onclick="go(3)">Go to Calculator</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: NORMAL BILL (NO SOLAR) -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> The Problem</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Peak pricing drives the pain</span>
+          <span class="pill"><span class="dot"></span> $0.17 → $0.42 / kWh (15 yrs)</span>
+        </div>
+      </div>
+      <div class="slideBody">
+        <div class="grid grid2">
+          <div class="card">
+            <div class="mediaFrame">
+              <img id="imgBillNoSolar" alt="Bill without solar (SCE)" />
+            </div>
+            <div class="cap">
+              <div>Bill example (no solar)</div>
+              <small>Tap to zoom</small>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="k">What TOU means</div>
+            <div class="h">It’s not only <span class="gradText">how much</span> power you use — it’s <span class="gradText">when</span> you buy it.</div>
+            <p>
+              Under Time-of-Use pricing, electricity costs more when the grid is stressed (typically late afternoon/evening).
+              Even with the same kWh, buying more during peak makes bills jump.
+            </p>
+
+            <div class="pillRow">
+              <span class="pill"><span class="dot"></span> Peak = most expensive</span>
+              <span class="pill"><span class="dot"></span> Off-peak = cheaper</span>
+              <span class="pill"><span class="dot"></span> Delivery + fees still exist</span>
+            </div>
+
+            <div class="ctaGrid">
+              <div class="bigCTA primary" id="btnSCE">
+                <div class="t">
+                  <div class="title">SCE: Updates to your bill</div>
+                  <div class="badge2">Popup</div>
+                </div>
+                <div class="desc">Official SCE explanation of residential bill/rate updates and why charges change over time.</div>
+              </div>
+
+              <div class="bigCTA" id="btnLAT">
+                <div class="t">
+                  <div class="title">LA Times: Edison rate case</div>
+                  <div class="badge2">Popup</div>
+                </div>
+                <div class="desc">News context on Edison’s rate case and drivers behind continued increases.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: SOLAR BILL ($28) -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Proof</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Solar + Storage Net Bill</span>
+        </div>
+      </div>
+      <div class="slideBody">
+        <div class="grid grid2">
+          <div class="card">
+            <div class="mediaFrame">
+              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" />
+            </div>
+            <div class="cap">
+              <div>Bill example (solar + storage)</div>
+              <small>Tap to zoom</small>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="k">Why it can drop this low</div>
+            <div class="h">Solar runs the day. Batteries protect the <span class="gradText">expensive</span> hours.</div>
+            <p>
+              This isn’t “free power.” It’s controlled power:
+              daytime production reduces what you buy, and batteries cover the peak window so you avoid purchasing at peak pricing.
+              The utility becomes backup instead of primary.
+            </p>
+            <div class="pillRow">
+              <span class="pill"><span class="dot"></span> Daytime offset</span>
+              <span class="pill"><span class="dot"></span> Peak avoidance</span>
+              <span class="pill"><span class="dot"></span> Grid as backup</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: CALCULATOR + YEAR WHEEL -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Compare</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn" type="button" onclick="setYear(1,true)">Year 1</button>
+          <button class="btn" type="button" onclick="setYear(5,true)">Year 5</button>
+          <button class="btn" type="button" onclick="setYear(10,true)">Year 10</button>
+          <button class="btn" type="button" onclick="setYear(25,true)">Year 25</button>
+        </div>
+      </div>
+
+      <div class="slideBody">
+        <div class="compareTop">
+          <div class="col">
+            <div class="colHead" style="background:rgba(255,59,48,.12);">
+              <div><div class="label">Utility</div><div class="title">Edison</div></div>
+              <span class="tag">Red</span>
+            </div>
+            <div class="colBody">
+              <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
+              <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
+              <div class="metric"><div class="mk">25-year utility spend</div><div class="mv" id="uTotal" style="color:var(--utility)">$0</div></div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="colHead" style="background:rgba(52,199,89,.12);">
+              <div><div class="label">Option 1</div><div class="title">Proposal A</div></div>
+              <span class="tag">Green</span>
+            </div>
+            <div class="colBody">
+              <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
+              <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="0"></label>
+              <div class="metric"><div class="mk">Total savings over 25 years</div><div class="mv" id="aSave25" style="color:var(--opt1)">$0</div></div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="colHead" style="background:rgba(0,194,255,.12);">
+              <div><div class="label">Option 2</div><div class="title">Proposal B</div></div>
+              <span class="tag">Cyan</span>
+            </div>
+            <div class="colBody">
+              <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
+              <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="0"></label>
+              <div class="metric"><div class="mk">Total savings over 25 years</div><div class="mv" id="bSave25" style="color:var(--opt2)">$0</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="yearPanel">
+          <div class="yearHead">
+            <div class="t"><span class="spark"></span> Annual payment comparison (synced year)</div>
+            <div class="yearPill"><span class="dot2"></span> Year <span id="yearChip">1</span></div>
+          </div>
+
+          <div class="yearBody">
+            <div class="wheelBox">
+              <div class="wheelTop">
+                <div class="yearBig" id="yearBig">1</div>
+                <div class="dialBtns">
+                  <button class="miniBtn" type="button" id="yearMinus">−1</button>
+                  <button class="miniBtn" type="button" id="yearPlus">+1</button>
+                </div>
+              </div>
+
+              <div class="wheel">
+                <div class="wheelList" id="yearWheel"></div>
+              </div>
+
+              <div class="muted" style="font-weight:900;font-size:13px;">
+                Scroll wheel or tap +/−. Updates all 3 options together.
+              </div>
+            </div>
+
+            <div class="yearCompare">
+              <div class="bigMoneyGrid">
+                <div class="bigTile">
+                  <div class="bk">Utility <span class="chip">Red</span></div>
+                  <div class="m" id="uM" style="color:var(--utility)">$0.00</div>
+                  <div class="a" id="uY">Annual: $0</div>
+                </div>
+
+                <div class="bigTile">
+                  <div class="bk">Option 1 <span class="chip">Green</span></div>
+                  <div class="m" id="aM" style="color:var(--opt1)">$0.00</div>
+                  <div class="a" id="aY">Annual: $0</div>
+                </div>
+
+                <div class="bigTile">
+                  <div class="bk">Option 2 <span class="chip">Cyan</span></div>
+                  <div class="m" id="bM" style="color:var(--opt2)">$0.00</div>
+                  <div class="a" id="bY">Annual: $0</div>
+                </div>
+              </div>
+
+              <div class="yearSavings">
+                <div>Best option savings vs utility (annual)</div>
+                <div class="v" id="bestAnnual">$0</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 5: OUTAGE VIDEO (LOCAL MP4) -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Outage Demo</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/support/energy/virtual-power-plant/sce">Tesla VPP (SCE)</a>
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.tesla.com/powerwall">Powerwall</a>
+        </div>
+      </div>
+      <div class="slideBody">
+        <div class="videoShell">
+          <div class="videoFrame">
+            <video id="outageVid" controls playsinline preload="metadata">
+              <source src="Outagevideo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="cap">
+            <div>Home powered during outage (storage)</div>
+            <small>Plays inline on iPhone</small>
+          </div>
+        </div>
+
+        <div class="ctaGrid" style="margin-top:14px;">
+          <div class="bigCTA primary" id="btnSCE">
+            <div class="t">
+              <div class="title">SCE: Updates to your bill</div>
+              <div class="badge2">Popup</div>
+            </div>
+            <div class="desc">Official SCE explanation of billing/rate updates and why charges change.</div>
+          </div>
+          <div class="bigCTA" id="btnLAT">
+            <div class="t">
+              <div class="title">LA Times: Edison rate case</div>
+              <div class="badge2">Popup</div>
+            </div>
+            <div class="desc">News context on rate cases and why rates continue to rise.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: TIMELINE -->
+    <section class="slide" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Timeline</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn" target="_blank" rel="noreferrer" href="https://www.sunup-energy.com">sunup-energy.com</a>
+          <a class="btn" target="_blank" rel="noreferrer" href="https://fulfillpower.com">fulfillpower.com</a>
+          <a class="btn primary" target="_blank" rel="noreferrer"
+             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33p_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
+        </div>
+      </div>
+      <div class="slideBody">
+        <div class="timeline">
+          <div class="step"><div class="num">1</div><div class="t">Site Survey</div><div class="d">&lt; 1 week</div></div>
+          <div class="step"><div class="num">2</div><div class="t">Engineering</div><div class="d">1 week</div></div>
+          <div class="step"><div class="num">3</div><div class="t">Permits</div><div class="d">1–12 weeks</div></div>
+          <div class="step"><div class="num">4</div><div class="t">Install Schedule</div><div class="d">1 day–2 weeks</div></div>
+          <div class="step"><div class="num">5</div><div class="t">Final Inspection</div><div class="d">1–2 weeks</div></div>
+          <div class="step"><div class="num">6</div><div class="t">PTO + First Payment</div><div class="d">PTO 30–60 days • 1st payment 1 month after PTO</div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="presentBar">
+  <button class="btn" id="btnPrev" type="button">Prev</button>
+  <button class="btn primary" id="btnNext" type="button">Next</button>
+</div>
+
+<!-- Modal (zoom) -->
+<div class="modal" id="modal">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div id="modalTitle">Preview</div>
+      <button class="btn danger" id="modalClose" type="button">Close</button>
+    </div>
+    <div class="modalImgWrap">
+      <img id="modalImg" alt="Zoomed preview"/>
+    </div>
+  </div>
+</div>
+
 <script>
-/**
- * Solar + Storage Closing Tool
- *
- * Goals:
- * - Deterministic slide navigation
- * - Robust calculator + year wheel
- * - No duplicate IDs / no inline handlers
- * - Better accessibility for modal
- */
-(() => {
-  "use strict";
+/* Local files (same folder as index.html) */
+const ASSETS = {
+  logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
+  billNoSolar: "Scebill.jpeg",
+  billSolar: "IMG_9100.jpeg",
+  outageVideo: "Outagevideo.mp4",
+  linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
+  linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case"
+};
 
-  /*** Config ***/
-  const ASSETS = {
-    logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
-    billNoSolar: "Scebill.jpeg",
-    billSolar: "IMG_9100.jpeg",
-    outageVideo: "Outagevideo.mp4",
-    linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
-    linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
-  };
+const $ = (id)=>document.getElementById(id);
 
-  const YEARS = 25;
+/* Slides */
+let slides = [];
+let idx = 0;
+const progressFill = $("progressFill");
+const slideCounter = $("slideCounter");
 
-  /*** Tiny DOM helpers ***/
-  const $ = (id) => document.getElementById(id);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+function refreshSlides(){ slides = Array.from(document.querySelectorAll("[data-slide]")); }
+function updateHUD(){
+  slideCounter.textContent = `Slide ${idx+1} / ${slides.length}`;
+  const pct = (idx / Math.max(1, slides.length-1)) * 100;
+  progressFill.style.width = `${pct}%`;
+}
+function activate(i){
+  refreshSlides();
+  idx = Math.max(0, Math.min(slides.length-1, i));
+  slides.forEach((s, n)=> s.classList.toggle("active", n === idx));
+  updateHUD();
+  const b = slides[idx].querySelector(".slideBody");
+  if(b) b.scrollTop = 0;
+}
+function next(){ activate(idx+1); }
+function prev(){ activate(idx-1); }
+function go(i){ activate(i); }
+window.go = go;
 
-  /*** Number + money helpers ***/
-  function toNumber(value) {
-    const raw = String(value ?? "").trim();
-    if (!raw) return 0;
-    const cleaned = raw.replace(/[^0-9.\-]/g, "");
-    const n = Number.parseFloat(cleaned);
-    return Number.isFinite(n) ? n : 0;
-  }
+$("btnNext").addEventListener("click", next);
+$("btnPrev").addEventListener("click", prev);
+$("btnNextTop").addEventListener("click", next);
+$("btnPrevTop").addEventListener("click", prev);
+$("btnHome").addEventListener("click", ()=>activate(0));
 
-  function clamp(n, min, max) {
-    return Math.max(min, Math.min(max, n));
-  }
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
+  if(e.key === "ArrowLeft"  || e.key === "PageUp"){ e.preventDefault(); prev(); }
+  if(e.key === "Home"){ e.preventDefault(); activate(0); }
+  if(e.key === "End"){ e.preventDefault(); activate(slides.length-1); }
+});
 
-  function money(n, digits) {
-    const v = Number.isFinite(n) ? n : 0;
-    return v.toLocaleString(undefined, {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    });
-  }
+/* Popup links */
+function popupArticle(url){
+  const w = Math.min(1100, screen.width * 0.92);
+  const h = Math.min(820, screen.height * 0.88);
+  const left = (screen.width - w) / 2;
+  const top = (screen.height - h) / 2;
+  const win = window.open(url, "LOS_ARTICLE",
+    `popup=yes,scrollbars=yes,resizable=yes,width=${w},height=${h},left=${left},top=${top}`
+  );
+  if(win) win.focus(); else window.location.href = url;
+}
 
-  function money0(n) { return money(n, 0); }
-  function money2(n) { return money(n, 2); }
+/* Modal zoom */
+function openModal(title, src){
+  $("modalTitle").textContent = title;
+  $("modalImg").src = src;
+  $("modal").classList.add("show");
+}
+function closeModal(){
+  $("modal").classList.remove("show");
+  $("modalImg").src = "";
+}
+$("modalClose").addEventListener("click", closeModal);
+$("modal").addEventListener("click", (e)=>{ if(e.target.id === "modal") closeModal(); });
 
-  function monthlySeries(baseMonthly, escPct, years = YEARS) {
-    const r = escPct / 100;
-    const out = new Array(years);
-    for (let y = 0; y < years; y++) out[y] = baseMonthly * Math.pow(1 + r, y);
-    return out;
-  }
+/* Start slide -> Calculator sync */
+function syncStartBillToCalculator(){
+  const v = $("startBill").value;
+  $("uPay").value = v;
+  recalc();
+}
+$("startBill").addEventListener("input", syncStartBillToCalculator);
 
-  function totalSeries(series) {
-    let sum = 0;
-    for (let i = 0; i < series.length; i++) sum += series[i] * 12;
-    return sum;
-  }
+/* Calculator + Wheel */
+let year = 1;
+let cache = { u:[], a:[], b:[], uTotal:0, aTotal:0, bTotal:0 };
 
-  /*** Popup ***/
-  function popupArticle(url) {
-    const w = Math.min(1100, window.screen.width * 0.92);
-    const h = Math.min(820, window.screen.height * 0.88);
-    const left = (window.screen.width - w) / 2;
-    const top = (window.screen.height - h) / 2;
+function toNumber(v){
+  const n = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
+  return Number.isFinite(n) ? n : 0;
+}
+function money0(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
+function money2(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+function monthlySeries(baseMonthly, escPct, years=25){
+  const r = escPct/100;
+  const out = [];
+  for(let y=1;y<=years;y++) out.push(baseMonthly * Math.pow(1+r, y-1));
+  return out;
+}
+function totalSeries(series){ return series.reduce((s,m)=> s + (m*12), 0); }
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
-    const win = window.open(
-      url,
-      "LOS_ARTICLE",
-      `popup=yes,scrollbars=yes,resizable=yes,width=${w},height=${h},left=${left},top=${top}`
-    );
+function recalc(){
+  const uPay = toNumber($("uPay").value);
+  const uEsc = toNumber($("uEsc").value);
+  const aPay = toNumber($("aPay").value);
+  const aEsc = toNumber($("aEsc").value);
+  const bPay = toNumber($("bPay").value);
+  const bEsc = toNumber($("bEsc").value);
 
-    if (win) win.focus();
-    else window.location.href = url;
-  }
+  cache.u = monthlySeries(uPay, uEsc);
+  cache.a = monthlySeries(aPay, aEsc);
+  cache.b = monthlySeries(bPay, bEsc);
 
-  /*** Modal ***/
-  const modal = $("modal");
-  const modalTitle = $("modalTitle");
-  const modalImg = $("modalImg");
-  const modalClose = $("modalClose");
+  cache.uTotal = totalSeries(cache.u);
+  cache.aTotal = totalSeries(cache.a);
+  cache.bTotal = totalSeries(cache.b);
 
-  let lastFocusedEl = null;
+  $("uTotal").textContent = money0(cache.uTotal);
+  $("aSave25").textContent = money0(cache.uTotal - cache.aTotal);
+  $("bSave25").textContent = money0(cache.uTotal - cache.bTotal);
 
-  function openModal(title, src) {
-    lastFocusedEl = document.activeElement;
-    modalTitle.textContent = title;
-    modalImg.src = src;
-    modal.classList.add("show");
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
-    modalClose.focus();
-  }
+  setYear(year, true);
+}
 
-  function closeModal() {
-    modal.classList.remove("show");
-    modalImg.src = "";
-    if (lastFocusedEl && typeof lastFocusedEl.focus === "function") {
-      lastFocusedEl.focus();
-    }
-  }
+function setYear(newYear, snapWheel){
+  year = clamp(parseInt(newYear,10)||1, 1, 25);
+  $("yearBig").textContent = String(year);
+  $("yearChip").textContent = String(year);
 
-  /*** Slides + HUD ***/
-  const progressFill = $("progressFill");
-  const slideCounter = $("slideCounter");
+  const i = year - 1;
+  const uM = cache.u[i] || 0;
+  const aM = cache.a[i] || 0;
+  const bM = cache.b[i] || 0;
 
-  const slides = $$("[data-slide]");
-  let idx = 0;
+  $("uM").textContent = money2(uM);
+  $("aM").textContent = money2(aM);
+  $("bM").textContent = money2(bM);
 
-  function updateHUD() {
-    slideCounter.textContent = `Slide ${idx + 1} / ${slides.length}`;
-    const pct = (idx / Math.max(1, slides.length - 1)) * 100;
-    progressFill.style.width = `${pct}%`;
-  }
+  $("uY").textContent = `Annual: ${money0(uM*12)}`;
+  $("aY").textContent = `Annual: ${money0(aM*12)}`;
+  $("bY").textContent = `Annual: ${money0(bM*12)}`;
 
-  function activate(i) {
-    idx = clamp(i, 0, slides.length - 1);
-    for (let n = 0; n < slides.length; n++) {
-      slides[n].classList.toggle("active", n === idx);
-    }
-    updateHUD();
+  const best = Math.min(aM, bM);
+  const bestAnnual = (uM - best) * 12;
+  $("bestAnnual").textContent = money0(bestAnnual);
+  $("bestAnnual").style.color = (bestAnnual >= 0) ? "var(--opt1)" : "var(--utility)";
 
-    const body = slides[idx].querySelector(".slideBody");
-    if (body) body.scrollTop = 0;
-  }
-
-  function next() { activate(idx + 1); }
-  function prev() { activate(idx - 1); }
-
-  /*** Calculator state ***/
-  let year = 1;
-  const cache = { u: [], a: [], b: [], uTotal: 0, aTotal: 0, bTotal: 0 };
-
-  function recalc() {
-    const uPay = toNumber($("uPay").value);
-    const uEsc = toNumber($("uEsc").value);
-    const aPay = toNumber($("aPay").value);
-    const aEsc = toNumber($("aEsc").value);
-    const bPay = toNumber($("bPay").value);
-    const bEsc = toNumber($("bEsc").value);
-
-    cache.u = monthlySeries(uPay, uEsc);
-    cache.a = monthlySeries(aPay, aEsc);
-    cache.b = monthlySeries(bPay, bEsc);
-
-    cache.uTotal = totalSeries(cache.u);
-    cache.aTotal = totalSeries(cache.a);
-    cache.bTotal = totalSeries(cache.b);
-
-    $("uTotal").textContent = money0(cache.uTotal);
-    $("aSave25").textContent = money0(cache.uTotal - cache.aTotal);
-    $("bSave25").textContent = money0(cache.uTotal - cache.bTotal);
-
-    setYear(year, true);
-  }
-
-  function setYear(newYear, snapWheel) {
-    year = clamp(Number.parseInt(newYear, 10) || 1, 1, YEARS);
-    $("yearBig").textContent = String(year);
-    $("yearChip").textContent = String(year);
-
-    const i = year - 1;
-    const uM = cache.u[i] ?? 0;
-    const aM = cache.a[i] ?? 0;
-    const bM = cache.b[i] ?? 0;
-
-    $("uM").textContent = money2(uM);
-    $("aM").textContent = money2(aM);
-    $("bM").textContent = money2(bM);
-
-    $("uY").textContent = `Annual: ${money0(uM * 12)}`;
-    $("aY").textContent = `Annual: ${money0(aM * 12)}`;
-    $("bY").textContent = `Annual: ${money0(bM * 12)}`;
-
-    const bestMonthly = Math.min(aM, bM);
-    const bestAnnual = (uM - bestMonthly) * 12;
-
-    $("bestAnnual").textContent = money0(bestAnnual);
-    $("bestAnnual").style.color = bestAnnual >= 0 ? "var(--opt1)" : "var(--utility)";
-
-    const wheel = $("yearWheel");
-    if (!wheel) return;
-
+  const wheel = $("yearWheel");
+  if(wheel){
     const items = wheel.querySelectorAll(".wheelItem");
-    items.forEach((el, n) => el.classList.toggle("active", n === i));
-
-    if (snapWheel) {
+    items.forEach((el, idx)=> el.classList.toggle("active", idx === i));
+    if(snapWheel){
       const target = items[i];
-      if (target) {
-        const top = target.offsetTop - (wheel.clientHeight / 2 - target.clientHeight / 2);
+      if(target){
+        const top = target.offsetTop - (wheel.clientHeight/2 - target.clientHeight/2);
         wheel.scrollTo({ top, behavior: "auto" });
       }
     }
   }
+}
+window.setYear = setYear;
 
-  /*** Year wheel builder ***/
-  function buildYearWheel() {
-    const wheel = $("yearWheel");
-    if (!wheel) return;
+function buildYearWheel(){
+  const wheel = $("yearWheel");
+  wheel.innerHTML = "";
+  for(let y=1;y<=25;y++){
+    const div = document.createElement("div");
+    div.className = "wheelItem" + (y===1 ? " active" : "");
+    div.textContent = `Year ${y}`;
+    div.addEventListener("click", ()=>setYear(y, true));
+    wheel.appendChild(div);
+  }
 
-    wheel.innerHTML = "";
+  const ITEM_H = 44;
+  const PAD = 88;
+  let ticking = false;
 
-    for (let y = 1; y <= YEARS; y++) {
-      const div = document.createElement("div");
-      div.className = "wheelItem" + (y === 1 ? " active" : "");
-      div.textContent = `Year ${y}`;
-      div.addEventListener("click", () => setYear(y, true));
-      wheel.appendChild(div);
+  wheel.addEventListener("scroll", ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      ticking = false;
+      const center = wheel.scrollTop + (wheel.clientHeight/2);
+      const pos = center - PAD - (ITEM_H/2);
+      const idx = clamp(Math.round(pos / ITEM_H), 0, 24);
+      const newYear = idx + 1;
+      if(newYear !== year) setYear(newYear, false);
+    });
+  }, {passive:true});
+
+  $("yearMinus").onclick = ()=>setYear(year-1, true);
+  $("yearPlus").onclick  = ()=>setYear(year+1, true);
+
+  ["uPay","uEsc","aPay","aEsc","bPay","bEsc"].forEach(id=>{
+    const el = $(id);
+    if(el){
+      el.addEventListener("input", recalc, {passive:true});
     }
+  });
 
-    const ITEM_H = 44;
-    const PAD = 88;
-    let ticking = false;
+  // init from Start slide
+  $("uPay").value = $("startBill").value;
+  recalc();
+  setYear(1, true);
+}
 
-    wheel.addEventListener(
-      "scroll",
-      () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          ticking = false;
-          const center = wheel.scrollTop + wheel.clientHeight / 2;
-          const pos = center - PAD - ITEM_H / 2;
-          const index = clamp(Math.round(pos / ITEM_H), 0, YEARS - 1);
-          const newYear = index + 1;
-          if (newYear !== year) setYear(newYear, false);
-        });
-      },
-      { passive: true }
-    );
+/* Reset */
+$("btnReset").addEventListener("click", ()=>{
+  $("startBill").value="458";
+  $("uPay").value="458"; $("uEsc").value="9";
+  $("aPay").value="295"; $("aEsc").value="0";
+  $("bPay").value="325"; $("bEsc").value="0";
+  year = 1;
+  recalc();
+  activate(0);
+});
 
-    $("yearMinus").addEventListener("click", () => setYear(year - 1, true));
-    $("yearPlus").addEventListener("click", () => setYear(year + 1, true));
+/* Boot */
+(function init(){
+  refreshSlides();
 
-    ["uPay", "uEsc", "aPay", "aEsc", "bPay", "bEsc"].forEach((id) => {
-      const el = $(id);
-      if (!el) return;
-      el.addEventListener("input", recalc, { passive: true });
-    });
-  }
+  // Assets
+  $("logoImg").src = ASSETS.logo;
 
-  /*** Start slide -> Calculator sync ***/
-  function syncStartBillToCalculator() {
-    const v = $("startBill").value;
-    $("uPay").value = v;
-    recalc();
-  }
+  const noSolar = $("imgBillNoSolar");
+  const solar = $("imgBillSolar");
+  noSolar.src = ASSETS.billNoSolar;
+  solar.src = ASSETS.billSolar;
 
-  /*** Reset ***/
-  function resetAll() {
-    $("startBill").value = "458";
-    $("uPay").value = "458";
-    $("uEsc").value = "9";
-    $("aPay").value = "295";
-    $("aEsc").value = "0";
-    $("bPay").value = "325";
-    $("bEsc").value = "0";
-    year = 1;
-    recalc();
-    activate(0);
-  }
+  // Zoom in-modal (keeps presentation locked)
+  noSolar.addEventListener("click", ()=>openModal("Bill (No Solar)", ASSETS.billNoSolar));
+  solar.addEventListener("click", ()=>openModal("Bill (Solar + Storage)", ASSETS.billSolar));
 
-  /*** Wiring ***/
-  function wireNav() {
-    $("btnNext").addEventListener("click", next);
-    $("btnPrev").addEventListener("click", prev);
-    $("btnNextTop").addEventListener("click", next);
-    $("btnPrevTop").addEventListener("click", prev);
-    $("btnHome").addEventListener("click", () => activate(0));
-    $("btnReset").addEventListener("click", resetAll);
+  // Links (bind once; reused on 2 slides)
+  const bindLinks = ()=>{
+    const a = document.querySelectorAll("#btnSCE");
+    const b = document.querySelectorAll("#btnLAT");
+    a.forEach(el=> el.onclick = ()=>popupArticle(ASSETS.linkSCE));
+    b.forEach(el=> el.onclick = ()=>popupArticle(ASSETS.linkLAT));
+  };
+  bindLinks();
 
-    document.addEventListener("keydown", (e) => {
-      if (modal.classList.contains("show") && e.key === "Escape") {
-        e.preventDefault();
-        closeModal();
-        return;
-      }
-      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
-        e.preventDefault();
-        next();
-      }
-      if (e.key === "ArrowLeft" || e.key === "PageUp") {
-        e.preventDefault();
-        prev();
-      }
-      if (e.key === "Home") {
-        e.preventDefault();
-        activate(0);
-      }
-      if (e.key === "End") {
-        e.preventDefault();
-        activate(slides.length - 1);
-      }
-    });
+  // Video source local
+  const v = $("outageVid");
+  v.querySelector("source").src = ASSETS.outageVideo;
+  v.load();
 
-    // Data-go buttons (replaces inline onclick)
-    $$(".js-go").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const n = Number.parseInt(btn.dataset.go ?? "0", 10);
-        if (Number.isFinite(n)) activate(n);
-      });
-    });
+  // Wheel
+  buildYearWheel();
 
-    // "Year quick jump" buttons
-    $$("[data-year]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const n = Number.parseInt(btn.dataset.year ?? "1", 10);
-        setYear(n, true);
-      });
-    });
-  }
-
-  function wireLinks() {
-    // Fix: use classes instead of duplicate IDs
-    $$(".js-btn-sce").forEach((el) => {
-      el.addEventListener("click", () => popupArticle(ASSETS.linkSCE));
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          popupArticle(ASSETS.linkSCE);
-        }
-      });
-    });
-
-    $$(".js-btn-lat").forEach((el) => {
-      el.addEventListener("click", () => popupArticle(ASSETS.linkLAT));
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          popupArticle(ASSETS.linkLAT);
-        }
-      });
-    });
-  }
-
-  function wireModal() {
-    modalClose.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal();
-    });
-  }
-
-  function wireImages() {
-    const noSolar = $("imgBillNoSolar");
-    const solar = $("imgBillSolar");
-
-    noSolar.addEventListener("click", () => openModal("Bill (No Solar)", ASSETS.billNoSolar));
-    solar.addEventListener("click", () => openModal("Bill (Solar + Storage)", ASSETS.billSolar));
-  }
-
-  function bootAssets() {
-    $("logoImg").src = ASSETS.logo;
-
-    $("imgBillNoSolar").src = ASSETS.billNoSolar;
-    $("imgBillSolar").src = ASSETS.billSolar;
-
-    const vid = $("outageVid");
-    const src = vid.querySelector("source");
-    src.src = ASSETS.outageVideo;
-    vid.load();
-  }
-
-  function bootCalculator() {
-    $("startBill").addEventListener("input", syncStartBillToCalculator);
-
-    // Initialize from start bill
-    $("uPay").value = $("startBill").value;
-
-    buildYearWheel();
-    recalc();
-    setYear(1, true);
-  }
-
-  /*** Init ***/
-  function init() {
-    bootAssets();
-    wireNav();
-    wireLinks();
-    wireModal();
-    wireImages();
-    bootCalculator();
-    activate(0);
-  }
-
-  init();
+  activate(0);
 })();
 </script>
+</body>
+</html>
