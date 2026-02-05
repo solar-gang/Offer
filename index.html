@@ -10,6 +10,9 @@
   :root{
     --navy:#0b1017; --navy2:#06122a; --gold:#FBC909; --teal:#3AADBB;
     --utility:#ff3b30; --opt1:#34c759; --opt2:#00c2ff;
+    /* brighter shades for $/kWh rows */
+    --utilityB:#ff6a61; --opt1B:#5dff8a; --opt2B:#49d7ff;
+
     --text:rgba(255,255,255,.96); --muted:rgba(255,255,255,.72); --muted2:rgba(255,255,255,.56);
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
     --shadow:0 18px 70px rgba(0,0,0,.45);
@@ -229,7 +232,7 @@
   .metricRow .mk{color:rgba(255,255,255,.70);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
   .metricRow .mv{font-weight:1000;font-size:clamp(26px,3.6vw,42px);letter-spacing:-.04em;color:var(--utility)}
 
-  /* Problem links (NO popups; open new tab) */
+  /* Problem links */
   .linkBtns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
   @media (max-width:980px){.linkBtns{grid-template-columns:1fr}}
   .linkBtn{
@@ -273,7 +276,7 @@
   .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
   .metric .mv{font-weight:1000; font-size:18px;}
 
-  /* NEW: cost per kWh badges under monthly inputs */
+  /* Price/kWh under monthly payments (brighter color) */
   .cpkwhRow{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.14);
@@ -287,9 +290,9 @@
   }
   .cpkwhRow .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
   .cpkwhRow .v{font-weight:1000; font-size:16px;}
-  .cpkwhRow.utility .v{color:var(--utility)}
-  .cpkwhRow.opt1 .v{color:var(--opt1)}
-  .cpkwhRow.opt2 .v{color:var(--opt2)}
+  .cpkwhRow.utility .v{color:var(--utilityB)}
+  .cpkwhRow.opt1 .v{color:var(--opt1B)}
+  .cpkwhRow.opt2 .v{color:var(--opt2B)}
 
   /* Year wheel */
   .yearPanel{margin-top:14px;border:1px solid rgba(255,255,255,.14);border-radius:22px;background: rgba(255,255,255,.04);overflow:hidden;}
@@ -349,7 +352,6 @@
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1 -->
     <section class="slide luxShadow active" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Start</h2>
@@ -382,7 +384,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 2 (Problem + ONLY SCE TOU + LA Times, open new window) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
@@ -397,8 +398,6 @@
           </div>
           <div>
             <div class="pill" style="margin-bottom:12px;">Peak hours cost more. Storage fixes the timing problem.</div>
-
-            <!-- CHANGE #1 and #2: remove popups; always open new window -->
             <div class="linkBtns">
               <div class="linkBtn" data-newtab="1" data-url="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">
                 <div class="linkTop"><span class="capTag">TOU</span><span class="capTag">New window</span></div>
@@ -418,7 +417,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 3 (Proof bill) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Proof</h2>
@@ -436,7 +434,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 4 (Outage) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Outage Protection</h2>
@@ -453,7 +450,6 @@
       </div>
     </section>
 
-    <!-- SLIDE 5 (Compare) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -468,7 +464,6 @@
       <div class="slideBody">
         <div class="compareTop">
 
-          <!-- Utility -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,255,255,.05));">
               <div><div class="label">Utility</div><div class="title">Edison</div></div>
@@ -478,7 +473,7 @@
               <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
 
-              <!-- CHANGE #3: cost per kWh for selected year -->
+              <!-- brighter $/kWh under monthly payments -->
               <div class="cpkwhRow utility">
                 <div class="k">Selected year cost per kWh</div>
                 <div class="v" id="uCpkwh">$0.00</div>
@@ -491,7 +486,6 @@
             </div>
           </div>
 
-          <!-- Option 1 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(52,199,89,.16), rgba(255,255,255,.05));">
               <div><div class="label">Option 1</div><div class="title">Proposal A</div></div>
@@ -501,7 +495,7 @@
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="3.5"></label>
 
-              <!-- CHANGE #3: cost per kWh for selected year -->
+              <!-- brighter $/kWh under monthly payments -->
               <div class="cpkwhRow opt1">
                 <div class="k">Selected year cost per kWh</div>
                 <div class="v" id="aCpkwh">$0.00</div>
@@ -514,7 +508,6 @@
             </div>
           </div>
 
-          <!-- Option 2 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(0,194,255,.16), rgba(255,255,255,.05));">
               <div><div class="label">Option 2</div><div class="title">Proposal B</div></div>
@@ -524,7 +517,7 @@
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="4.9"></label>
 
-              <!-- CHANGE #3: cost per kWh for selected year -->
+              <!-- brighter $/kWh under monthly payments -->
               <div class="cpkwhRow opt2">
                 <div class="k">Selected year cost per kWh</div>
                 <div class="v" id="bCpkwh">$0.00</div>
@@ -660,7 +653,7 @@ window.addEventListener("keydown", (e)=>{
   if(e.key==="Home"){ e.preventDefault(); start(); }
 });
 
-/* CHANGE #1 and #2: these links always open new window */
+/* Problem links open new window */
 document.addEventListener("click", (e)=>{
   const n = e.target.closest("[data-url][data-newtab='1']");
   if(!n) return;
@@ -703,7 +696,7 @@ const uTotal=$("uTotal"), aSave=$("aSave"), bSave=$("bSave");
 const yearPill=$("yearPill"), yearBig=$("yearBig");
 const uYearPay=$("uYearPay"), aYearPay=$("aYearPay"), bYearPay=$("bYearPay"), best25=$("best25");
 
-/* NEW: cost per kWh readouts (selected year) */
+/* Price per kWh displays */
 const uCpkwh=$("uCpkwh"), aCpkwh=$("aCpkwh"), bCpkwh=$("bCpkwh");
 
 function yearlyMonthly(base, escPct, year){
@@ -715,8 +708,6 @@ function sum25(baseMonthly, escPct){
   for(let y=1;y<=years;y++) sum += yearlyMonthly(baseMonthly, escPct, y)*12;
   return sum;
 }
-
-/* CHANGE #3: $/kWh uses selected-year annual cost / annual usage */
 function costPerKwhForYear(monthly, escPct, year, annualUsage){
   const kwh = Math.max(0, annualUsage);
   if(kwh <= 0) return 0;
