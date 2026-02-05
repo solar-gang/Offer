@@ -265,53 +265,66 @@
     white-space:nowrap;
   }
 
-  /* ===== Slide 1: Customer Cost (big centered red) ===== */
+  .gradText{
+    background:var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-weight:1000;
+  }
+
+  /* ===== Slide 1 simplified ===== */
   .centerStage{
     height:100%;
     display:grid;
     place-items:center;
   }
-  .costCard{
+  .heroCard{
     width:min(980px, 100%);
     border:1px solid rgba(255,255,255,.14);
     border-radius:22px;
     background:
-      radial-gradient(740px 340px at 20% 20%, rgba(255,59,48,.16), transparent 62%),
-      radial-gradient(740px 340px at 80% 20%, rgba(251,201,9,.10), transparent 62%),
+      radial-gradient(740px 340px at 20% 20%, rgba(251,201,9,.14), transparent 62%),
+      radial-gradient(740px 340px at 80% 20%, rgba(58,173,187,.12), transparent 62%),
       linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
     padding:18px;
   }
-  html.ios .costCard{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
-  .costTitle{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
+  html.ios .heroCard{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
+
+  .heroTop{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:12px; flex-wrap:wrap;
   }
-  .costTitle h1{
+  .heroTop h1{
     margin:0;
-    font-size: clamp(24px, 3.6vw, 46px);
-    letter-spacing:-.05em;
-    line-height:1.05;
+    font-size: clamp(28px, 4.2vw, 56px);
+    letter-spacing:-.055em;
+    line-height:1.02;
   }
-  .redPill{
-    border:1px solid rgba(255,59,48,.30);
-    background: rgba(255,59,48,.12);
+  .heroTop .tag{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
     border-radius:999px;
     padding:10px 12px;
     font-weight:1000;
-    color: rgba(255,255,255,.92);
     white-space:nowrap;
   }
+  .heroSub{
+    margin-top:10px;
+    color:var(--muted);
+    font-weight:900;
+    font-size:15px;
+    line-height:1.5;
+  }
+
   .formGrid{
     display:grid;
     grid-template-columns: 1fr 1fr;
     gap:12px;
-    margin-top:12px;
+    margin-top:14px;
   }
   @media (max-width:980px){ .formGrid{grid-template-columns:1fr;} }
+
   .klabel{
     display:block;
     color:rgba(255,255,255,.78);
@@ -334,27 +347,25 @@
     min-height:44px;
   }
   input:focus{
-    border-color: rgba(255,59,48,.72);
-    box-shadow: 0 0 0 6px rgba(255,59,48,.12);
+    border-color: rgba(58,173,187,.72);
+    box-shadow: 0 0 0 6px rgba(58,173,187,.12);
   }
 
-  .costMetrics{
+  .metricRow{
     margin-top:12px;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:12px;
-  }
-  @media (max-width:980px){ .costMetrics{grid-template-columns:1fr;} }
-  .metric{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.16);
     border-radius:18px;
     padding:14px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
   }
-  .metric .mk{color:rgba(255,255,255,.70); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .metric .mv{margin-top:10px; font-weight:1000; font-size: clamp(26px, 3.8vw, 44px); letter-spacing:-.04em;}
-  .metric .mv.red{color:var(--utility);}
-  .metric .sub{margin-top:10px; color:var(--muted); font-weight:900; line-height:1.4; font-size:13.5px;}
+  .metricRow .mk{color:rgba(255,255,255,.70); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .metricRow .mv{font-weight:1000; font-size: clamp(26px, 3.6vw, 42px); letter-spacing:-.04em;}
+  .metricRow .mv.red{color:var(--utility);}
 
   /* ===== Bills ===== */
   .billFrame{
@@ -511,13 +522,6 @@
     letter-spacing:-.03em;
     font-weight:1000;
   }
-  .gradText{
-    background:var(--grad);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    font-weight:1000;
-  }
   .tagline p{
     margin:8px 0 0;
     color:var(--muted);
@@ -557,7 +561,6 @@
     gap:12px;
     margin-top:12px;
   }
-
   .vppCard{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
@@ -603,8 +606,7 @@
     white-space:nowrap;
   }
   .colBody{padding:14px; display:grid; gap:10px;}
-
-  .metricRow{
+  .metricLine{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.16);
     border-radius:14px;
@@ -615,8 +617,8 @@
     align-items:center;
     flex-wrap:wrap;
   }
-  .metricRow .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .metricRow .mv{font-weight:1000; font-size:18px;}
+  .metricLine .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .metricLine .mv{font-weight:1000; font-size:18px;}
 
   /* Year wheel */
   .yearPanel{
@@ -794,7 +796,7 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Timeline + Reviews & Sites on same slide */
+  /* Next Steps: Timeline + Company links/reviews */
   .timelineWrap{
     display:grid;
     grid-template-columns: 1.05fr .95fr;
@@ -802,12 +804,14 @@
     align-items:stretch;
   }
   @media (max-width:980px){ .timelineWrap{grid-template-columns:1fr;} }
+
   .timeline{
     display:grid;
     grid-template-columns: repeat(3,1fr);
     gap:10px;
   }
   @media (max-width:980px){ .timeline{grid-template-columns:1fr;} }
+
   .step{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.16);
@@ -885,7 +889,6 @@
     letter-spacing:-.01em;
   }
   .siteRow .actions{display:flex; gap:8px; flex-wrap:wrap;}
-  .siteRow .btn{min-height:40px; padding:9px 10px;}
   .btn.small{min-height:40px; padding:9px 10px;}
   .btn.linkish{border-color: rgba(58,173,187,.22); background: rgba(58,173,187,.10);}
 
@@ -1020,19 +1023,22 @@
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1: Customer cost awareness -->
+    <!-- SLIDE 1: Slogan + inputs + $/kWh -->
     <section class="slide luxShadow active" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Customer Cost</h2>
-        <div class="pill"><span class="dot"></span> Know the real $/kWh</div>
+        <h2><span class="spark"></span> Start</h2>
+        <div class="pill"><span class="dot"></span> Win the day • Own the night</div>
       </div>
 
       <div class="slideBody">
         <div class="centerStage">
-          <div class="costCard">
-            <div class="costTitle">
-              <h1>Your home’s energy cost <span style="color:var(--utility)">(utility baseline)</span></h1>
-              <span class="redPill">Set these 3 numbers</span>
+          <div class="heroCard">
+            <div class="heroTop">
+              <h1>Win the day. <span class="gradText">Own the night.</span></h1>
+              <span class="tag">Baseline inputs</span>
+            </div>
+            <div class="heroSub">
+              Enter their average monthly bill and annual kWh. This calculates today’s $/kWh and auto-fills the utility column in the calculator.
             </div>
 
             <div class="formGrid">
@@ -1046,25 +1052,15 @@
               </label>
             </div>
 
-            <div class="costMetrics">
-              <div class="metric">
-                <div class="mk">Average cost per kWh (today)</div>
-                <div class="mv red" id="custCpkwh">$0.00</div>
-                <div class="sub">Calculated: (monthly × 12) ÷ annual kWh</div>
-              </div>
-
-              <div class="metric">
-                <div class="mk">Annual cost (today)</div>
-                <div class="mv red" id="custAnnual">$0</div>
-                <div class="sub">This becomes the baseline used throughout the presentation.</div>
-              </div>
+            <div class="metricRow" style="margin-top:14px;">
+              <div class="mk">Today’s average cost per kWh</div>
+              <div class="mv red" id="custCpkwh">$0.00</div>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
               <button class="btn primary hoverLift" type="button" onclick="go(1)">Continue</button>
               <button class="btn hoverLift" type="button" onclick="syncUtilityFromCustomer()">Apply to calculator</button>
             </div>
-
           </div>
         </div>
       </div>
@@ -1074,7 +1070,7 @@
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
-        <div class="pill"><span class="dot"></span> Rates keep rising</div>
+        <div class="pill"><span class="dot"></span> Time-of-Use + rising rates</div>
       </div>
 
       <div class="slideBody">
@@ -1090,16 +1086,16 @@
           </div>
 
           <div class="headlineBox">
-            <div class="big">Why bills spike: <span class="gradText">Time-of-Use</span></div>
+            <div class="big">Why bills spike: <span class="gradText">TOU pricing</span></div>
             <p class="sub">
-              The biggest driver isn’t only how many kWh you use — it’s <b>when</b> those kWh are purchased.
-              Peak hours cost the most. Even the same usage becomes expensive if more of it lands in peak windows.
+              Utility pricing is built around <b>when</b> power is purchased. Peak hours are priced highest.
+              Solar + batteries change the timing: produce by day, store surplus, discharge during peak.
             </p>
 
             <div class="bullets">
               <div class="bItem"><div class="bIcon">⏱️</div><div class="bText"><strong>Peak costs more</strong><span>Grid-stress hours are priced higher.</span></div></div>
-              <div class="bItem"><div class="bIcon">📈</div><div class="bText"><strong>Rates climbed fast</strong><span>~$0.17 → ~$0.42 average over ~15 years (context).</span></div></div>
-              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Fees + delivery still apply</strong><span>Staying connected means required charges remain, even with solar.</span></div></div>
+              <div class="bItem"><div class="bIcon">📈</div><div class="bText"><strong>Pressure keeps building</strong><span>More electrification + grid upgrades = upward rate pressure.</span></div></div>
+              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Required charges stay</strong><span>You stay connected — the goal is to buy less at peak pricing.</span></div></div>
             </div>
 
             <div class="linkBtns">
@@ -1140,7 +1136,7 @@
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Proof</h2>
-        <div class="pill"><span class="dot"></span> Solar + Storage</div>
+        <div class="pill"><span class="dot"></span> Solar + Storage result</div>
       </div>
 
       <div class="slideBody">
@@ -1158,13 +1154,13 @@
           <div class="headlineBox">
             <div class="big">Why it can be <span class="gradText">$28</span></div>
             <p class="sub">
-              This isn’t “free power.” It’s controlled power. Solar handles daytime. Batteries cover the expensive peak hours.
-              The utility becomes backup instead of primary — leaving mostly required charges + small net usage.
+              Not “free power.” Controlled power. Solar covers the day. Batteries cover peak.
+              The utility becomes the backup supplier instead of the primary supplier.
             </p>
             <div class="bullets">
               <div class="bItem"><div class="bIcon">☀️</div><div class="bText"><strong>Daytime offsets</strong><span>Solar reduces the kWh you would buy during the day.</span></div></div>
               <div class="bItem"><div class="bIcon">🔋</div><div class="bText"><strong>Peak avoidance</strong><span>Batteries discharge during peak so you buy less at high pricing.</span></div></div>
-              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Net billing reality</strong><span>You’re still connected, but you’re not forced to buy most power at peak.</span></div></div>
+              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Net billing reality</strong><span>You stay connected, but you’re not forced to buy most power at peak.</span></div></div>
             </div>
           </div>
         </div>
@@ -1249,7 +1245,7 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
-              <div class="metricRow">
+              <div class="metricLine">
                 <div class="mk">25-year utility spend</div>
                 <div class="mv" id="uTotal" style="color:var(--utility)">$0</div>
               </div>
@@ -1267,7 +1263,7 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="3.5"></label>
-              <div class="metricRow">
+              <div class="metricLine">
                 <div class="mk">Total savings over 25 years</div>
                 <div class="mv" id="aSave" style="color:var(--opt1)">$0</div>
               </div>
@@ -1285,7 +1281,7 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="4.9"></label>
-              <div class="metricRow">
+              <div class="metricLine">
                 <div class="mk">Total savings over 25 years</div>
                 <div class="mv" id="bSave" style="color:var(--opt2)">$0</div>
               </div>
@@ -1348,10 +1344,10 @@
       </div>
     </section>
 
-    <!-- SLIDE 6: Timeline + Sites + Reviews (moved here) -->
+    <!-- SLIDE 6: Next Steps (timeline + company links/reviews here) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Process + Reviews</h2>
+        <h2><span class="spark"></span> Next Steps</h2>
         <div class="pill"><span class="dot"></span> Tap a step • show trust</div>
       </div>
 
@@ -1377,8 +1373,8 @@
             </div>
 
             <div class="panel">
-              <h3>Company sites + Google reviews</h3>
-              <p>Open each website in-page for presentation. Use the Reviews button to show Google reviews without leaving this tool.</p>
+              <h3>Websites + Google reviews</h3>
+              <p>Open each website and reviews in-page (popup), so you never leave this presentation.</p>
 
               <div class="siteGrid">
                 <div class="siteRow">
@@ -1530,12 +1526,7 @@ window.addEventListener("keydown", (e)=>{
   if(e.key === "Escape" && modal.classList.contains("show")) closeModal();
 });
 
-/* ========= Customer cost (slide 1) ========= */
-const custMonthly = document.getElementById("custMonthly");
-const custUsage = document.getElementById("custUsage");
-const custCpkwh = document.getElementById("custCpkwh");
-const custAnnual = document.getElementById("custAnnual");
-
+/* ========= Helpers ========= */
 function num(v, fallback=0){
   const x = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
   return isFinite(x) ? x : fallback;
@@ -1549,15 +1540,19 @@ function money2(x){
   return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
+/* ========= Slide 1: customer $/kWh ========= */
+const custMonthly = document.getElementById("custMonthly");
+const custUsage = document.getElementById("custUsage");
+const custCpkwh = document.getElementById("custCpkwh");
+
 function recalcCustomer(){
   const m = num(custMonthly.value, 458);
   const kwh = Math.max(0, num(custUsage.value, 12000));
   const annual = m * 12;
   const cpk = (kwh > 0) ? (annual / kwh) : 0;
-  custAnnual.textContent = money(annual);
   custCpkwh.textContent = "$" + (cpk || 0).toFixed(2);
 }
-custMonthly.addEventListener("input", ()=>{recalcCustomer(); syncUtilityFromCustomer(true);});
+custMonthly.addEventListener("input", ()=>{ recalcCustomer(); syncUtilityFromCustomer(true); });
 custUsage.addEventListener("input", recalcCustomer);
 
 /* ========= Calculator + wheel ========= */
@@ -1690,7 +1685,7 @@ function snapWheelToYear(y){
   target.scrollIntoView({block:"center", behavior: document.documentElement.classList.contains("ios") ? "auto" : "smooth"});
 }
 
-/* Timeline click */
+/* ========= Next Steps timeline ========= */
 const stepTitle = document.getElementById("stepTitle");
 const stepBody  = document.getElementById("stepBody");
 const stepTip   = document.getElementById("stepTip");
