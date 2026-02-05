@@ -315,7 +315,7 @@
   .cap small{color:var(--muted2);font-weight:900;white-space:nowrap;}
 
   /* Link buttons (open new tab) */
-  .linkBtns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
+  .linkBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
   @media (max-width:980px){.linkBtns{grid-template-columns:1fr;}}
   .linkBtn{
     border:1px solid rgba(255,255,255,.14);
@@ -618,6 +618,15 @@
     letter-spacing:-.035em;
     line-height:1;
   }
+  .kwhLine{
+    margin-top:8px;
+    font-weight:1000;
+    font-size:14px;
+    letter-spacing:-.01em;
+    color: rgba(255,255,255,.92); /* brighter than section */
+  }
+  .kwhLine .u{color:rgba(255,255,255,.92);}
+  .kwhLine .unit{color:rgba(255,255,255,.72); font-weight:900;}
   .yearSavings{
     border:1px solid rgba(52,199,89,.28);
     background: rgba(52,199,89,.10);
@@ -863,6 +872,12 @@
                 <div class="linkDesc">Official SCE TOU plan page.</div>
               </div>
 
+              <div class="linkBtn" data-open-url="https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill">
+                <div class="linkTop"><span class="capTag">13% increase</span><span class="capTag">Open</span></div>
+                <div class="linkTitle">SCE: Understanding bill updates</div>
+                <div class="linkDesc">Why bills & rate components have increased.</div>
+              </div>
+
               <div class="linkBtn" data-open-url="https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case">
                 <div class="linkTop"><span class="capTag">L.A. fires</span><span class="capTag">Open</span></div>
                 <div class="linkTitle">LA Times: Edison Rate Case</div>
@@ -939,6 +954,26 @@
               <div class="backupItem"><div class="bkIcon">📶</div><div><b>Wi-Fi + charging</b><span>Phones, internet, work continuity.</span></div></div>
               <div class="backupItem"><div class="bkIcon">🛡️</div><div><b>Security + garage</b><span>Stay safe and functional.</span></div></div>
             </div>
+
+            <!-- Tesla VPP links (open external) -->
+            <div class="linkBtns" style="margin-top:12px;">
+              <div class="linkBtn" data-open-url="https://www.google.com/search?q=tesla+virtual+power+plant">
+                <div class="linkTop"><span class="capTag">Tesla VPP</span><span class="capTag">Open</span></div>
+                <div class="linkTitle">Tesla Virtual Power Plant</div>
+                <div class="linkDesc">Program overview (search results open reliably).</div>
+              </div>
+              <div class="linkBtn" data-open-url="https://www.google.com/search?q=tesla+virtual+power+plant+payments+checks">
+                <div class="linkTop"><span class="capTag">Checks</span><span class="capTag">Open</span></div>
+                <div class="linkTitle">VPP Earnings / Check Examples</div>
+                <div class="linkDesc">What customers can earn for supporting the grid.</div>
+              </div>
+              <div class="linkBtn" data-open-url="https://www.google.com/search?q=tesla+virtual+power+plant+california">
+                <div class="linkTop"><span class="capTag">CA</span><span class="capTag">Open</span></div>
+                <div class="linkTitle">VPP in California</div>
+                <div class="linkDesc">Availability + how it works locally.</div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1017,9 +1052,21 @@
 
             <div class="yearCompare">
               <div class="bigMoneyGrid">
-                <div class="bigTile"><div class="bk">Utility <span class="chip">Red</span></div><div class="m" style="color:var(--utility)" id="uYearPay">$0</div></div>
-                <div class="bigTile"><div class="bk">Option 1 <span class="chip">Green</span></div><div class="m" style="color:var(--opt1)" id="aYearPay">$0</div></div>
-                <div class="bigTile"><div class="bk">Option 2 <span class="chip">Cyan</span></div><div class="m" style="color:var(--opt2)" id="bYearPay">$0</div></div>
+                <div class="bigTile">
+                  <div class="bk">Utility <span class="chip">Red</span></div>
+                  <div class="m" style="color:var(--utility)" id="uYearPay">$0</div>
+                  <div class="kwhLine"><span id="uYearKwh">$0.34</span> <span class="unit">/kWh</span></div>
+                </div>
+                <div class="bigTile">
+                  <div class="bk">Option 1 <span class="chip">Green</span></div>
+                  <div class="m" style="color:var(--opt1)" id="aYearPay">$0</div>
+                  <div class="kwhLine"><span id="aYearKwh">$0.34</span> <span class="unit">/kWh</span></div>
+                </div>
+                <div class="bigTile">
+                  <div class="bk">Option 2 <span class="chip">Cyan</span></div>
+                  <div class="m" style="color:var(--opt2)" id="bYearPay">$0</div>
+                  <div class="kwhLine"><span id="bYearKwh">$0.34</span> <span class="unit">/kWh</span></div>
+                </div>
               </div>
 
               <div class="yearSavings">
@@ -1204,7 +1251,6 @@ $("outageVideo").load();
 
 /* OPEN LINKS EXTERNALLY (new tab/window) */
 document.addEventListener("click",(e)=>{
-  // 1) Any element using data-open-url (buttons/cards)
   const node = e.target.closest("[data-open-url]");
   if (node){
     const url = node.getAttribute("data-open-url");
@@ -1215,7 +1261,6 @@ document.addEventListener("click",(e)=>{
     return;
   }
 
-  // 2) Any normal <a href="https://..."> links
   const a = e.target.closest("a[href]");
   if(!a) return;
   const href = a.getAttribute("href");
@@ -1262,6 +1307,7 @@ const uPay=$("uPay"), uEsc=$("uEsc"), aPay=$("aPay"), aEsc=$("aEsc"), bPay=$("bP
 const uTotal=$("uTotal"), aSave=$("aSave"), bSave=$("bSave");
 const yearPill=$("yearPill"), yearBig=$("yearBig");
 const uYearPay=$("uYearPay"), aYearPay=$("aYearPay"), bYearPay=$("bYearPay"), best25=$("best25");
+const uYearKwh=$("uYearKwh"), aYearKwh=$("aYearKwh"), bYearKwh=$("bYearKwh");
 
 function yearlyMonthly(base, escPct, year){
   const r = escPct/100;
@@ -1271,6 +1317,13 @@ function sum25(baseMonthly, escPct){
   let sum=0;
   for(let y=1;y<=years;y++) sum += yearlyMonthly(baseMonthly, escPct, y)*12;
   return sum;
+}
+function fmtKwhCost(monthly, annualKwh){
+  const kwh = Math.max(0, annualKwh);
+  if(!kwh) return "$0.00";
+  const annual = Math.max(0, monthly)*12;
+  const c = annual / kwh;
+  return "$" + c.toFixed(2);
 }
 function recalc(){
   const U=num(uPay.value,458), UE=num(uEsc.value,9);
@@ -1284,9 +1337,18 @@ function recalc(){
   aSave.textContent = money(saveA);
   bSave.textContent = money(saveB);
 
-  uYearPay.textContent = money2(yearlyMonthly(U,UE,currentYear));
-  aYearPay.textContent = money2(yearlyMonthly(A,AE,currentYear));
-  bYearPay.textContent = money2(yearlyMonthly(B,BE,currentYear));
+  const Uy = yearlyMonthly(U,UE,currentYear);
+  const Ay = yearlyMonthly(A,AE,currentYear);
+  const By = yearlyMonthly(B,BE,currentYear);
+
+  uYearPay.textContent = money2(Uy);
+  aYearPay.textContent = money2(Ay);
+  bYearPay.textContent = money2(By);
+
+  const annualKwh = num(custUsage.value,12000);
+  uYearKwh.textContent = fmtKwhCost(Uy, annualKwh);
+  aYearKwh.textContent = fmtKwhCost(Ay, annualKwh);
+  bYearKwh.textContent = fmtKwhCost(By, annualKwh);
 
   best25.textContent = money(Math.max(saveA, saveB));
 }
