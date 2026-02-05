@@ -8,21 +8,24 @@
 
 <style>
   :root{
+    /* Brand palette (locked to your logo energy) */
     --navy:#0b1017;
     --navy2:#06122a;
     --gold:#FBC909;
     --teal:#3AADBB;
 
-    --utility:#ff3b30;
-    --opt1:#34c759;
-    --opt2:#00c2ff;
+    /* Column colors */
+    --utility:#ff3b30; /* red */
+    --opt1:#34c759;    /* green */
+    --opt2:#00c2ff;    /* cyan */
 
     --text:rgba(255,255,255,.96);
     --muted:rgba(255,255,255,.72);
     --muted2:rgba(255,255,255,.56);
 
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
-    --shadow: 0 18px 70px rgba(0,0,0,.45);
+    --shadow:0 18px 70px rgba(0,0,0,.45);
+
     --r:16px;
     --r2:22px;
 
@@ -42,24 +45,24 @@
       radial-gradient(900px 460px at 14% 10%, rgba(251,201,9,.18), transparent 60%),
       radial-gradient(900px 460px at 86% 12%, rgba(58,173,187,.16), transparent 60%),
       linear-gradient(180deg, var(--navy2), var(--navy));
-    overflow:hidden;
+    overflow:hidden; /* presentation mode */
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
 
+  /* iPhone stability (reduces GPU churn without changing look) */
   html.ios .luxShadow{ box-shadow:none !important; }
   html.ios .hoverLift:hover{ transform:none !important; box-shadow:none !important; }
   html.ios .slide{ transition:none !important; }
-  html.ios input:focus{ box-shadow:none !important; }
 
   a{color:#cfe8ff;text-decoration:none}
   a:hover{text-decoration:underline}
   button, a, input { -webkit-tap-highlight-color: transparent; }
 
-  /* ===== Top Bar ===== */
+  /* ===== Top Bar (compact on mobile) ===== */
   .topbar{
     position:fixed; inset:0 0 auto 0;
-    z-index:160;
+    z-index:100;
     padding-top:var(--safeT);
     background: rgba(10,16,24,.88);
     border-bottom:1px solid rgba(255,255,255,.12);
@@ -75,12 +78,12 @@
     align-items:center;
     justify-content:space-between;
   }
-  .brand{display:flex; align-items:center; gap:12px; min-width:220px; overflow:hidden;}
+  .brand{display:flex; align-items:center; gap:12px; min-width:180px; overflow:hidden;}
   .brand img{
-    height:54px; width:auto; display:block;
+    height:56px; width:auto; display:block;
     filter:drop-shadow(0 12px 28px rgba(0,0,0,.35));
   }
-  .brandTitle{display:flex; flex-direction:column; line-height:1.1; min-width:0;}
+  .brandTitle{display:flex; flex-direction:column; line-height:1.1; min-width:0}
   .brandTitle .name{
     font-weight:1000; letter-spacing:-.02em;
     display:flex; align-items:center; gap:10px;
@@ -89,7 +92,7 @@
   .dot{
     width:10px;height:10px;border-radius:999px;
     background:var(--grad);
-    box-shadow: 0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18);
+    box-shadow:0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18);
     flex:0 0 auto;
   }
   .brandTitle .sub{
@@ -98,7 +101,9 @@
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
 
-  .navTop{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+  .nav{
+    display:flex; gap:8px; align-items:center; justify-content:flex-end; flex-wrap:wrap;
+  }
   .btn{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
@@ -128,17 +133,17 @@
     box-shadow: 0 18px 58px rgba(58,173,187,.14), 0 18px 58px rgba(251,201,9,.10);
   }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
-  .btn.icon{padding:10px 12px; min-width:46px;}
-
+  .btn.icon{min-width:46px; padding:10px 12px;}
+  .hideMobile{display:inline-flex;}
   @media (max-width:860px){
-    .brand img{height:50px;}
-    .brandTitle .sub{display:none;}
-    .navTop .btn.hideMobile{display:none;}
+    .brand img{height:52px}
+    .brandTitle .sub{display:none}
+    .hideMobile{display:none;}
   }
 
   .progressWrap{
     max-width:1280px; margin:0 auto;
-    padding: 0 14px 10px;
+    padding:0 14px 10px;
     padding-left: calc(14px + var(--safeL));
     padding-right: calc(14px + var(--safeR));
   }
@@ -217,20 +222,20 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Bottom controls */
+  /* Bottom presentation controls (never overlap content) */
   .presentBar{
     position:fixed;
     left: 12px;
     right: 12px;
     bottom: calc(12px + var(--safeB));
-    z-index:180;
+    z-index:120;
     display:flex;
     justify-content:center;
     pointer-events:none;
   }
   .presentShell{
     pointer-events:auto;
-    width:min(980px, 100%);
+    width:min(980px,100%);
     display:flex;
     gap:10px;
     align-items:center;
@@ -242,11 +247,11 @@
   .presentShell .btn{flex:1; min-height:46px;}
   .presentShell .btn.primary{flex:1.2;}
   @media (max-width:520px){
-    .presentShell{gap:8px; padding:8px;}
-    .presentShell .btn{min-height:44px; padding:10px 10px;}
+    .presentShell{gap:8px;padding:8px}
+    .presentShell .btn{min-height:44px;padding:10px 10px}
   }
 
-  /* Helpers */
+  /* Layout helpers */
   .grid{display:grid; gap:14px;}
   .grid2{grid-template-columns: 1.05fr .95fr;}
   .grid2eq{grid-template-columns:1fr 1fr;}
@@ -264,7 +269,6 @@
     gap:10px;
     white-space:nowrap;
   }
-
   .gradText{
     background:var(--grad);
     -webkit-background-clip:text;
@@ -273,14 +277,10 @@
     font-weight:1000;
   }
 
-  /* ===== Slide 1 simplified ===== */
-  .centerStage{
-    height:100%;
-    display:grid;
-    place-items:center;
-  }
+  /* Slide 1 (simple input only) */
+  .centerStage{height:100%;display:grid;place-items:center;}
   .heroCard{
-    width:min(980px, 100%);
+    width:min(980px,100%);
     border:1px solid rgba(255,255,255,.14);
     border-radius:22px;
     background:
@@ -289,42 +289,12 @@
       linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
     padding:18px;
   }
-  html.ios .heroCard{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
-
-  .heroTop{
-    display:flex; align-items:flex-end; justify-content:space-between;
-    gap:12px; flex-wrap:wrap;
-  }
-  .heroTop h1{
-    margin:0;
-    font-size: clamp(28px, 4.2vw, 56px);
-    letter-spacing:-.055em;
-    line-height:1.02;
-  }
-  .heroTop .tag{
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    border-radius:999px;
-    padding:10px 12px;
-    font-weight:1000;
-    white-space:nowrap;
-  }
-  .heroSub{
-    margin-top:10px;
-    color:var(--muted);
-    font-weight:900;
-    font-size:15px;
-    line-height:1.5;
-  }
-
-  .formGrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:12px;
-    margin-top:14px;
-  }
-  @media (max-width:980px){ .formGrid{grid-template-columns:1fr;} }
-
+  html.ios .heroCard{background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));}
+  .heroTop{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .heroTop h1{margin:0;font-size:clamp(28px,4.2vw,56px);letter-spacing:-.055em;line-height:1.02}
+  .heroSub{margin-top:10px;color:var(--muted);font-weight:900;font-size:15px;line-height:1.5}
+  .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media (max-width:980px){.formGrid{grid-template-columns:1fr}}
   .klabel{
     display:block;
     color:rgba(255,255,255,.78);
@@ -350,7 +320,7 @@
     border-color: rgba(58,173,187,.72);
     box-shadow: 0 0 0 6px rgba(58,173,187,.12);
   }
-
+  html.ios input:focus{ box-shadow:none; }
   .metricRow{
     margin-top:12px;
     border:1px solid rgba(255,255,255,.12);
@@ -363,32 +333,13 @@
     align-items:center;
     flex-wrap:wrap;
   }
-  .metricRow .mk{color:rgba(255,255,255,.70); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .metricRow .mv{font-weight:1000; font-size: clamp(26px, 3.6vw, 42px); letter-spacing:-.04em;}
-  .metricRow .mv.red{color:var(--utility);}
+  .metricRow .mk{color:rgba(255,255,255,.70);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .metricRow .mv{font-weight:1000;font-size:clamp(26px,3.6vw,42px);letter-spacing:-.04em;color:var(--utility)}
 
-  /* ===== Bills ===== */
-  .billFrame{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.16);
-    overflow:hidden;
-  }
-  .billViewport{
-    height: clamp(260px, 42vh, 520px);
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-  .billViewport img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    cursor:pointer;
-  }
+  /* Bills */
+  .billFrame{border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(0,0,0,.16);overflow:hidden}
+  .billViewport{height:clamp(260px,42vh,520px);background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .billViewport img{width:100%;height:100%;object-fit:contain;display:block;cursor:pointer;background:#000}
   .cap{
     padding:12px 14px;
     border-top:1px solid rgba(255,255,255,.10);
@@ -401,51 +352,7 @@
   }
   .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
 
-  /* TOU link buttons */
-  .linkBtns{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap:12px;
-    margin-top:14px;
-  }
-  @media (max-width:980px){ .linkBtns{grid-template-columns:1fr;} }
-  .linkBtn{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.16);
-    padding:14px;
-    cursor:pointer;
-    transition: transform .12s ease, background .12s ease, border-color .12s ease;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .linkBtn:hover{
-    transform: translateY(-1px);
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,255,255,.18);
-  }
-  .linkTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-  .capTag{
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    border-radius:999px;
-    padding:6px 10px;
-    font-weight:1000;
-    font-size:12px;
-    color: rgba(255,255,255,.86);
-    white-space:nowrap;
-  }
-  .linkTitle{font-weight:1000; letter-spacing:-.02em; font-size:18px; line-height:1.12;}
-  .linkDesc{color:var(--muted); font-weight:900; font-size:13.5px; line-height:1.4;}
-
-  /* Proof text */
+  /* Explanation bullets */
   .headlineBox{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
@@ -461,13 +368,13 @@
   }
   .headlineBox .sub{margin:0; color:var(--muted); font-weight:900; font-size:15px; line-height:1.45;}
   .bullets{
+    margin-top:12px;
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
     background: rgba(255,255,255,.05);
     padding:16px;
     display:grid;
     gap:12px;
-    margin-top:12px;
   }
   .bItem{
     border:1px solid rgba(255,255,255,.12);
@@ -491,91 +398,61 @@
   .bText strong{font-weight:1000; letter-spacing:-.02em;}
   .bText span{display:block; margin-top:3px; color:var(--muted); font-weight:850; font-size:13.5px; line-height:1.35;}
 
-  /* Outage */
-  .videoShell{
+  /* Link buttons (open new window) */
+  .linkBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media (max-width:980px){.linkBtns{grid-template-columns:1fr}}
+  .linkBtn{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
-    overflow:hidden;
-    background: rgba(0,0,0,.22);
+    background: rgba(0,0,0,.16);
+    padding:14px;
+    cursor:pointer;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
   }
-  .videoViewport{
-    width:100%;
-    height: clamp(260px, 46vh, 520px);
-    background:#000;
+  .linkBtn:hover{transform:translateY(-1px);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+  .linkTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .capTag{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:1000;
+    font-size:12px;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
   }
-  video{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    background:#000;
-  }
+  .linkTitle{font-weight:1000;letter-spacing:-.02em;font-size:18px;line-height:1.12}
+  .linkDesc{color:var(--muted);font-weight:900;font-size:13.5px;line-height:1.4}
+
+  /* Outage demo */
+  .videoShell{border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;background:rgba(0,0,0,.22)}
+  .videoViewport{width:100%;height:clamp(260px,46vh,520px);background:#000}
+  video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
   .tagline{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
-    background: linear-gradient(135deg, rgba(251,201,9,.11), rgba(58,173,187,.09));
-    padding:14px;
+    background:linear-gradient(135deg,rgba(251,201,9,.11),rgba(58,173,187,.09));
+    padding:14px
   }
-  .tagline h3{
-    margin:0;
-    font-size: clamp(18px, 2.4vw, 28px);
-    letter-spacing:-.03em;
-    font-weight:1000;
-  }
-  .tagline p{
-    margin:8px 0 0;
-    color:var(--muted);
-    font-weight:900;
-    line-height:1.45;
-  }
-  .backupGrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-    margin-top:12px;
-  }
-  @media (max-width:980px){ .backupGrid{grid-template-columns:1fr;} }
-  .backupItem{
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.16);
-    border-radius:18px;
-    padding:12px;
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-  }
-  .bkIcon{
-    width:36px;height:36px;border-radius:14px;
-    background: var(--grad);
-    color:#07121b;
-    display:flex; align-items:center; justify-content:center;
-    font-weight:1000;
-    flex:0 0 auto;
-  }
-  .backupItem b{display:block; font-weight:1000; letter-spacing:-.01em;}
-  .backupItem span{display:block; margin-top:3px; color:var(--muted); font-weight:900; font-size:13.5px; line-height:1.35;}
+  .tagline h3{margin:0;font-size:clamp(18px,2.4vw,28px);letter-spacing:-.03em;font-weight:1000}
+  .tagline p{margin:8px 0 0;color:var(--muted);font-weight:900;line-height:1.45}
+  .backupGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  @media (max-width:980px){.backupGrid{grid-template-columns:1fr}}
+  .backupItem{border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.16);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:flex-start}
+  .bkIcon{width:36px;height:36px;border-radius:14px;background:var(--grad);color:#07121b;display:flex;align-items:center;justify-content:center;font-weight:1000;flex:0 0 auto}
+  .backupItem b{display:block;font-weight:1000}
+  .backupItem span{display:block;margin-top:3px;color:var(--muted);font-weight:900;font-size:13.5px;line-height:1.35}
 
-  .vppLinks{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:12px;
-    margin-top:12px;
-  }
-  .vppCard{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.16);
-    overflow:hidden;
-  }
-  .vppBtn{
-    padding:14px;
-    cursor:pointer;
-  }
-  .vppBtn:hover{ background: rgba(255,255,255,.06); }
-  .vppBtn .t{font-weight:1000; font-size:16px; letter-spacing:-.01em;}
-  .vppBtn .d{margin-top:8px; color:var(--muted); font-weight:900; font-size:13.5px; line-height:1.4;}
+  .vppCard{border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(0,0,0,.16);overflow:hidden;margin-top:12px}
+  .vppBtn{padding:14px;cursor:pointer}
+  .vppBtn:hover{background:rgba(255,255,255,.06)}
+  .vppBtn .t{font-weight:1000;font-size:16px}
+  .vppBtn .d{margin-top:6px;color:var(--muted);font-weight:900;font-size:13.5px;line-height:1.4}
 
-  /* Compare tool */
+  /* Compare tool (original look/feel) */
   .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
   @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
   .col{
@@ -606,7 +483,7 @@
     white-space:nowrap;
   }
   .colBody{padding:14px; display:grid; gap:10px;}
-  .metricLine{
+  .metric{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.16);
     border-radius:14px;
@@ -617,10 +494,10 @@
     align-items:center;
     flex-wrap:wrap;
   }
-  .metricLine .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .metricLine .mv{font-weight:1000; font-size:18px;}
+  .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .metric .mv{font-weight:1000; font-size:18px;}
 
-  /* Year wheel */
+  /* Year wheel (smooth + synced) */
   .yearPanel{
     margin-top:14px;
     border:1px solid rgba(255,255,255,.14);
@@ -651,7 +528,6 @@
     white-space:nowrap;
   }
   .yearPill .dot2{width:10px;height:10px;border-radius:999px;background:var(--grad);}
-
   .yearBody{
     padding:16px;
     display:grid;
@@ -682,7 +558,6 @@
     min-height:44px;
     cursor:pointer;
   }
-
   .wheel{
     position:relative;
     height:220px;
@@ -711,6 +586,7 @@
     pointer-events:none;
     z-index:3;
   }
+  html.ios .wheel::after{ box-shadow:none; }
 
   .wheelList{
     height:100%;
@@ -732,6 +608,7 @@
     letter-spacing:-.01em;
     color: rgba(255,255,255,.72);
     user-select:none;
+    cursor:pointer;
   }
   .wheelItem.active{
     color: rgba(255,255,255,.96);
@@ -796,22 +673,11 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Next Steps: Timeline + Company links/reviews */
-  .timelineWrap{
-    display:grid;
-    grid-template-columns: 1.05fr .95fr;
-    gap:12px;
-    align-items:stretch;
-  }
-  @media (max-width:980px){ .timelineWrap{grid-template-columns:1fr;} }
-
-  .timeline{
-    display:grid;
-    grid-template-columns: repeat(3,1fr);
-    gap:10px;
-  }
-  @media (max-width:980px){ .timeline{grid-template-columns:1fr;} }
-
+  /* Next steps + reviews */
+  .timelineWrap{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:stretch}
+  @media (max-width:980px){.timelineWrap{grid-template-columns:1fr}}
+  .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media (max-width:980px){.timeline{grid-template-columns:1fr}}
   .step{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.16);
@@ -821,59 +687,29 @@
     cursor:pointer;
     transition: transform .12s ease, background .12s ease, border-color .12s ease;
   }
-  .step:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18);}
-  .step.active{
-    border-color: rgba(58,173,187,.55);
-    background: rgba(58,173,187,.10);
-  }
+  .step:hover{transform:translateY(-1px);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+  .step.active{border-color:rgba(58,173,187,.55);background:rgba(58,173,187,.10)}
   .num{
     width:30px;height:30px;border-radius:12px;
     background: var(--grad);
     color:#07121b;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:1000;
-    margin-bottom:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:1000;margin-bottom:10px;
   }
   .step .t{font-weight:1000; letter-spacing:-.02em;}
   .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900; font-size:13.5px; line-height:1.35;}
-
-  .rightStack{display:grid; gap:12px;}
   .panel{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.16);
     border-radius:18px;
     padding:16px;
   }
-  .panel h3{
-    margin:0;
-    font-size: clamp(18px, 2.2vw, 28px);
-    letter-spacing:-.03em;
-    font-weight:1000;
-  }
-  .panel p{
-    margin:10px 0 0;
-    color:var(--muted);
-    font-weight:900;
-    line-height:1.5;
-  }
-  .tip{
-    margin-top:12px;
-    border:1px solid rgba(251,201,9,.22);
-    background: rgba(251,201,9,.08);
-    border-radius:16px;
-    padding:12px;
-    font-weight:1000;
-    color: rgba(255,255,255,.92);
-  }
-  .siteGrid{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:10px;
-    margin-top:12px;
-  }
+  .panel h3{margin:0;font-size:clamp(18px,2.2vw,28px);letter-spacing:-.03em;font-weight:1000}
+  .panel p{margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.5}
+  .tip{margin-top:12px;border:1px solid rgba(251,201,9,.22);background:rgba(251,201,9,.08);border-radius:16px;padding:12px;font-weight:1000;color:rgba(255,255,255,.92)}
+  .tip.alt{border-color:rgba(58,173,187,.28);background:rgba(58,173,187,.10)}
   .siteRow{
+    margin-top:12px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.14);
     border-radius:18px;
@@ -884,26 +720,17 @@
     gap:10px;
     flex-wrap:wrap;
   }
-  .siteRow .name{
-    font-weight:1000;
-    letter-spacing:-.01em;
-  }
+  .siteRow .name{font-weight:1000;}
   .siteRow .actions{display:flex; gap:8px; flex-wrap:wrap;}
-  .btn.small{min-height:40px; padding:9px 10px;}
-  .btn.linkish{border-color: rgba(58,173,187,.22); background: rgba(58,173,187,.10);}
 
-  /* ===== Modal ===== */
+  /* Simple modal for in-page bill zoom (no leaving page) */
   .modal{
-    position:fixed;
-    inset:0;
-    z-index:220;
-    display:none;
-    align-items:center;
-    justify-content:center;
+    position:fixed; inset:0; z-index:300;
+    display:none; align-items:center; justify-content:center;
     padding: calc(14px + var(--safeT)) calc(14px + var(--safeR)) calc(14px + var(--safeB)) calc(14px + var(--safeL));
     background: rgba(0,0,0,.72);
   }
-  .modal.show{display:flex;}
+  .modal.show{display:flex}
   .modalBox{
     width:min(1100px, 100%);
     height:min(84vh, 880px);
@@ -918,85 +745,27 @@
   .modalTop{
     padding:10px 12px;
     border-bottom:1px solid rgba(255,255,255,.10);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
   }
-  .modalTop .title{
-    font-weight:1000;
-    letter-spacing:-.02em;
-    color: rgba(255,255,255,.92);
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  .modalActions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .modalTop .title{font-weight:1000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60vw;}
   .iconBtn{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
-    color:var(--text);
+    color: var(--text);
     border-radius:14px;
     padding:10px 12px;
     font-weight:950;
     min-height:42px;
     cursor:pointer;
   }
-  .modalBody{position:relative; flex:1; overflow:hidden;}
-
-  .viewer{position:absolute; inset:0; overflow:hidden; background:#000;}
-  .viewerCanvas{
-    position:absolute; inset:0;
-    cursor:grab;
-    touch-action:none;
-  }
-  .viewerCanvas.grabbing{cursor:grabbing;}
-  .viewerCanvas img{
-    position:absolute;
-    top:0; left:0;
-    transform-origin: 0 0;
-    user-select:none;
-    -webkit-user-drag:none;
-    max-width:none;
-    max-height:none;
-  }
-  .zoomBar{
-    position:absolute;
-    left:12px; right:12px;
-    bottom:12px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    z-index:3;
-    pointer-events:none;
-  }
-  .zoomRange{
-    flex:1;
-    pointer-events:auto;
-    height:42px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06);
-    padding:0 10px;
-    display:flex;
-    align-items:center;
-  }
-  .zoomRange input{
-    width:100%;
-    height:24px;
-    margin:0;
-    background: transparent;
-    border:0;
-    padding:0;
-    box-shadow:none;
-    min-height:auto;
-  }
-
-  .frame{position:absolute; inset:0; background:#000;}
-  .frame iframe{width:100%; height:100%; border:0; display:block; background:#000;}
+  .modalBody{flex:1; background:#000; display:flex; align-items:center; justify-content:center;}
+  .modalBody img{width:100%; height:100%; object-fit:contain; display:block;}
 </style>
 </head>
 
 <body>
 
+<!-- ===== Topbar ===== -->
 <div class="topbar">
   <div class="topbarInner">
     <div class="brand">
@@ -1006,12 +775,11 @@
         <div class="sub">Solar + Storage Closing Tool</div>
       </div>
     </div>
-
-    <div class="navTop">
+    <div class="nav">
       <button class="btn hoverLift hideMobile" id="btnHome" type="button">Home</button>
       <button class="btn hoverLift hideMobile" id="btnPrevTop" type="button">Prev</button>
       <button class="btn primary hoverLift hideMobile" id="btnNextTop" type="button">Next</button>
-      <button class="btn hoverLift icon" id="btnFS" type="button" title="Fullscreen">⛶</button>
+      <button class="btn icon hoverLift" id="btnFS" type="button" title="Fullscreen">⛶</button>
       <button class="btn danger hoverLift hideMobile" id="btnReset" type="button">Reset</button>
     </div>
   </div>
@@ -1020,10 +788,11 @@
   </div>
 </div>
 
+<!-- ===== Deck ===== -->
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1: Slogan + inputs + $/kWh -->
+    <!-- SLIDE 1: Start (slogan + monthly + annual kWh + $/kWh; auto-fills Edison) -->
     <section class="slide luxShadow active" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Start</h2>
@@ -1035,10 +804,11 @@
           <div class="heroCard">
             <div class="heroTop">
               <h1>Win the day. <span class="gradText">Own the night.</span></h1>
-              <span class="tag">Baseline inputs</span>
+              <span class="pill">Baseline</span>
             </div>
+
             <div class="heroSub">
-              Enter their average monthly bill and annual kWh. This calculates today’s $/kWh and auto-fills the utility column in the calculator.
+              Enter the customer’s monthly average + annual usage. This calculates today’s $/kWh and auto-fills Edison in the comparison calculator.
             </div>
 
             <div class="formGrid">
@@ -1052,122 +822,114 @@
               </label>
             </div>
 
-            <div class="metricRow" style="margin-top:14px;">
+            <div class="metricRow">
               <div class="mk">Today’s average cost per kWh</div>
-              <div class="mv red" id="custCpkwh">$0.00</div>
+              <div class="mv" id="custCpkwh">$0.00</div>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-              <button class="btn primary hoverLift" type="button" onclick="go(1)">Continue</button>
-              <button class="btn hoverLift" type="button" onclick="syncUtilityFromCustomer()">Apply to calculator</button>
+              <button class="btn" type="button" id="btnApply">Apply to calculator</button>
+              <button class="btn primary" type="button" id="btnContinue">Continue</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2: Problem + bill + TOU links -->
+    <!-- SLIDE 2: Problem (bill + TOU / SCE / LA Times buttons) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
-        <div class="pill"><span class="dot"></span> Time-of-Use + rising rates</div>
+        <div class="pill"><span class="dot"></span> TOU + rising rates</div>
       </div>
 
       <div class="slideBody">
         <div class="grid grid2">
           <div class="billFrame">
             <div class="billViewport">
-              <img id="imgUtilityBill" alt="Utility bill without solar" />
+              <img id="imgUtilityBill" alt="Utility bill without solar">
             </div>
             <div class="cap">
               <div>Today’s bill (no solar)</div>
-              <small>Tap to magnify</small>
+              <small>Tap to zoom</small>
             </div>
           </div>
 
           <div class="headlineBox">
-            <div class="big">Why bills spike: <span class="gradText">TOU pricing</span></div>
+            <div class="big">Why bills spike: <span class="gradText">Time-of-Use</span></div>
             <p class="sub">
-              Utility pricing is built around <b>when</b> power is purchased. Peak hours are priced highest.
-              Solar + batteries change the timing: produce by day, store surplus, discharge during peak.
+              The bill punishes <b>when</b> you buy power. Peak hours cost the most. Storage shifts you away from peak buying.
             </p>
 
             <div class="bullets">
-              <div class="bItem"><div class="bIcon">⏱️</div><div class="bText"><strong>Peak costs more</strong><span>Grid-stress hours are priced higher.</span></div></div>
-              <div class="bItem"><div class="bIcon">📈</div><div class="bText"><strong>Pressure keeps building</strong><span>More electrification + grid upgrades = upward rate pressure.</span></div></div>
-              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Required charges stay</strong><span>You stay connected — the goal is to buy less at peak pricing.</span></div></div>
+              <div class="bItem"><div class="bIcon">⏱️</div><div class="bText"><strong>Peak costs more</strong><span>High-demand hours are priced highest.</span></div></div>
+              <div class="bItem"><div class="bIcon">📈</div><div class="bText"><strong>Rates keep climbing</strong><span>Grid hardening, demand growth, and infrastructure upgrades drive increases.</span></div></div>
+              <div class="bItem"><div class="bIcon">🔋</div><div class="bText"><strong>Storage fixes the timing problem</strong><span>Use stored energy when Edison is most expensive.</span></div></div>
             </div>
 
+            <!-- NEW: the 2 links you asked for, plus TOU, with labels above buttons -->
             <div class="linkBtns">
-              <div class="linkBtn hoverLift" onclick="openLinkInModal('SCE Time-of-Use rates','https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-rate-plans')">
-                <div class="linkTop">
-                  <span class="capTag">TOU</span>
-                  <span class="capTag">Popup</span>
-                </div>
-                <div class="linkTitle">SCE Time-of-Use rates</div>
-                <div class="linkDesc">Official TOU pricing and plan details.</div>
+              <div class="linkBtn" data-url="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">
+                <div class="linkTop"><span class="capTag">TOU</span><span class="capTag">Open</span></div>
+                <div class="linkTitle">SCE Time-of-Use plans</div>
+                <div class="linkDesc">Official SCE TOU plans and pricing information.</div>
               </div>
 
-              <div class="linkBtn hoverLift" onclick="openLinkInModal('SCE bill updates','https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill')">
-                <div class="linkTop">
-                  <span class="capTag">13% increase</span>
-                  <span class="capTag">Popup</span>
-                </div>
+              <div class="linkBtn" data-url="https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill">
+                <div class="linkTop"><span class="capTag">13% increase</span><span class="capTag">Open</span></div>
                 <div class="linkTitle">SCE: Understanding updates</div>
-                <div class="linkDesc">Explains why bill components and rates change.</div>
+                <div class="linkDesc">How changes and increases show up on your bill.</div>
               </div>
 
-              <div class="linkBtn hoverLift" onclick="openLinkInModal('LA Times: Edison rate case','https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case')">
-                <div class="linkTop">
-                  <span class="capTag">L.A. fires</span>
-                  <span class="capTag">Popup</span>
-                </div>
+              <div class="linkBtn" data-url="https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case">
+                <div class="linkTop"><span class="capTag">L.A. fires</span><span class="capTag">Open</span></div>
                 <div class="linkTitle">LA Times: Edison rate case</div>
-                <div class="linkDesc">News context on continued utility rate pressure.</div>
+                <div class="linkDesc">News context for continued rate pressure.</div>
               </div>
             </div>
+
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- SLIDE 3: Proof bill -->
+    <!-- SLIDE 3: Proof ($28 bill) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Proof</h2>
-        <div class="pill"><span class="dot"></span> Solar + Storage result</div>
+        <div class="pill"><span class="dot"></span> Solar + Storage</div>
       </div>
 
       <div class="slideBody">
         <div class="grid grid2">
           <div class="billFrame">
             <div class="billViewport">
-              <img id="imgSolarBill" alt="Solar + storage bill example" />
+              <img id="imgSolarBill" alt="Solar + storage bill example">
             </div>
             <div class="cap">
               <div>Solar + storage bill example ($28)</div>
-              <small>Tap to magnify</small>
+              <small>Tap to zoom</small>
             </div>
           </div>
 
           <div class="headlineBox">
             <div class="big">Why it can be <span class="gradText">$28</span></div>
             <p class="sub">
-              Not “free power.” Controlled power. Solar covers the day. Batteries cover peak.
-              The utility becomes the backup supplier instead of the primary supplier.
+              Solar covers the day. Batteries cover the expensive hours. The utility becomes the backup supplier —
+              so what’s left is typically minimum charges + small net usage.
             </p>
+
             <div class="bullets">
-              <div class="bItem"><div class="bIcon">☀️</div><div class="bText"><strong>Daytime offsets</strong><span>Solar reduces the kWh you would buy during the day.</span></div></div>
-              <div class="bItem"><div class="bIcon">🔋</div><div class="bText"><strong>Peak avoidance</strong><span>Batteries discharge during peak so you buy less at high pricing.</span></div></div>
-              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Net billing reality</strong><span>You stay connected, but you’re not forced to buy most power at peak.</span></div></div>
+              <div class="bItem"><div class="bIcon">☀️</div><div class="bText"><strong>Daytime offsets</strong><span>Less daytime kWh purchased from Edison.</span></div></div>
+              <div class="bItem"><div class="bIcon">🔋</div><div class="bText"><strong>Peak avoidance</strong><span>Discharge during peak so you don’t buy at premium prices.</span></div></div>
+              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Net billing reality</strong><span>You stay connected, but you buy far less power at peak pricing.</span></div></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 4: Outage demo + VPP links -->
+    <!-- SLIDE 4: Outage demo BEFORE calculator (with VPP links) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Outage Protection</h2>
@@ -1180,7 +942,6 @@
             <div class="videoViewport">
               <video id="outageVideo" controls playsinline preload="metadata">
                 <source id="outageSrc" type="video/mp4">
-                Your browser can’t play this video.
               </video>
             </div>
             <div class="cap">
@@ -1192,26 +953,25 @@
           <div>
             <div class="tagline">
               <h3>Win the day. <span class="gradText">Own the night.</span></h3>
-              <p>Batteries aren’t just savings — they give control when the grid fails.</p>
+              <p>Same batteries that save money also keep your home running when the grid goes down.</p>
             </div>
 
             <div class="backupGrid">
-              <div class="backupItem"><div class="bkIcon">💡</div><div><b>Lights + outlets</b><span>Stay functional without scrambling.</span></div></div>
-              <div class="backupItem"><div class="bkIcon">❄️</div><div><b>Fridge + freezer</b><span>Protect food during longer outages.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">💡</div><div><b>Lights + outlets</b><span>Keep essentials powered.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">❄️</div><div><b>Fridge + freezer</b><span>Protect food during outages.</span></div></div>
               <div class="backupItem"><div class="bkIcon">📶</div><div><b>Wi-Fi + charging</b><span>Phones, internet, work continuity.</span></div></div>
-              <div class="backupItem"><div class="bkIcon">🛡️</div><div><b>Security + garage</b><span>Keep essentials online.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">🛡️</div><div><b>Security + garage</b><span>Stay safe and functional.</span></div></div>
             </div>
 
-            <div class="vppLinks">
-              <div class="vppCard">
-                <div class="vppBtn hoverLift" onclick="openLinkInModal('Tesla Virtual Power Plant (VPP)','https://www.tesla.com/support/tesla-virtual-power-plant')">
-                  <div class="t">Tesla Virtual Power Plant (VPP)</div>
-                  <div class="d">How batteries can support the grid and create additional value. (Popup)</div>
-                </div>
-                <div class="vppBtn hoverLift" onclick="openLinkInModal('VPP checks (examples)','https://www.google.com/search?q=tesla+virtual+power+plant+check+example&tbm=isch')">
-                  <div class="t">VPP checks (examples)</div>
-                  <div class="d">Image search of check examples to show potential payouts. (Popup)</div>
-                </div>
+            <!-- keep VPP links (no Tesla Powerwall link) -->
+            <div class="vppCard">
+              <div class="vppBtn" data-url="https://www.google.com/search?q=tesla+virtual+power+plant+california">
+                <div class="t">Tesla VPP info</div>
+                <div class="d">Opens in a new window (Google blocks in-page).</div>
+              </div>
+              <div class="vppBtn" data-url="https://www.google.com/search?q=tesla+virtual+power+plant+check+example&tbm=isch">
+                <div class="t">VPP check examples</div>
+                <div class="d">Opens in a new window (Google blocks in-page).</div>
               </div>
             </div>
 
@@ -1220,7 +980,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: Compare tool -->
+    <!-- SLIDE 5: Compare (calculator + wheel) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -1234,6 +994,7 @@
 
       <div class="slideBody">
         <div class="compareTop">
+          <!-- Utility -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,255,255,.05));">
               <div>
@@ -1245,13 +1006,14 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
-              <div class="metricLine">
+              <div class="metric">
                 <div class="mk">25-year utility spend</div>
                 <div class="mv" id="uTotal" style="color:var(--utility)">$0</div>
               </div>
             </div>
           </div>
 
+          <!-- Option 1 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(52,199,89,.16), rgba(255,255,255,.05));">
               <div>
@@ -1263,13 +1025,14 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="3.5"></label>
-              <div class="metricLine">
+              <div class="metric">
                 <div class="mk">Total savings over 25 years</div>
                 <div class="mv" id="aSave" style="color:var(--opt1)">$0</div>
               </div>
             </div>
           </div>
 
+          <!-- Option 2 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(0,194,255,.16), rgba(255,255,255,.05));">
               <div>
@@ -1281,7 +1044,7 @@
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="4.9"></label>
-              <div class="metricLine">
+              <div class="metric">
                 <div class="mk">Total savings over 25 years</div>
                 <div class="mv" id="bSave" style="color:var(--opt2)">$0</div>
               </div>
@@ -1300,18 +1063,16 @@
               <div class="wheelTop">
                 <div class="yearBig" id="yearBig">1</div>
                 <div class="dialBtns">
-                  <button class="miniBtn" type="button" onclick="nudgeYear(-1)">-1</button>
-                  <button class="miniBtn" type="button" onclick="nudgeYear(1)">+1</button>
-                  <button class="miniBtn" type="button" onclick="setYear(1,true)">Reset</button>
+                  <button class="miniBtn" type="button" id="btnYMinus">-1</button>
+                  <button class="miniBtn" type="button" id="btnYPlus">+1</button>
+                  <button class="miniBtn" type="button" id="btnYReset">Reset</button>
                 </div>
               </div>
 
-              <div class="wheel" aria-label="Year wheel">
-                <div class="wheelList" id="wheelList"></div>
-              </div>
+              <div class="wheel"><div class="wheelList" id="wheelList"></div></div>
 
-              <div class="muted" style="font-weight:900;font-size:13px;">
-                Scroll the year wheel. All 3 options update together.
+              <div style="color:var(--muted);font-weight:900;font-size:13px;">
+                Scroll the year wheel. All three options update together.
               </div>
             </div>
 
@@ -1321,12 +1082,10 @@
                   <div class="bk">Utility <span class="chip">Red</span></div>
                   <div class="m" style="color:var(--utility)" id="uYearPay">$0</div>
                 </div>
-
                 <div class="bigTile">
                   <div class="bk">Option 1 <span class="chip">Green</span></div>
                   <div class="m" style="color:var(--opt1)" id="aYearPay">$0</div>
                 </div>
-
                 <div class="bigTile">
                   <div class="bk">Option 2 <span class="chip">Cyan</span></div>
                   <div class="m" style="color:var(--opt2)" id="bYearPay">$0</div>
@@ -1338,17 +1097,17 @@
                 <div class="v" id="best25">$0</div>
               </div>
             </div>
+
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- SLIDE 6: Next Steps (timeline + company links/reviews here) -->
+    <!-- SLIDE 6: Next Steps + Reviews links -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Next Steps</h2>
-        <div class="pill"><span class="dot"></span> Tap a step • show trust</div>
+        <div class="pill"><span class="dot"></span> Tap a step • simple explanation</div>
       </div>
 
       <div class="slideBody">
@@ -1362,43 +1121,38 @@
             <div class="step" data-step="5"><div class="num">6</div><div class="t">PTO</div><div class="d">30–60 days</div></div>
           </div>
 
-          <div class="rightStack">
+          <div>
             <div class="panel">
               <h3 id="stepTitle">Site survey</h3>
               <p id="stepBody">We verify roof measurements, electrical details, and battery placement so the final design matches your home exactly. This prevents surprises and keeps the project moving.</p>
               <div class="tip" id="stepTip">Why it matters: accuracy here reduces delays later.</div>
-              <div class="tip" style="border-color: rgba(58,173,187,.28); background: rgba(58,173,187,.10);">
-                First payment: typically 1 month after PTO (Permission To Operate).
-              </div>
+              <div class="tip alt">First payment: typically 1 month after PTO (Permission To Operate).</div>
             </div>
 
-            <div class="panel">
-              <h3>Websites + Google reviews</h3>
-              <p>Open each website and reviews in-page (popup), so you never leave this presentation.</p>
+            <div class="panel" style="margin-top:12px;">
+              <h3>Reviews (open new window)</h3>
+              <p style="margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.5">
+                Use these during the Site Survey stage to build confidence fast. Each button opens in a new window.
+              </p>
 
-              <div class="siteGrid">
-                <div class="siteRow">
-                  <div class="name">SunUp Energy</div>
-                  <div class="actions">
-                    <button class="btn small linkish hoverLift" type="button" onclick="openLinkInModal('SunUp Energy','https://www.sunup-energy.com')">Website</button>
-                    <button class="btn small hoverLift" type="button" onclick="openLinkInModal('SunUp Energy Reviews','https://www.google.com/search?q=SunUp+Energy+Reviews')">Reviews</button>
-                  </div>
+              <div class="siteRow">
+                <div class="name">Energy Time Solar — Reviews</div>
+                <div class="actions">
+                  <button class="btn hoverLift" type="button" data-url="https://www.google.com/search?q=energy+time+solar+reviews&ie=UTF-8&oe=UTF-8&hl=en-us&client=safari&sei=Uf2DaefjFeKYkPIPyN_BiA0&dlnr=1">Open</button>
                 </div>
+              </div>
 
-                <div class="siteRow">
-                  <div class="name">Fulfill Power</div>
-                  <div class="actions">
-                    <button class="btn small linkish hoverLift" type="button" onclick="openLinkInModal('Fulfill Power','https://fulfillpower.com')">Website</button>
-                    <button class="btn small hoverLift" type="button" onclick="openLinkInModal('Fulfill Power Reviews','https://www.google.com/search?q=Fulfill+Power+reviews')">Reviews</button>
-                  </div>
+              <div class="siteRow">
+                <div class="name">Fulfill Power — Reviews</div>
+                <div class="actions">
+                  <button class="btn hoverLift" type="button" data-url="https://www.google.com/search?q=fulfill+power+reviews&client=safari">Open</button>
                 </div>
+              </div>
 
-                <div class="siteRow">
-                  <div class="name">Energy Time Solar</div>
-                  <div class="actions">
-                    <button class="btn small linkish hoverLift" type="button" onclick="openLinkInModal('Energy Time Solar','https://energytimesolar.com')">Website</button>
-                    <button class="btn small hoverLift" type="button" onclick="openLinkInModal('Energy Time Solar Reviews','https://www.google.com/search?q=Energy+Time+Solar+reviews')">Reviews</button>
-                  </div>
+              <div class="siteRow">
+                <div class="name">Sun Up Energy — Reviews</div>
+                <div class="actions">
+                  <button class="btn hoverLift" type="button" data-url="https://www.google.com/search?q=sun+up+energy+reviews&client=safari">Open</button>
                 </div>
               </div>
 
@@ -1412,48 +1166,37 @@
   </div>
 </div>
 
+<!-- Bottom controls -->
 <div class="presentBar">
   <div class="presentShell">
-    <button class="btn hoverLift" id="btnPrev" type="button">Prev</button>
-    <button class="btn hoverLift" id="btnStart" type="button">Start</button>
-    <button class="btn primary hoverLift" id="btnNext" type="button">Next</button>
+    <button class="btn" id="btnPrev" type="button">Prev</button>
+    <button class="btn" id="btnStart" type="button">Start</button>
+    <button class="btn primary" id="btnNext" type="button">Next</button>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Bill zoom modal (same window) -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="modalBox">
     <div class="modalTop">
-      <div class="title" id="modalTitle">Preview</div>
-      <div class="modalActions">
-        <button class="iconBtn" id="zoomOut" type="button" title="Zoom out">−</button>
-        <button class="iconBtn" id="zoomIn" type="button" title="Zoom in">+</button>
-        <button class="iconBtn" id="zoomFit" type="button" title="Fit">Fit</button>
-        <button class="iconBtn" id="modalClose" type="button" title="Close">Close</button>
-      </div>
+      <div class="title" id="modalTitle">Bill</div>
+      <button class="iconBtn" id="modalClose" type="button">Close</button>
     </div>
-
     <div class="modalBody">
-      <div class="viewer" id="viewer" style="display:none;">
-        <div class="viewerCanvas" id="viewerCanvas">
-          <img id="viewerImg" alt="Preview"/>
-        </div>
-        <div class="zoomBar">
-          <div class="zoomRange">
-            <input id="zoomRange" type="range" min="0.8" max="3.0" step="0.05" value="1.2" aria-label="Zoom"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="frame" id="frame" style="display:none;">
-        <iframe id="frameIframe" title="Popup"></iframe>
-      </div>
+      <img id="modalImg" alt="Zoomed bill">
     </div>
   </div>
 </div>
 
 <script>
-/* ========= Assets ========= */
+/* ===========================
+   FILES YOU MUST PLACE NEXT TO THIS index.html
+   (same folder, same capitalization)
+   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png   (logo)
+   - Scebill.jpeg                               (regular bill image)
+   - IMG_9100.jpeg                              (solar+storage bill image)
+   - Outagevideo.mp4                            (outage demo)
+   =========================== */
 const ASSETS = {
   logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
   billUtility: "Scebill.jpeg",
@@ -1461,160 +1204,148 @@ const ASSETS = {
   outageVideo: "Outagevideo.mp4"
 };
 
-/* iOS detection */
+/* iOS detect for smoothness */
 (function(){
   const ua = navigator.userAgent || "";
-  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   if(isIOS) document.documentElement.classList.add("ios");
 })();
 
-/* Init assets */
-document.getElementById("logoImg").src = ASSETS.logo;
+const $ = (id)=>document.getElementById(id);
 
-const imgUtilityBill = document.getElementById("imgUtilityBill");
-const imgSolarBill = document.getElementById("imgSolarBill");
-imgUtilityBill.src = ASSETS.billUtility;
-imgSolarBill.src = ASSETS.billSolar;
-
-imgUtilityBill.addEventListener("click", () => openImageInModal("Today’s bill (no solar)", ASSETS.billUtility));
-imgSolarBill.addEventListener("click", () => openImageInModal("Solar + storage bill example ($28)", ASSETS.billSolar));
-
-const outageVideo = document.getElementById("outageVideo");
-document.getElementById("outageSrc").src = ASSETS.outageVideo;
-outageVideo.load();
+/* Load assets */
+$("logoImg").src = ASSETS.logo;
+$("imgUtilityBill").src = ASSETS.billUtility;
+$("imgSolarBill").src = ASSETS.billSolar;
+$("outageSrc").src = ASSETS.outageVideo;
+$("outageVideo").load();
 
 /* Slides */
 const slides = Array.from(document.querySelectorAll("[data-slide]"));
 let idx = 0;
+
 function show(i){
-  idx = Math.max(0, Math.min(slides.length - 1, i));
-  slides.forEach((s, n) => s.classList.toggle("active", n === idx));
-  const pct = ((idx) / (slides.length - 1)) * 100;
-  document.getElementById("progressFill").style.width = (isFinite(pct)?pct:0) + "%";
-  if(outageVideo && idx !== 3){ try{ outageVideo.pause(); }catch(e){} }
+  idx = Math.max(0, Math.min(slides.length-1, i));
+  slides.forEach((s,n)=>s.classList.toggle("active", n===idx));
+  const pct = slides.length<=1 ? 0 : (idx/(slides.length-1))*100;
+  $("progressFill").style.width = (isFinite(pct)?pct:0) + "%";
+  if(idx !== 3){ try{ $("outageVideo").pause(); }catch(e){} }
 }
-function go(i){ show(i); }
-function next(){ show(idx + 1); }
-function prev(){ show(idx - 1); }
+function next(){ show(idx+1); }
+function prev(){ show(idx-1); }
 function start(){ show(0); }
 
-document.getElementById("btnPrev").addEventListener("click", prev);
-document.getElementById("btnNext").addEventListener("click", next);
-document.getElementById("btnStart").addEventListener("click", start);
+$("btnPrev").addEventListener("click", prev);
+$("btnNext").addEventListener("click", next);
+$("btnStart").addEventListener("click", start);
 
-document.getElementById("btnHome").addEventListener("click", start);
-document.getElementById("btnPrevTop").addEventListener("click", prev);
-document.getElementById("btnNextTop").addEventListener("click", next);
-document.getElementById("btnReset").addEventListener("click", resetAll);
+$("btnHome").addEventListener("click", start);
+$("btnPrevTop").addEventListener("click", prev);
+$("btnNextTop").addEventListener("click", next);
+$("btnReset").addEventListener("click", resetAll);
 
-/* Fullscreen */
-document.getElementById("btnFS").addEventListener("click", async ()=>{
+$("btnFS").addEventListener("click", async ()=>{
   try{
-    if(!document.fullscreenElement){
-      await document.documentElement.requestFullscreen();
-    }else{
-      await document.exitFullscreen();
-    }
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
   }catch(e){}
 });
 
-/* Keyboard */
 window.addEventListener("keydown", (e)=>{
-  if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " "){ e.preventDefault(); next(); }
-  if(e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); prev(); }
-  if(e.key === "Home"){ e.preventDefault(); start(); }
-  if(e.key === "Escape" && modal.classList.contains("show")) closeModal();
+  if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){ e.preventDefault(); next(); }
+  if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); prev(); }
+  if(e.key==="Home"){ e.preventDefault(); start(); }
+  if(e.key==="Escape" && $("modal").classList.contains("show")) closeModal();
 });
 
-/* ========= Helpers ========= */
-function num(v, fallback=0){
+/* Slide 1: customer baseline */
+function num(v,fallback=0){
   const x = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
-  return isFinite(x) ? x : fallback;
+  return isFinite(x)?x:fallback;
 }
-function money(x){
-  const n = isFinite(x) ? x : 0;
-  return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
-}
-function money2(x){
-  const n = isFinite(x) ? x : 0;
-  return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
-/* ========= Slide 1: customer $/kWh ========= */
-const custMonthly = document.getElementById("custMonthly");
-const custUsage = document.getElementById("custUsage");
-const custCpkwh = document.getElementById("custCpkwh");
+const custMonthly = $("custMonthly");
+const custUsage = $("custUsage");
+const custCpkwh = $("custCpkwh");
 
 function recalcCustomer(){
-  const m = num(custMonthly.value, 458);
-  const kwh = Math.max(0, num(custUsage.value, 12000));
-  const annual = m * 12;
-  const cpk = (kwh > 0) ? (annual / kwh) : 0;
-  custCpkwh.textContent = "$" + (cpk || 0).toFixed(2);
+  const m = num(custMonthly.value,458);
+  const kwh = Math.max(0, num(custUsage.value,12000));
+  const annual = m*12;
+  const cpk = (kwh>0) ? (annual/kwh) : 0;
+  custCpkwh.textContent = "$" + (cpk||0).toFixed(2);
 }
-custMonthly.addEventListener("input", ()=>{ recalcCustomer(); syncUtilityFromCustomer(true); });
+custMonthly.addEventListener("input", ()=>{ recalcCustomer(); syncUtilityFromCustomer(); });
 custUsage.addEventListener("input", recalcCustomer);
 
-/* ========= Calculator + wheel ========= */
-const uPay = document.getElementById("uPay");
-const uEsc = document.getElementById("uEsc");
-const aPay = document.getElementById("aPay");
-const aEsc = document.getElementById("aEsc");
-const bPay = document.getElementById("bPay");
-const bEsc = document.getElementById("bEsc");
+$("btnApply").addEventListener("click", ()=>syncUtilityFromCustomer());
+$("btnContinue").addEventListener("click", next);
 
-const uTotal = document.getElementById("uTotal");
-const aSave = document.getElementById("aSave");
-const bSave = document.getElementById("bSave");
+/* Link buttons: always open new window (prevents blank/blocked screens) */
+document.addEventListener("click", (e)=>{
+  const n = e.target.closest("[data-url]");
+  if(!n) return;
+  const url = n.getAttribute("data-url");
+  if(url) window.open(url, "_blank", "noopener,noreferrer");
+});
 
-const yearPill = document.getElementById("yearPill");
-const yearBig = document.getElementById("yearBig");
+/* Bill zoom modal (same window) */
+const modal = $("modal");
+const modalImg = $("modalImg");
+const modalTitle = $("modalTitle");
 
-const uYearPay = document.getElementById("uYearPay");
-const aYearPay = document.getElementById("aYearPay");
-const bYearPay = document.getElementById("bYearPay");
-const best25 = document.getElementById("best25");
+function openModal(title, src){
+  modalTitle.textContent = title;
+  modalImg.src = src;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+}
+function closeModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+  modalImg.src = "";
+}
+$("modalClose").addEventListener("click", closeModal);
+modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
 
-let currentYear = 1;
+$("imgUtilityBill").addEventListener("click", ()=>openModal("Today’s bill (no solar)", ASSETS.billUtility));
+$("imgSolarBill").addEventListener("click", ()=>openModal("Solar + storage bill ($28)", ASSETS.billSolar));
+
+/* Calculator */
+function money(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
+function money2(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+
 const years = 25;
+let currentYear = 1;
+
+const uPay=$("uPay"), uEsc=$("uEsc"), aPay=$("aPay"), aEsc=$("aEsc"), bPay=$("bPay"), bEsc=$("bEsc");
+const uTotal=$("uTotal"), aSave=$("aSave"), bSave=$("bSave");
+const yearPill=$("yearPill"), yearBig=$("yearBig");
+const uYearPay=$("uYearPay"), aYearPay=$("aYearPay"), bYearPay=$("bYearPay"), best25=$("best25");
 
 function yearlyMonthly(base, escPct, year){
   const r = escPct/100;
   return base * Math.pow(1+r, Math.max(0, year-1));
 }
 function sum25(baseMonthly, escPct){
-  let sum = 0;
-  for(let y=1;y<=years;y++){
-    sum += yearlyMonthly(baseMonthly, escPct, y) * 12;
-  }
+  let sum=0;
+  for(let y=1;y<=years;y++) sum += yearlyMonthly(baseMonthly, escPct, y)*12;
   return sum;
 }
 function recalc(){
-  const U = num(uPay.value, 458);
-  const UE = num(uEsc.value, 9);
-  const A = num(aPay.value, 295);
-  const AE = num(aEsc.value, 3.5);
-  const B = num(bPay.value, 325);
-  const BE = num(bEsc.value, 4.9);
+  const U=num(uPay.value,458), UE=num(uEsc.value,9);
+  const A=num(aPay.value,295), AE=num(aEsc.value,3.5);
+  const B=num(bPay.value,325), BE=num(bEsc.value,4.9);
 
-  const U25 = sum25(U, UE);
-  const A25 = sum25(A, AE);
-  const B25 = sum25(B, BE);
-
-  const saveA = Math.max(0, U25 - A25);
-  const saveB = Math.max(0, U25 - B25);
+  const U25=sum25(U,UE), A25=sum25(A,AE), B25=sum25(B,BE);
+  const saveA=Math.max(0,U25-A25), saveB=Math.max(0,U25-B25);
 
   uTotal.textContent = money(U25);
   aSave.textContent = money(saveA);
   bSave.textContent = money(saveB);
 
-  const Um = yearlyMonthly(U, UE, currentYear);
-  const Am = yearlyMonthly(A, AE, currentYear);
-  const Bm = yearlyMonthly(B, BE, currentYear);
-
-  uYearPay.textContent = money2(Um);
-  aYearPay.textContent = money2(Am);
-  bYearPay.textContent = money2(Bm);
+  uYearPay.textContent = money2(yearlyMonthly(U,UE,currentYear));
+  aYearPay.textContent = money2(yearlyMonthly(A,AE,currentYear));
+  bYearPay.textContent = money2(yearlyMonthly(B,BE,currentYear));
 
   best25.textContent = money(Math.max(saveA, saveB));
 }
@@ -1623,12 +1354,12 @@ function recalc(){
   el.addEventListener("change", recalc);
 });
 
-function syncUtilityFromCustomer(silent=false){
-  uPay.value = String(num(custMonthly.value, 458));
-  if(!silent) recalc();
-  else recalc();
+function syncUtilityFromCustomer(){
+  uPay.value = String(num(custMonthly.value,458));
+  recalc();
 }
 
+/* Year wheel */
 function setYear(y, snapWheel=false){
   currentYear = Math.max(1, Math.min(years, y));
   yearPill.textContent = String(currentYear);
@@ -1637,47 +1368,48 @@ function setYear(y, snapWheel=false){
   recalc();
   if(snapWheel) snapWheelToYear(currentYear);
 }
-function nudgeYear(delta){ setYear(currentYear + delta, true); }
+window.setYear = setYear; // for header buttons
 
-const wheelList = document.getElementById("wheelList");
+function nudgeYear(d){ setYear(currentYear + d, true); }
+$("btnYMinus").addEventListener("click", ()=>nudgeYear(-1));
+$("btnYPlus").addEventListener("click", ()=>nudgeYear(1));
+$("btnYReset").addEventListener("click", ()=>setYear(1,true));
+
+const wheelList = $("wheelList");
 (function buildWheel(){
-  const frag = document.createDocumentFragment();
+  const frag=document.createDocumentFragment();
   for(let y=1;y<=years;y++){
-    const div = document.createElement("div");
-    div.className = "wheelItem";
-    div.dataset.year = String(y);
-    div.textContent = "Year " + y;
-    div.addEventListener("click", ()=> setYear(y, true));
+    const div=document.createElement("div");
+    div.className="wheelItem";
+    div.dataset.year=String(y);
+    div.textContent="Year " + y;
+    div.addEventListener("click", ()=>setYear(y,true));
     frag.appendChild(div);
   }
   wheelList.appendChild(frag);
   wheelList.addEventListener("scroll", onWheelScroll, {passive:true});
-  setTimeout(()=>{ setYear(1,true); }, 0);
+  setTimeout(()=>setYear(1,true),0);
 })();
-let wheelScrollTimer = null;
+let wheelScrollTimer=null;
 function onWheelScroll(){
   if(wheelScrollTimer) clearTimeout(wheelScrollTimer);
-  wheelScrollTimer = setTimeout(()=>{
+  wheelScrollTimer=setTimeout(()=>{
     const items = Array.from(wheelList.querySelectorAll(".wheelItem"));
-    const rect = wheelList.getBoundingClientRect();
-    const centerY = rect.top + rect.height/2;
-
-    let best = null, bestDist = Infinity;
+    const rect=wheelList.getBoundingClientRect();
+    const centerY=rect.top + rect.height/2;
+    let best=null, bestDist=Infinity;
     for(const it of items){
-      const r = it.getBoundingClientRect();
-      const itCenter = r.top + r.height/2;
-      const d = Math.abs(itCenter - centerY);
-      if(d < bestDist){ bestDist = d; best = it; }
+      const r=it.getBoundingClientRect();
+      const d=Math.abs((r.top+r.height/2)-centerY);
+      if(d<bestDist){ bestDist=d; best=it; }
     }
-    if(best){
-      const y = parseInt(best.dataset.year,10);
-      setYear(y,false);
-    }
+    if(best) setYear(parseInt(best.dataset.year,10), false);
   }, 90);
 }
 function highlightWheel(){
-  wheelList.querySelectorAll(".wheelItem")
-    .forEach(it => it.classList.toggle("active", parseInt(it.dataset.year,10) === currentYear));
+  wheelList.querySelectorAll(".wheelItem").forEach(it=>{
+    it.classList.toggle("active", parseInt(it.dataset.year,10)===currentYear);
+  });
 }
 function snapWheelToYear(y){
   const target = wheelList.querySelector(`.wheelItem[data-year="${y}"]`);
@@ -1685,141 +1417,36 @@ function snapWheelToYear(y){
   target.scrollIntoView({block:"center", behavior: document.documentElement.classList.contains("ios") ? "auto" : "smooth"});
 }
 
-/* ========= Next Steps timeline ========= */
-const stepTitle = document.getElementById("stepTitle");
-const stepBody  = document.getElementById("stepBody");
-const stepTip   = document.getElementById("stepTip");
-
+/* Next steps explanation */
+const stepTitle=$("stepTitle"), stepBody=$("stepBody"), stepTip=$("stepTip");
 const stepData = [
   {title:"Site survey", body:"We verify roof measurements, electrical details, and battery placement so the final design matches your home exactly. This prevents surprises and keeps the project moving.", tip:"Why it matters: accuracy here reduces delays later."},
-  {title:"Engineering", body:"Your system is designed to code and finalized for the roof, electrical, and utility requirements. This turns the concept into a build-ready plan.", tip:"Why it matters: clean engineering speeds up permits and reduces change orders."},
-  {title:"Permits", body:"The city reviews and approves the plans. Timelines vary by city workload and specific requirements.", tip:"Why it matters: this is the widest time range step—tracking is key."},
-  {title:"Install", body:"Solar and batteries are installed. Some homes are completed quickly; larger projects can take longer based on scope and scheduling.", tip:"Why it matters: once installed, you’re close to inspection and PTO."},
-  {title:"Final inspection", body:"The city/authority verifies the installation matches the approved plans and meets code.", tip:"Why it matters: passing inspection is required before the utility grants PTO."},
-  {title:"PTO (Permission To Operate)", body:"The utility grants permission to operate/export fully. This step typically takes 30–60 days after inspection depending on utility processing.", tip:"Why it matters: PTO is the official go-live milestone."}
+  {title:"Engineering", body:"Your system is designed to code and finalized for roof, electrical, and utility requirements. This turns the concept into a build-ready plan.", tip:"Why it matters: clean engineering speeds up permits and reduces change orders."},
+  {title:"Permits", body:"The city reviews and approves plans. Timing varies by city workload and project details.", tip:"Why it matters: this step has the widest range—tracking matters."},
+  {title:"Install", body:"Solar and batteries are installed. Duration depends on scope and scheduling.", tip:"Why it matters: after install, you’re close to inspection and PTO."},
+  {title:"Final inspection", body:"The authority verifies the install matches the approved plans and meets code.", tip:"Why it matters: passing inspection is required for PTO."},
+  {title:"PTO", body:"The utility grants Permission To Operate. Often 30–60 days after inspection depending on processing.", tip:"Why it matters: PTO is the official go-live milestone."}
 ];
-
-document.getElementById("timeline").addEventListener("click", (e)=>{
-  const step = e.target.closest(".step");
-  if(!step) return;
+$("timeline").addEventListener("click",(e)=>{
+  const step = e.target.closest(".step"); if(!step) return;
   const i = parseInt(step.dataset.step,10);
   document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
   step.classList.add("active");
   const d = stepData[i] || stepData[0];
-  stepTitle.textContent = d.title;
-  stepBody.textContent = d.body;
-  stepTip.textContent = d.tip;
+  stepTitle.textContent=d.title; stepBody.textContent=d.body; stepTip.textContent=d.tip;
 });
-
-/* ========= Modal functions ========= */
-const modal = document.getElementById("modal");
-const modalTitle = document.getElementById("modalTitle");
-const modalClose = document.getElementById("modalClose");
-const viewer = document.getElementById("viewer");
-const viewerCanvas = document.getElementById("viewerCanvas");
-const viewerImg = document.getElementById("viewerImg");
-const zoomRange = document.getElementById("zoomRange");
-const zoomOut = document.getElementById("zoomOut");
-const zoomIn = document.getElementById("zoomIn");
-const zoomFit = document.getElementById("zoomFit");
-const frame = document.getElementById("frame");
-const frameIframe = document.getElementById("frameIframe");
-
-let viewScale = 1.2, imgW = 0, imgH = 0, panX = 0, panY = 0;
-let dragging = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
-
-function openModal(){ modal.classList.add("show"); modal.setAttribute("aria-hidden","false"); }
-function closeModal(){
-  modal.classList.remove("show"); modal.setAttribute("aria-hidden","true");
-  frameIframe.src = "about:blank";
-  viewerImg.src = "";
-}
-modalClose.addEventListener("click", closeModal);
-modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
-
-function openImageInModal(title, src){
-  modalTitle.textContent = title;
-  frame.style.display = "none";
-  viewer.style.display = "block";
-  viewerImg.onload = ()=>{
-    imgW = viewerImg.naturalWidth;
-    imgH = viewerImg.naturalHeight;
-    fitToView();
-  };
-  viewerImg.src = src;
-  openModal();
-}
-function openLinkInModal(title, url){
-  modalTitle.textContent = title;
-  viewer.style.display = "none";
-  frame.style.display = "block";
-  frameIframe.src = url;
-  openModal();
-}
-function applyTransform(){
-  const s = Math.max(0.8, Math.min(3.0, viewScale));
-  viewScale = s;
-  zoomRange.value = String(s);
-  viewerImg.style.transform = `translate(${panX}px, ${panY}px) scale(${s})`;
-}
-function fitToView(){
-  const box = viewerCanvas.getBoundingClientRect();
-  if(!imgW || !imgH || !box.width || !box.height){
-    viewScale = 1.2; panX = 0; panY = 0; applyTransform(); return;
-  }
-  const sx = (box.width - 24) / imgW;
-  const sy = (box.height - 24) / imgH;
-  const fit = Math.min(sx, sy);
-  viewScale = Math.max(0.9, Math.min(1.6, fit * 1.15));
-  panX = Math.max(12, (box.width - imgW * viewScale)/2);
-  panY = Math.max(12, (box.height - imgH * viewScale)/2);
-  applyTransform();
-}
-
-viewerCanvas.addEventListener("pointerdown", (e)=>{
-  dragging = true;
-  viewerCanvas.classList.add("grabbing");
-  viewerCanvas.setPointerCapture(e.pointerId);
-  startX = e.clientX; startY = e.clientY;
-  startPanX = panX; startPanY = panY;
-});
-viewerCanvas.addEventListener("pointermove", (e)=>{
-  if(!dragging) return;
-  const dx = e.clientX - startX;
-  const dy = e.clientY - startY;
-  panX = startPanX + dx;
-  panY = startPanY + dy;
-  applyTransform();
-});
-viewerCanvas.addEventListener("pointerup", ()=>{
-  dragging = false;
-  viewerCanvas.classList.remove("grabbing");
-});
-viewerCanvas.addEventListener("pointercancel", ()=>{
-  dragging = false;
-  viewerCanvas.classList.remove("grabbing");
-});
-
-zoomRange.addEventListener("input", ()=>{ viewScale = parseFloat(zoomRange.value); applyTransform(); });
-zoomIn.addEventListener("click", ()=>{ viewScale = Math.min(3.0, viewScale + 0.15); applyTransform(); });
-zoomOut.addEventListener("click", ()=>{ viewScale = Math.max(0.8, viewScale - 0.15); applyTransform(); });
-zoomFit.addEventListener("click", fitToView);
 
 /* Reset */
 function resetAll(){
-  custMonthly.value = "458";
-  custUsage.value = "12000";
-  recalcCustomer();
-
-  uPay.value = "458"; uEsc.value = "9";
-  aPay.value = "295"; aEsc.value = "3.5";
-  bPay.value = "325"; bEsc.value = "4.9";
+  custMonthly.value="458"; custUsage.value="12000";
+  uPay.value="458"; uEsc.value="9";
+  aPay.value="295"; aEsc.value="3.5";
+  bPay.value="325"; bEsc.value="4.9";
+  recalcCustomer(); syncUtilityFromCustomer();
   setYear(1,true); show(0); recalc();
 }
-
-/* Init */
 recalcCustomer();
-syncUtilityFromCustomer(true);
+syncUtilityFromCustomer();
 setYear(1,true);
 recalc();
 show(0);
