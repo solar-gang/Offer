@@ -20,9 +20,12 @@
     --text:rgba(255,255,255,.96);
     --muted:rgba(255,255,255,.72);
     --muted2:rgba(255,255,255,.56);
+    --border:rgba(255,255,255,.14);
+
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
     --shadow: 0 18px 70px rgba(0,0,0,.45);
 
+    --r:16px;
     --r2:22px;
 
     --safeT: env(safe-area-inset-top);
@@ -45,6 +48,13 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
+
+  html.ios .luxShadow{ box-shadow:none !important; }
+  html.ios .hoverLift:hover{ transform:none !important; box-shadow:none !important; }
+  html.ios .slide{ transition:none !important; }
+  html.ios .wheelList{ scroll-behavior:auto !important; }
+  html.ios input:focus{ box-shadow:none !important; }
+
   a{color:#cfe8ff;text-decoration:none}
   a:hover{text-decoration:underline}
   button, a, input { -webkit-tap-highlight-color: transparent; }
@@ -52,62 +62,67 @@
   /* ===== Top Bar ===== */
   .topbar{
     position:fixed; inset:0 0 auto 0;
-    z-index:100;
+    z-index:160;
     padding-top:var(--safeT);
-    background: rgba(10,16,24,.90);
+    background: rgba(10,16,24,.88);
     border-bottom:1px solid rgba(255,255,255,.12);
   }
   .topbarInner{
     max-width:1280px;
     margin:0 auto;
-    padding:12px 16px;
-    padding-left: calc(16px + var(--safeL));
-    padding-right: calc(16px + var(--safeR));
+    padding:10px 14px;
+    padding-left: calc(14px + var(--safeL));
+    padding-right: calc(14px + var(--safeR));
     display:flex;
-    gap:12px;
+    gap:10px;
     align-items:center;
     justify-content:space-between;
-    flex-wrap:wrap;
   }
-  .brand{display:flex; align-items:center; gap:12px; min-width:240px;}
+  .brand{display:flex; align-items:center; gap:12px; min-width:220px; overflow:hidden;}
   .brand img{
-    height:52px; width:auto; display:block; /* increased logo size */
-    filter:drop-shadow(0 12px 28px rgba(0,0,0,.30));
+    height:54px; width:auto; display:block;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,.35));
   }
-  @media (max-width:720px){
-    .brand img{height:42px;}
-  }
-
-  .brandTitle{display:flex; flex-direction:column; line-height:1.1}
+  .brandTitle{display:flex; flex-direction:column; line-height:1.1; min-width:0;}
   .brandTitle .name{
     font-weight:1000; letter-spacing:-.02em;
     display:flex; align-items:center; gap:10px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .dot{
     width:10px;height:10px;border-radius:999px;
     background:var(--grad);
     box-shadow: 0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18);
+    flex:0 0 auto;
   }
   .brandTitle .sub{
     font-size:12px; color:var(--muted2);
     margin-top:3px; letter-spacing:.02em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
 
-  .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+  .navTop{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
   .btn{
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
     color:var(--text);
-    padding:11px 14px;
+    padding:10px 12px;
     border-radius:14px;
     font-weight:950;
     cursor:pointer;
-    min-height:44px;
+    min-height:42px;
     display:inline-flex;
     align-items:center;
     justify-content:center;
     gap:8px;
     user-select:none;
+    transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .btn.hoverLift:hover{
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.10);
+    box-shadow: 0 14px 44px rgba(0,0,0,.25);
+    border-color: rgba(255,255,255,.18);
   }
   .btn.primary{
     background: var(--grad);
@@ -116,43 +131,19 @@
     box-shadow: 0 18px 58px rgba(58,173,187,.14), 0 18px 58px rgba(251,201,9,.10);
   }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
+  .btn.icon{padding:10px 12px; min-width:46px;}
 
-  /* ===== Mobile compact topbar ===== */
-  .hamburger{display:none}
-  .mobileControls{display:none}
-  @media (max-width: 720px){
-    .topbarInner{
-      padding:10px 12px;
-      gap:10px;
-    }
-    .brandTitle .sub{display:none}
-    .nav{display:none}
-    .hamburger{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:44px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      font-weight:1000;
-      cursor:pointer;
-    }
-    .mobileControls{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-left:auto;
-    }
+  @media (max-width:860px){
+    .brand img{height:50px;}
+    .brandTitle .sub{display:none;}
+    .navTop .btn.hideMobile{display:none;}
   }
 
   .progressWrap{
     max-width:1280px; margin:0 auto;
-    padding: 0 16px 10px;
-    padding-left: calc(16px + var(--safeL));
-    padding-right: calc(16px + var(--safeR));
+    padding: 0 14px 10px;
+    padding-left: calc(14px + var(--safeL));
+    padding-right: calc(14px + var(--safeR));
   }
   .progress{
     height:7px;
@@ -161,50 +152,16 @@
     border:1px solid rgba(255,255,255,.10);
     overflow:hidden;
   }
-  .progress > div{height:100%; width:0%; background:var(--grad); transition: width .16s ease;}
-
-  .badge{
-    position:fixed;
-    top: calc(12px + var(--safeT));
-    right: 12px;
-    z-index:120;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.24);
-    border-radius:999px;
-    padding:10px 12px;
-  }
-  .badge .t{font-weight:1000; color: rgba(255,255,255,.90); font-size:13px; letter-spacing:-.02em;}
-
-  /* ===== Fullscreen button: moved to the right so it never blocks the logo ===== */
-  .fsBtn{
-    position:fixed;
-    top: calc(12px + var(--safeT));
-    right: 12px;     /* moved */
-    left: auto;
-    z-index:130;
-  }
-  @media (max-width:720px){
-    .fsBtn{display:none;}
-    .badge{display:none;}
-  }
+  .progress > div{height:100%; width:0%; background:var(--grad); transition: width .18s ease;}
 
   /* ===== Deck ===== */
   .deck{
     height:100%;
-    padding-top: calc(110px + var(--safeT)); /* more space for bigger logo */
-    padding-bottom: calc(92px + var(--safeB));
+    padding-top: calc(88px + var(--safeT));
+    padding-bottom: calc(86px + var(--safeB));
     display:flex;
     align-items:stretch;
     justify-content:center;
-  }
-  @media (max-width:720px){
-    .deck{
-      padding-top: calc(74px + var(--safeT));
-      padding-bottom: calc(82px + var(--safeB));
-    }
   }
   .stage{
     width:min(1280px, 100vw);
@@ -213,9 +170,6 @@
     padding-left: calc(16px + var(--safeL));
     padding-right: calc(16px + var(--safeR));
     position:relative;
-  }
-  @media (max-width:720px){
-    .stage{ padding: 10px 12px; }
   }
   .slide{
     position:absolute;
@@ -230,16 +184,14 @@
     transform: translateY(10px) scale(.99);
     pointer-events:none;
     transition: opacity .16s ease, transform .16s ease;
-    box-shadow: var(--shadow);
   }
-  @media (max-width:720px){
-    .slide{
-      inset:10px 12px;
-      inset-left: calc(12px + var(--safeL));
-      inset-right: calc(12px + var(--safeR));
-    }
+  .slide.active{
+    opacity:1;
+    transform: translateY(0) scale(1);
+    pointer-events:auto;
   }
-  .slide.active{opacity:1; transform: translateY(0) scale(1); pointer-events:auto;}
+  .luxShadow{ box-shadow: var(--shadow); }
+
   .slideHead{
     padding:16px 18px;
     border-bottom:1px solid rgba(255,255,255,.10);
@@ -250,9 +202,6 @@
     gap:12px;
     flex-wrap:wrap;
   }
-  @media (max-width:720px){
-    .slideHead{ padding:12px 12px; }
-  }
   .slideHead h2{
     margin:0;
     font-size: 15px;
@@ -262,126 +211,69 @@
     align-items:center;
     gap:10px;
   }
-  .spark{width:10px;height:10px;border-radius:999px;background:var(--grad); box-shadow:0 0 22px rgba(251,201,9,.14), 0 0 22px rgba(58,173,187,.12);}
+  .spark{width:10px;height:10px;border-radius:999px;background:var(--grad); box-shadow:0 0 22px rgba(251,201,9,.16), 0 0 22px rgba(58,173,187,.14);}
+
   .slideBody{
     padding:18px;
     height: calc(100% - 58px);
     overflow:auto;
     -webkit-overflow-scrolling: touch;
   }
-  @media (max-width:720px){
-    .slideBody{ padding:12px; }
-  }
+  .slideBody::-webkit-scrollbar{ width: 10px; }
+  .slideBody::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.14); border-radius:999px; }
 
-  /* ===== Bottom dock ===== */
+  /* Bottom controls */
   .presentBar{
     position:fixed;
-    left: max(10px, var(--safeL));
-    right: max(10px, var(--safeR));
-    bottom: calc(10px + var(--safeB));
-    z-index:140;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + var(--safeB));
+    z-index:180;
     display:flex;
     justify-content:center;
     pointer-events:none;
   }
-  .dock{
+  .presentShell{
     pointer-events:auto;
-    width:min(960px, 100%);
-    display:grid;
-    grid-template-columns: 1fr 1.4fr 1fr;
-    gap:12px;
-    padding:12px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(10,16,24,.88);
-    box-shadow: 0 20px 70px rgba(0,0,0,.45);
-  }
-  .dock .btn{
-    width:100%;
-    min-height:52px;
-    font-size:15px;
-    font-weight:1000;
-  }
-  @media (max-width:720px){
-    .dock{
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      padding:10px;
-    }
-    .dock .btn{
-      min-height:54px;
-      font-size:16px;
-    }
-    #btnStartDock{display:none;}
-  }
-
-  /* ===== Drawer (mobile) ===== */
-  .drawerOverlay{
-    position:fixed; inset:0;
-    background: rgba(0,0,0,.55);
-    z-index:200;
-    opacity:0;
-    pointer-events:none;
-    transition: opacity .16s ease;
-  }
-  .drawerOverlay.open{opacity:1; pointer-events:auto;}
-  .drawer{
-    position:fixed;
-    left: 12px;
-    right: 12px;
-    top: calc(12px + var(--safeT));
-    bottom: calc(12px + var(--safeB));
-    z-index:210;
-    transform: translateY(14px);
-    opacity:0;
-    pointer-events:none;
-    transition: transform .16s ease, opacity .16s ease;
-    border-radius:22px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(10,16,24,.96);
-    box-shadow: 0 24px 90px rgba(0,0,0,.55);
-    overflow:hidden;
+    width:min(980px, 100%);
     display:flex;
-    flex-direction:column;
-  }
-  .drawer.open{opacity:1; pointer-events:auto; transform: translateY(0);}
-  .drawerHead{
-    padding:14px 14px;
-    border-bottom:1px solid rgba(255,255,255,.10);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-  }
-  .drawerTitle{
-    font-weight:1000;
-    letter-spacing:-.02em;
-  }
-  .drawerBody{
-    padding:12px;
-    overflow:auto;
-    -webkit-overflow-scrolling: touch;
-    display:grid;
     gap:10px;
-  }
-  .slideLink{
+    align-items:center;
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06);
-    border-radius:16px;
-    padding:12px;
-    cursor:pointer;
+    background: rgba(0,0,0,.24);
+    border-radius:18px;
+    padding:10px;
   }
-  .slideLink strong{display:block; font-weight:1000; letter-spacing:-.01em;}
-  .slideLink span{display:block; margin-top:6px; color:var(--muted); font-weight:900; font-size:13px; line-height:1.3;}
-  .slideLink.active{
-    border-color: rgba(251,201,9,.45);
-    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
+  .presentShell .btn{flex:1; min-height:46px;}
+  .presentShell .btn.primary{flex:1.2;}
+  @media (max-width:520px){
+    .presentShell{gap:8px; padding:8px;}
+    .presentShell .btn{min-height:44px; padding:10px 10px;}
   }
 
-  /* ===== Layout helpers ===== */
+  /* Helpers */
   .grid{display:grid; gap:14px;}
   .grid2{grid-template-columns: 1.05fr .95fr;}
-  @media (max-width:980px){ .grid2{grid-template-columns:1fr;} }
+  .grid2eq{grid-template-columns:1fr 1fr;}
+  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
+
+  .card{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    overflow:hidden;
+  }
+  .cap{
+    padding:12px 14px;
+    border-top:1px solid rgba(255,255,255,.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    background: rgba(0,0,0,.14);
+    font-weight:1000;
+  }
+  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
 
   .pill{
     border:1px solid rgba(255,255,255,.14);
@@ -396,56 +288,30 @@
     white-space:nowrap;
   }
 
-  .card{
+  /* Hero */
+  .hero{
+    height:100%;
+    display:grid;
+    grid-template-columns: 1.18fr .82fr;
+    gap:14px;
+    align-items:stretch;
+  }
+  @media (max-width: 980px){ .hero{ grid-template-columns:1fr; } }
+  .heroCard{
     border:1px solid rgba(255,255,255,.14);
     border-radius:18px;
-    background: rgba(0,0,0,.16);
-    overflow:hidden;
-  }
-
-  /* Media lock box */
-  .mediaFrame{
-    width:100%;
-    height: clamp(220px, 42vh, 560px);
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .mediaFrame img, .mediaFrame video{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    background:#000;
-  }
-  .cap{
-    padding:12px 14px;
-    border-top:1px solid rgba(255,255,255,.10);
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:center;
-    background: rgba(0,0,0,.14);
-    font-weight:1000;
-  }
-  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
-
-  /* Start slide */
-  .focusWrap{height:100%; display:flex; align-items:center; justify-content:center;}
-  .focusCard{
-    width:min(980px, 100%);
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:22px;
-    background: rgba(0,0,0,.16);
+    background:
+      radial-gradient(740px 340px at 20% 20%, rgba(251,201,9,.14), transparent 62%),
+      radial-gradient(740px 340px at 80% 20%, rgba(58,173,187,.12), transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
     padding:18px;
   }
-  .focusTitle{
-    font-weight:1000;
-    letter-spacing:-.04em;
-    font-size: clamp(24px, 3.2vw, 44px);
-    margin:0 0 10px;
-    line-height:1.05;
+  html.ios .heroCard{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
+  .heroCard h1{
+    margin:0;
+    font-size: clamp(28px, 4.3vw, 58px);
+    letter-spacing:-.055em;
+    line-height:1.01;
   }
   .gradText{
     background:var(--grad);
@@ -454,108 +320,288 @@
     color:transparent;
     font-weight:1000;
   }
-  .focusSub{color:var(--muted); font-weight:900; margin:0 0 16px; line-height:1.45;}
-  .bigRedBox{
-    border:1px solid rgba(255,59,48,.35);
-    background: rgba(255,59,48,.10);
-    border-radius:18px;
-    padding:14px;
+  .heroCard p{
+    margin:10px 0 0;
+    color:var(--muted);
+    font-size:15.5px;
+    line-height:1.45;
+    max-width: 900px;
   }
-  .bigLabel{
-    color:rgba(255,255,255,.86);
-    font-weight:1000;
-    letter-spacing:.10em;
-    text-transform:uppercase;
-    font-size:12px;
-  }
-  .bigInput{
-    margin-top:10px;
-    width:100%;
-    border-radius:18px;
-    border:1px solid rgba(255,59,48,.40);
-    background: rgba(0,0,0,.20);
-    color: rgba(255,255,255,.98);
-    font-weight:1000;
-    font-size: clamp(24px, 4.5vw, 48px);
-    padding:16px 16px;
-    outline:none;
-    min-height:64px;
-    text-align:center;
-  }
-  .bigHint{margin-top:10px; color:rgba(255,255,255,.78); font-weight:900; line-height:1.35; font-size:13px;}
-  .bigActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; justify-content:flex-end;}
+  .heroRow{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
-  /* Problem slide big link buttons */
-  .ctaGrid{
+  .heroQuick{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    padding:18px;
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    gap:12px;
+  }
+  .stat{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    background: rgba(255,255,255,.05);
+    padding:12px;
+  }
+  .stat .k{
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .stat .v{
+    margin-top:8px;
+    font-weight:1000;
+    letter-spacing:-.02em;
+    font-size: 20px;
+  }
+  .stat .v span{ color: var(--utility); }
+  .stat .sub{
+    margin-top:6px;
+    color:var(--muted);
+    font-weight:900;
+    font-size: 13px;
+    line-height:1.35;
+  }
+
+  /* TOU link buttons */
+  .linkBtns{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
     gap:12px;
     margin-top:14px;
   }
-  @media (max-width:980px){ .ctaGrid{grid-template-columns:1fr;} }
-  .bigCTA{
-    border:1px solid rgba(255,255,255,.16);
-    border-radius:20px;
-    background: rgba(255,255,255,.06);
-    padding:16px;
+  @media (max-width:980px){ .linkBtns{grid-template-columns:1fr;} }
+  .linkBtn{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    padding:14px;
     cursor:pointer;
-    text-align:left;
-    min-height:120px;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
   }
-  .bigCTA:hover{ background: rgba(255,255,255,.09); }
-  .ctaLabel{
-    display:inline-flex;
+  .linkBtn:hover{
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.18);
+  }
+  .linkTop{
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-    gap:8px;
-    font-weight:1000;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    font-size:11px;
-    color: rgba(255,255,255,.86);
-    margin-bottom:8px;
+    gap:10px;
+    flex-wrap:wrap;
   }
-  .ctaLabel .dotMini{width:9px;height:9px;border-radius:999px;background:var(--grad);}
-  .ctaTitle{
+  .capTag{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:1000;
+    font-size:12px;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
+  }
+  .linkTitle{
     font-weight:1000;
     letter-spacing:-.02em;
     font-size:18px;
-    line-height:1.15;
-    margin:0;
+    line-height:1.12;
   }
-  .ctaDesc{
-    margin-top:10px;
-    color: var(--muted);
+  .linkDesc{
+    color:var(--muted);
     font-weight:900;
-    line-height:1.35;
     font-size:13.5px;
+    line-height:1.4;
   }
 
-  /* Outage slide */
-  .headline{
-    font-weight:1000;
-    letter-spacing:-.04em;
-    font-size: clamp(22px, 3vw, 38px);
-    margin:0 0 10px;
-    line-height:1.05;
-  }
-  .catch{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    border:1px solid rgba(251,201,9,.22);
-    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
-    padding:10px 12px;
-    border-radius:999px;
-    font-weight:1000;
-  }
-  .backupGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top:12px;}
-  @media (max-width:980px){ .backupGrid{grid-template-columns:1fr 1fr;} }
-  .backupTile{
-    border:1px solid rgba(255,255,255,.12);
+  /* Bills */
+  .billFrame{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
     background: rgba(0,0,0,.16);
-    border-radius:16px;
-    padding:12px;
+    overflow:hidden;
+  }
+  .billViewport{
+    height: clamp(260px, 42vh, 520px);
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .billViewport img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    cursor:pointer;
+  }
+
+  /* Proof text */
+  .headlineBox{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    padding:16px;
+  }
+  .headlineBox .big{
+    margin:0 0 10px;
+    font-size: clamp(22px, 3.1vw, 40px);
     font-weight:1000;
+    letter-spacing:-.045em;
+    line-height:1.06;
+  }
+  .headlineBox .sub{margin:0; color:var(--muted); font-weight:900; font-size:15px; line-height:1.45;}
+  .bullets{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(255,255,255,.05);
+    padding:16px;
+    display:grid;
+    gap:12px;
+    margin-top:12px;
+  }
+  .bItem{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    background: rgba(0,0,0,.14);
+    padding:12px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .bIcon{
+    width:34px;height:34px;border-radius:12px;
+    background: var(--grad);
+    color:#07121b;
+    font-weight:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+  }
+  .bText strong{font-weight:1000; letter-spacing:-.02em;}
+  .bText span{display:block; margin-top:3px; color:var(--muted); font-weight:850; font-size:13.5px; line-height:1.35;}
+
+  /* Outage */
+  .videoShell{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    overflow:hidden;
+    background: rgba(0,0,0,.22);
+  }
+  .videoViewport{
+    width:100%;
+    height: clamp(260px, 46vh, 520px);
+    background:#000;
+  }
+  video{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#000;
+  }
+  .tagline{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: linear-gradient(135deg, rgba(251,201,9,.11), rgba(58,173,187,.09));
+    padding:14px;
+  }
+  .tagline h3{
+    margin:0;
+    font-size: clamp(18px, 2.4vw, 28px);
+    letter-spacing:-.03em;
+    font-weight:1000;
+  }
+  .tagline p{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-weight:900;
+    line-height:1.45;
+  }
+  .backupGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  @media (max-width:980px){ .backupGrid{grid-template-columns:1fr;} }
+  .backupItem{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.16);
+    border-radius:18px;
+    padding:12px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .bkIcon{
+    width:36px;height:36px;border-radius:14px;
+    background: var(--grad);
+    color:#07121b;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:1000;
+    flex:0 0 auto;
+  }
+  .backupItem b{display:block; font-weight:1000; letter-spacing:-.01em;}
+  .backupItem span{display:block; margin-top:3px; color:var(--muted); font-weight:900; font-size:13.5px; line-height:1.35;}
+
+  /* VPP + company/review dropdowns */
+  .vppLinks{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+  @media (max-width:980px){ .vppLinks{grid-template-columns:1fr;} }
+
+  .vppCard{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    overflow:hidden;
+  }
+  .vppBtn{
+    padding:14px;
+    cursor:pointer;
+  }
+  .vppBtn:hover{ background: rgba(255,255,255,.06); }
+  .vppBtn .t{font-weight:1000; font-size:16px; letter-spacing:-.01em;}
+  .vppBtn .d{margin-top:8px; color:var(--muted); font-weight:900; font-size:13.5px; line-height:1.4;}
+
+  .dropRow{
+    border-top:1px solid rgba(255,255,255,.10);
+    padding:12px 14px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    background: rgba(0,0,0,.14);
+  }
+  .dropRow .label{
+    color:rgba(255,255,255,.9);
+    font-weight:1000;
+    font-size:13px;
+    letter-spacing:-.01em;
+  }
+  select{
+    width:min(420px,100%);
+    padding:12px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.22);
+    color: rgba(255,255,255,.96);
+    font-weight:1000;
+    font-size:15px;
+    outline:none;
+    min-height:44px;
   }
 
   /* Compare tool */
@@ -614,6 +660,7 @@
     border-color: rgba(58,173,187,.72);
     box-shadow: 0 0 0 6px rgba(58,173,187,.12);
   }
+
   .metric{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.16);
@@ -665,6 +712,7 @@
     display:grid;
     grid-template-columns: .9fr 1.1fr;
     gap:12px;
+    align-items:stretch;
   }
   @media (max-width:980px){ .yearBody{grid-template-columns:1fr;} }
 
@@ -714,6 +762,7 @@
     height:44px;
     border-radius:14px;
     border:1px solid rgba(251,201,9,.24);
+    box-shadow: 0 0 0 6px rgba(58,173,187,.10);
     pointer-events:none;
     z-index:3;
   }
@@ -754,7 +803,6 @@
   }
   .bigMoneyGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px;}
   @media (max-width:980px){ .bigMoneyGrid{grid-template-columns:1fr;} }
-
   .bigTile{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.04);
@@ -795,6 +843,7 @@
     font-weight:900;
     font-size:13px;
   }
+
   .yearSavings{
     border:1px solid rgba(52,199,89,.28);
     background: rgba(52,199,89,.10);
@@ -809,10 +858,17 @@
   }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
 
-  /* Timeline (interactive) */
+  /* Timeline */
+  .timelineWrap{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap:12px;
+    align-items:stretch;
+  }
+  @media (max-width:980px){ .timelineWrap{grid-template-columns:1fr;} }
   .timeline{
     display:grid;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(3,1fr);
     gap:10px;
   }
   @media (max-width:980px){ .timeline{grid-template-columns:1fr;} }
@@ -823,12 +879,12 @@
     padding:14px;
     min-height:112px;
     cursor:pointer;
-    transition: border-color .15s ease, background .15s ease, transform .12s ease;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
   }
-  .step:hover{ transform: translateY(-1px); }
+  .step:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18);}
   .step.active{
-    border-color: rgba(251,201,9,.55);
-    background: linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));
+    border-color: rgba(58,173,187,.55);
+    background: rgba(58,173,187,.10);
   }
   .num{
     width:30px;height:30px;border-radius:12px;
@@ -841,80 +897,142 @@
     margin-bottom:10px;
   }
   .step .t{font-weight:1000; letter-spacing:-.02em;}
-  .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900;}
-
-  /* ===== In-page modal viewer for bills + links (keeps everything inside this page) ===== */
-  .modalOverlay{
-    position:fixed; inset:0;
-    background: rgba(0,0,0,.68);
-    z-index:300;
-    opacity:0;
-    pointer-events:none;
-    transition: opacity .16s ease;
+  .step .d{margin-top:8px; color: rgba(255,255,255,.78); font-weight:900; font-size:13.5px; line-height:1.35;}
+  .explainPanel{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.16);
+    border-radius:18px;
+    padding:16px;
+    display:grid;
+    gap:12px;
   }
-  .modalOverlay.open{opacity:1; pointer-events:auto;}
+  .explainPanel h3{
+    margin:0;
+    font-size: clamp(18px, 2.4vw, 30px);
+    letter-spacing:-.03em;
+    font-weight:1000;
+  }
+  .explainPanel p{
+    margin:0;
+    color:var(--muted);
+    font-weight:900;
+    line-height:1.5;
+  }
+  .tip{
+    border:1px solid rgba(251,201,9,.22);
+    background: rgba(251,201,9,.08);
+    border-radius:16px;
+    padding:12px;
+    font-weight:1000;
+    color: rgba(255,255,255,.92);
+  }
+
+  /* ===== Modal ===== */
   .modal{
     position:fixed;
-    left: max(10px, var(--safeL));
-    right: max(10px, var(--safeR));
-    top: calc(10px + var(--safeT));
-    bottom: calc(10px + var(--safeB));
-    z-index:310;
-    border-radius:22px;
+    inset:0;
+    z-index:220;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding: calc(14px + var(--safeT)) calc(14px + var(--safeR)) calc(14px + var(--safeB)) calc(14px + var(--safeL));
+    background: rgba(0,0,0,.72);
+  }
+  .modal.show{display:flex;}
+  .modalBox{
+    width:min(1100px, 100%);
+    height:min(84vh, 880px);
     border:1px solid rgba(255,255,255,.16);
-    background: rgba(10,16,24,.96);
-    box-shadow: 0 26px 100px rgba(0,0,0,.65);
+    border-radius:22px;
+    background: rgba(10,16,24,.94);
     overflow:hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,.55);
     display:flex;
     flex-direction:column;
-    transform: translateY(14px);
-    opacity:0;
-    pointer-events:none;
-    transition: transform .16s ease, opacity .16s ease;
   }
-  .modal.open{opacity:1; pointer-events:auto; transform: translateY(0);}
-  .modalHead{
-    padding:12px 12px;
+  .modalTop{
+    padding:10px 12px;
     border-bottom:1px solid rgba(255,255,255,.10);
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    flex-wrap:wrap;
   }
-  .modalTitle{
+  .modalTop .title{
     font-weight:1000;
     letter-spacing:-.02em;
+    color: rgba(255,255,255,.92);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .modalBody{
+  .modalActions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .iconBtn{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 12px;
+    font-weight:950;
+    min-height:42px;
+    cursor:pointer;
+  }
+  .modalBody{position:relative; flex:1; overflow:hidden;}
+
+  .viewer{position:absolute; inset:0; overflow:hidden; background:#000;}
+  .viewerCanvas{
+    position:absolute; inset:0;
+    cursor:grab;
+    touch-action:none;
+  }
+  .viewerCanvas.grabbing{cursor:grabbing;}
+  .viewerCanvas img{
+    position:absolute;
+    top:0; left:0;
+    transform-origin: 0 0;
+    user-select:none;
+    -webkit-user-drag:none;
+    max-width:none;
+    max-height:none;
+  }
+  .zoomBar{
+    position:absolute;
+    left:12px; right:12px;
+    bottom:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    z-index:3;
+    pointer-events:none;
+  }
+  .zoomRange{
     flex:1;
-    background:#000;
-    position:relative;
+    pointer-events:auto;
+    height:42px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    padding:0 10px;
+    display:flex;
+    align-items:center;
   }
-  .modalBody img{
+  .zoomRange input{
     width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-    background:#000;
-  }
-  .modalBody iframe{
-    width:100%;
-    height:100%;
+    height:24px;
+    margin:0;
+    background: transparent;
     border:0;
-    display:block;
-    background:#000;
+    padding:0;
+    box-shadow:none;
+    min-height:auto;
   }
-  .modalActions{display:flex; gap:10px; flex-wrap:wrap;}
+
+  .frame{position:absolute; inset:0; background:#000;}
+  .frame iframe{width:100%; height:100%; border:0; display:block; background:#000;}
 </style>
 </head>
 
 <body>
 
-<!-- Fullscreen (desktop/tablet). Mobile uses menu. -->
-<button class="btn fsBtn" id="btnFS" type="button">Fullscreen</button>
-
-<!-- Topbar -->
+<!-- ===== Topbar ===== -->
 <div class="topbar">
   <div class="topbarInner">
     <div class="brand">
@@ -925,18 +1043,12 @@
       </div>
     </div>
 
-    <!-- Mobile controls -->
-    <div class="mobileControls">
-      <button class="hamburger" id="btnMenu" type="button">Menu</button>
-      <button class="hamburger" id="btnResetMobile" type="button">Reset</button>
-    </div>
-
-    <!-- Desktop nav -->
-    <div class="nav">
-      <button class="btn" id="btnHome" type="button">Start</button>
-      <button class="btn" id="btnPrevTop" type="button">Prev</button>
-      <button class="btn primary" id="btnNextTop" type="button">Next</button>
-      <button class="btn danger" id="btnReset" type="button">Reset</button>
+    <div class="navTop">
+      <button class="btn hoverLift hideMobile" id="btnHome" type="button">Home</button>
+      <button class="btn hoverLift hideMobile" id="btnPrevTop" type="button">Prev</button>
+      <button class="btn primary hoverLift hideMobile" id="btnNextTop" type="button">Next</button>
+      <button class="btn hoverLift icon" id="btnFS" type="button" title="Fullscreen">⛶</button>
+      <button class="btn danger hoverLift hideMobile" id="btnReset" type="button">Reset</button>
     </div>
   </div>
   <div class="progressWrap">
@@ -944,215 +1056,234 @@
   </div>
 </div>
 
-<div class="badge">
-  <span class="dot"></span>
-  <span class="t" id="slideCounter">Slide 1 / 1</span>
-</div>
-
-<!-- Mobile slide drawer -->
-<div class="drawerOverlay" id="drawerOverlay"></div>
-<div class="drawer" id="drawer">
-  <div class="drawerHead">
-    <div class="drawerTitle">Presentation Menu</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn" id="btnFSMenu" type="button">Fullscreen</button>
-      <button class="btn danger" id="btnCloseMenu" type="button">Close</button>
-    </div>
-  </div>
-  <div class="drawerBody" id="drawerBody"></div>
-</div>
-
-<!-- In-page Modal -->
-<div class="modalOverlay" id="modalOverlay"></div>
-<div class="modal" id="modal">
-  <div class="modalHead">
-    <div class="modalTitle" id="modalTitle">Preview</div>
-    <div class="modalActions">
-      <button class="btn" id="btnModalOpenExternal" type="button">Open External</button>
-      <button class="btn danger" id="btnModalClose" type="button">Close</button>
-    </div>
-  </div>
-  <div class="modalBody" id="modalBody"></div>
-</div>
-
+<!-- ===== Deck ===== -->
 <div class="deck">
   <div class="stage" id="stage">
 
-    <!-- SLIDE 1: START INPUT -->
-    <section class="slide active" data-slide data-title="Start" data-sub="Enter average bill to populate calculator">
+    <!-- SLIDE 1: HERO -->
+    <section class="slide luxShadow active" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Customer Starting Point</h2>
+        <h2><span class="spark"></span> Closing Tool</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Feeds the calculator</span>
+          <span class="pill"><span class="dot"></span> Win the day • Own the night</span>
         </div>
       </div>
+
       <div class="slideBody">
-        <div class="focusWrap">
-          <div class="focusCard">
-            <h1 class="focusTitle">What is your <span class="gradText">average</span> monthly Edison bill?</h1>
-            <p class="focusSub">Enter the customer’s average monthly payment. This automatically populates the Utility column in the comparison tool.</p>
-
-            <div class="bigRedBox">
-              <div class="bigLabel">Average monthly utility payment (USD)</div>
-              <input class="bigInput" id="startBill" inputmode="decimal" value="458" aria-label="Average monthly utility bill"/>
-              <div class="bigHint">Use the average of the last 12 months if it varies.</div>
+        <div class="hero">
+          <div class="heroCard">
+            <h1>Win the day. <span class="gradText">Own the night.</span></h1>
+            <p>
+              Show the rate problem, show the proof, show outage protection, then compare payments year-by-year.
+              Built to run smoothly on iPhone and laptop.
+            </p>
+            <div class="heroRow">
+              <button class="btn primary hoverLift" type="button" onclick="go(1)">Start</button>
+              <button class="btn hoverLift" type="button" onclick="go(4)">Go to Compare</button>
+              <button class="btn hoverLift" type="button" onclick="go(5)">Timeline</button>
             </div>
+          </div>
 
-            <div class="bigActions">
-              <button class="btn" type="button" onclick="go(1)">See Rate Problem</button>
-              <button class="btn primary" type="button" onclick="go(2)">Outage Demo</button>
+          <div class="heroQuick">
+            <div class="stat">
+              <div class="k">Rates (15 years)</div>
+              <div class="v"><span>$0.17</span> → <span>$0.42</span> / kWh</div>
+              <div class="sub">Peak pricing is the enemy.</div>
+            </div>
+            <div class="stat">
+              <div class="k">Proof</div>
+              <div class="v">$28 bill example</div>
+              <div class="sub">Solar + storage controls peak purchases.</div>
+            </div>
+            <div class="stat">
+              <div class="k">Close</div>
+              <div class="v">Year wheel</div>
+              <div class="sub">Instant Year 1 → Year 25 comparisons.</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2: PROBLEM + LINKS -->
-    <section class="slide" data-slide data-title="Rate Problem" data-sub="TOU, 13% increase, LA fires (in-page links)">
+    <!-- SLIDE 2: THE PROBLEM -->
+    <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> The Problem</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Rates: $0.17 → $0.42 / kWh</span>
+          <span class="pill"><span class="dot"></span> Rates keep rising</span>
         </div>
       </div>
 
       <div class="slideBody">
         <div class="grid grid2">
-          <div class="card">
-            <div class="mediaFrame">
-              <img id="imgBillNoSolar" alt="Bill without solar (SCE)" style="cursor:pointer" />
+          <div class="billFrame">
+            <div class="billViewport">
+              <img id="imgUtilityBill" alt="Utility bill without solar" />
             </div>
             <div class="cap">
-              <div>Bill example (no solar)</div>
-              <small>Tap to zoom</small>
+              <div>Today’s bill (no solar)</div>
+              <small>Tap to magnify</small>
             </div>
           </div>
 
-          <div class="card" style="padding:16px;">
-            <div style="color:var(--muted2);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;">Why it’s expensive</div>
-            <div style="margin-top:10px;font-weight:1000;font-size:clamp(22px,3vw,38px);letter-spacing:-.045em;line-height:1.06;">
-              It’s not only <span class="gradText">how much</span> — it’s <span class="gradText">when</span>.
-            </div>
-            <div style="margin-top:10px;color:var(--muted);font-weight:900;line-height:1.5;font-size:14.5px;">
-              Time-of-Use (TOU) pricing charges more when the grid is stressed. That “peak window” is where bills explode.
-              Batteries shift energy into peak and reduce expensive purchases.
-            </div>
+          <div class="headlineBox">
+            <div class="big">Why bills spike: <span class="gradText">Time-of-Use</span></div>
+            <p class="sub">
+              The biggest driver isn’t only how many kWh you use — it’s when those kWh are purchased.
+              Peak hours cost the most. Even the same usage becomes expensive if more of it lands in peak windows.
+            </p>
 
-            <div class="ctaGrid">
-              <div class="bigCTA" onclick="openInPageLink('SCE Time-of-Use Rates (TOU)', ASSETS.linkTOU)">
-                <div class="ctaLabel"><span class="dotMini"></span> TOU</div>
-                <div class="ctaTitle">SCE Time-of-Use Rates</div>
-                <div class="ctaDesc">Official TOU rate plans and time-of-day pricing.</div>
-              </div>
-
-              <div class="bigCTA" onclick="openInPageLink('SCE Bill Updates (13% Increase Context)', ASSETS.linkSCE)">
-                <div class="ctaLabel"><span class="dotMini"></span> 13% increase</div>
-                <div class="ctaTitle">SCE: Understanding bill updates</div>
-                <div class="ctaDesc">Why charges change and what updates mean on the bill.</div>
-              </div>
-
-              <div class="bigCTA" onclick="openInPageLink('LA Times: Edison Rate Case (LA Fires Context)', ASSETS.linkLAT)">
-                <div class="ctaLabel"><span class="dotMini"></span> L.A fires</div>
-                <div class="ctaTitle">LA Times: Edison rate case</div>
-                <div class="ctaDesc">Context on rate cases and drivers behind increases.</div>
-              </div>
+            <div class="bullets">
+              <div class="bItem"><div class="bIcon">⏱️</div><div class="bText"><strong>Peak costs more</strong><span>Grid-stress hours are priced higher.</span></div></div>
+              <div class="bItem"><div class="bIcon">📈</div><div class="bText"><strong>Rates climbed fast</strong><span>~$0.17 → ~$0.42 average over ~15 years (context).</span></div></div>
+              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Fees + delivery still apply</strong><span>Staying connected means required charges remain, even with solar.</span></div></div>
             </div>
 
+            <div class="linkBtns">
+              <div class="linkBtn hoverLift" onclick="openLinkInModal('SCE Time-of-Use rates','https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-rate-plans')">
+                <div class="linkTop">
+                  <span class="capTag">TOU</span>
+                  <span class="capTag">Popup</span>
+                </div>
+                <div class="linkTitle">SCE Time-of-Use rates</div>
+                <div class="linkDesc">Official TOU pricing and plan details.</div>
+              </div>
+
+              <div class="linkBtn hoverLift" onclick="openLinkInModal('SCE bill updates','https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill')">
+                <div class="linkTop">
+                  <span class="capTag">13% increase</span>
+                  <span class="capTag">Popup</span>
+                </div>
+                <div class="linkTitle">SCE: Understanding updates</div>
+                <div class="linkDesc">Explains why bill components and rates change.</div>
+              </div>
+
+              <div class="linkBtn hoverLift" onclick="openLinkInModal('LA Times: Edison rate case','https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case')">
+                <div class="linkTop">
+                  <span class="capTag">L.A. fires</span>
+                  <span class="capTag">Popup</span>
+                </div>
+                <div class="linkTitle">LA Times: Edison rate case</div>
+                <div class="linkDesc">News context on continued utility rate pressure.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 3: PROOF ($28 BILL) -->
+    <section class="slide luxShadow" data-slide>
+      <div class="slideHead">
+        <h2><span class="spark"></span> Proof</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Solar + Storage</span>
+        </div>
+      </div>
+
+      <div class="slideBody">
+        <div class="grid grid2">
+          <div class="billFrame">
+            <div class="billViewport">
+              <img id="imgSolarBill" alt="Solar + storage bill example" />
+            </div>
+            <div class="cap">
+              <div>Solar + storage bill example ($28)</div>
+              <small>Tap to magnify</small>
+            </div>
+          </div>
+
+          <div class="headlineBox">
+            <div class="big">Why it can be <span class="gradText">$28</span></div>
+            <p class="sub">
+              This isn’t “free power.” It’s controlled power. Solar handles daytime. Batteries cover the expensive peak hours.
+              The utility becomes backup instead of primary — leaving mostly required charges + small net usage.
+            </p>
+            <div class="bullets">
+              <div class="bItem"><div class="bIcon">☀️</div><div class="bText"><strong>Daytime offsets</strong><span>Solar reduces the kWh you would buy during the day.</span></div></div>
+              <div class="bItem"><div class="bIcon">🔋</div><div class="bText"><strong>Peak avoidance</strong><span>Batteries discharge during peak so you buy less at high pricing.</span></div></div>
+              <div class="bItem"><div class="bIcon">🧾</div><div class="bText"><strong>Net billing reality</strong><span>You’re still connected, but you’re not forced to buy most power at peak.</span></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 3: OUTAGE DEMO -->
-    <section class="slide" data-slide data-title="Outage Demo" data-sub="Backup essentials + Tesla VPP (in-page)">
+    <!-- SLIDE 4: OUTAGE DEMO + VPP + COMPANY REVIEW DROPDOWNS -->
+    <section class="slide luxShadow" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Outage Demo</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <span style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(251,201,9,.22);background:linear-gradient(135deg, rgba(251,201,9,.14), rgba(58,173,187,.10));padding:10px 12px;border-radius:999px;font-weight:1000;">
-            <span class="dot"></span> Win the day, own the night
-          </span>
+        <h2><span class="spark"></span> Outage Protection</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill"><span class="dot"></span> Win the day • Own the night</span>
         </div>
       </div>
 
       <div class="slideBody">
         <div class="grid grid2">
-          <div class="card">
-            <div class="mediaFrame">
-              <video id="outageVid" controls playsinline preload="metadata"></video>
+          <div class="videoShell">
+            <div class="videoViewport">
+              <video id="outageVideo" controls playsinline preload="metadata">
+                <source id="outageSrc" type="video/mp4">
+                Your browser can’t play this video.
+              </video>
             </div>
             <div class="cap">
-              <div>Home powered during outage</div>
+              <div>Backup power demo</div>
               <small>Plays inline on iPhone</small>
             </div>
           </div>
 
-          <div class="card" style="padding:16px;">
-            <div class="headline">Major things you can back up</div>
-            <div style="color:var(--muted);font-weight:900;line-height:1.45;">
-              Batteries protect comfort and safety during outages — and they’re also the same tool that reduces peak costs.
+          <div>
+            <div class="tagline">
+              <h3>Win the day. <span class="gradText">Own the night.</span></h3>
+              <p>Batteries aren’t just savings — they give control when the grid fails.</p>
             </div>
 
             <div class="backupGrid">
-              <div class="backupTile">Lights + outlets</div>
-              <div class="backupTile">Wi-Fi + internet</div>
-              <div class="backupTile">Refrigerator / freezer</div>
-              <div class="backupTile">Security + cameras</div>
-              <div class="backupTile">Garage door</div>
-              <div class="backupTile">Selective HVAC</div>
+              <div class="backupItem"><div class="bkIcon">💡</div><div><b>Lights + outlets</b><span>Stay functional without scrambling.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">❄️</div><div><b>Fridge + freezer</b><span>Protect food during longer outages.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">📶</div><div><b>Wi-Fi + charging</b><span>Phones, internet, work continuity.</span></div></div>
+              <div class="backupItem"><div class="bkIcon">🛡️</div><div><b>Security + garage</b><span>Keep essentials online.</span></div></div>
             </div>
 
-            <div style="display:grid;gap:10px;margin-top:14px;">
-              <button class="btn primary" type="button" onclick="openInPageLink('Tesla Virtual Power Plant', ASSETS.linkTeslaVPP)">
-                Tesla Virtual Power Plant
-              </button>
-              <button class="btn" type="button" onclick="openInPageLink('Tesla VPP (SCE Program Page)', ASSETS.linkTeslaVPP_SCE)">
-                Tesla VPP (SCE page)
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: PROOF -->
-    <section class="slide" data-slide data-title="Proof ($28 Bill)" data-sub="Why the bill can be low with storage">
-      <div class="slideHead">
-        <h2><span class="spark"></span> Proof</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="pill"><span class="dot"></span> Solar + Storage Net Bill</span>
-        </div>
-      </div>
-
-      <div class="slideBody">
-        <div class="grid grid2">
-          <div class="card">
-            <div class="mediaFrame">
-              <img id="imgBillSolar" alt="Bill on solar (SCE net billing example)" style="cursor:pointer"/>
-            </div>
-            <div class="cap">
-              <div>Bill example (solar + storage)</div>
-              <small>Tap to zoom</small>
-            </div>
-          </div>
-
-          <div class="card" style="padding:16px;">
-            <div style="color:var(--muted2);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;">Why it can be low</div>
-            <div style="margin-top:10px;font-weight:1000;font-size:clamp(22px,3vw,38px);letter-spacing:-.045em;line-height:1.06;">
-              Solar runs the day. Batteries protect the <span class="gradText">expensive</span> hours.
-            </div>
-            <div style="margin-top:10px;color:var(--muted);font-weight:900;line-height:1.5;font-size:14.5px;">
-              Solar offsets daytime purchases. Batteries discharge during peak hours so you buy less at the highest prices.
-              The grid becomes backup instead of primary.
-            </div>
-
-            <div style="display:grid;gap:10px;margin-top:14px;">
-              <div class="metric">
-                <div class="mk">Simple way to say it</div>
-                <div class="mv" style="color:var(--opt1);">Less peak buying = lower net bill</div>
+            <div class="vppLinks">
+              <div class="vppCard">
+                <div class="vppBtn hoverLift" onclick="openLinkInModal('Tesla Virtual Power Plant (VPP)','https://www.tesla.com/support/tesla-virtual-power-plant')">
+                  <div class="t">Tesla Virtual Power Plant (VPP)</div>
+                  <div class="d">How batteries can support the grid and create additional value. (Popup)</div>
+                </div>
+                <div class="dropRow">
+                  <div class="label">VPP checks (examples)</div>
+                  <button class="btn hoverLift" type="button" onclick="openLinkInModal('VPP checks (examples)','https://www.google.com/search?q=tesla+virtual+power+plant+check+example&tbm=isch')">Open</button>
+                </div>
               </div>
-              <div class="metric">
-                <div class="mk">What remains on most bills</div>
-                <div class="mv">Minimum charges + small net usage</div>
+
+              <!-- Company + Reviews dropdown -->
+              <div class="vppCard">
+                <div class="vppBtn hoverLift" onclick="openLinkInModal('Fulfill Power','https://fulfillpower.com')">
+                  <div class="t">Fulfill Power</div>
+                  <div class="d">Open site in-page (Popup). Choose reviews below.</div>
+                </div>
+                <div class="dropRow">
+                  <div class="label">Reviews</div>
+                  <select id="reviewsSelect">
+                    <option value="" selected disabled>Select review page…</option>
+                    <option value="https://www.google.com/search?q=SunUp+Energy+Reviews">SunUp Energy (Google)</option>
+                    <option value="https://www.google.com/search?q=Fulfill+Power+reviews">Fulfill Power (Google)</option>
+                    <option value="https://www.google.com/search?q=Energy+Time+Solar+reviews">Energy Time Solar (Google)</option>
+                  </select>
+                </div>
+
+                <div class="dropRow">
+                  <div class="label">More company sites</div>
+                  <select id="companySelect">
+                    <option value="" selected disabled>Select website…</option>
+                    <option value="https://www.sunup-energy.com">SunUp Energy</option>
+                    <option value="https://fulfillpower.com">Fulfill Power</option>
+                    <option value="https://energytimesolar.com">Energy Time Solar</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -1162,20 +1293,19 @@
     </section>
 
     <!-- SLIDE 5: COMPARE TOOL -->
-    <section class="slide" data-slide data-title="Compare" data-sub="3 options + synced year wheel">
+    <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button class="btn" type="button" onclick="setYear(1,true)">Year 1</button>
-          <button class="btn" type="button" onclick="setYear(5,true)">Year 5</button>
-          <button class="btn" type="button" onclick="setYear(10,true)">Year 10</button>
-          <button class="btn" type="button" onclick="setYear(25,true)">Year 25</button>
+          <button class="btn hoverLift" type="button" onclick="setYear(1,true)">Year 1</button>
+          <button class="btn hoverLift" type="button" onclick="setYear(5,true)">Year 5</button>
+          <button class="btn hoverLift" type="button" onclick="setYear(10,true)">Year 10</button>
+          <button class="btn hoverLift" type="button" onclick="setYear(25,true)">Year 25</button>
         </div>
       </div>
 
       <div class="slideBody">
         <div class="compareTop">
-          <!-- Utility -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,255,255,.05));">
               <div>
@@ -1194,7 +1324,6 @@
             </div>
           </div>
 
-          <!-- Option 1 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(52,199,89,.16), rgba(255,255,255,.05));">
               <div>
@@ -1205,15 +1334,14 @@
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
-              <label><span class="klabel">Annual escalator (%)</span><input id="aEsc" inputmode="decimal" value="0"></label>
+              <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="3.5"></label>
               <div class="metric">
                 <div class="mk">Total savings over 25 years</div>
-                <div class="mv" id="aSave25" style="color:var(--opt1)">$0</div>
+                <div class="mv" id="aSave" style="color:var(--opt1)">$0</div>
               </div>
             </div>
           </div>
 
-          <!-- Option 2 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(0,194,255,.16), rgba(255,255,255,.05));">
               <div>
@@ -1224,10 +1352,10 @@
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
-              <label><span class="klabel">Annual escalator (%)</span><input id="bEsc" inputmode="decimal" value="0"></label>
+              <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="4.9"></label>
               <div class="metric">
                 <div class="mk">Total savings over 25 years</div>
-                <div class="mv" id="bSave25" style="color:var(--opt2)">$0</div>
+                <div class="mv" id="bSave" style="color:var(--opt2)">$0</div>
               </div>
             </div>
           </div>
@@ -1236,7 +1364,7 @@
         <div class="yearPanel">
           <div class="yearHead">
             <div class="t"><span class="spark"></span> Annual payment comparison (synced year)</div>
-            <div class="yearPill"><span class="dot2"></span> Year <span id="yearChip">1</span></div>
+            <div class="yearPill"><span class="dot2"></span> Year <span id="yearPill">1</span></div>
           </div>
 
           <div class="yearBody">
@@ -1244,16 +1372,17 @@
               <div class="wheelTop">
                 <div class="yearBig" id="yearBig">1</div>
                 <div class="dialBtns">
-                  <button class="miniBtn" type="button" id="yearMinus">−1</button>
-                  <button class="miniBtn" type="button" id="yearPlus">+1</button>
+                  <button class="miniBtn" type="button" onclick="nudgeYear(-1)">-1</button>
+                  <button class="miniBtn" type="button" onclick="nudgeYear(1)">+1</button>
+                  <button class="miniBtn" type="button" onclick="setYear(1,true)">Reset</button>
                 </div>
               </div>
 
-              <div class="wheel">
-                <div class="wheelList" id="yearWheel"></div>
+              <div class="wheel" aria-label="Year wheel">
+                <div class="wheelList" id="wheelList"></div>
               </div>
 
-              <div style="color:var(--muted); font-weight:900; font-size:13px;">
+              <div class="muted" style="font-weight:900;font-size:13px;">
                 Scroll the year wheel. All 3 options update together.
               </div>
             </div>
@@ -1262,29 +1391,26 @@
               <div class="bigMoneyGrid">
                 <div class="bigTile">
                   <div class="bk">Utility <span class="chip">Red</span></div>
-                  <div class="m" id="uM" style="color:var(--utility)">$0.00</div>
-                  <div class="a" id="uY">Annual: $0</div>
+                  <div class="m" style="color:var(--utility)" id="uYearPay">$0</div>
+                  <div class="a">Annual: <span id="uYearAnnual">$0</span></div>
                 </div>
 
                 <div class="bigTile">
                   <div class="bk">Option 1 <span class="chip">Green</span></div>
-                  <div class="m" id="aM" style="color:var(--opt1)">$0.00</div>
-                  <div class="a" id="aY">Annual: $0</div>
+                  <div class="m" style="color:var(--opt1)" id="aYearPay">$0</div>
                 </div>
 
                 <div class="bigTile">
                   <div class="bk">Option 2 <span class="chip">Cyan</span></div>
-                  <div class="m" id="bM" style="color:var(--opt2)">$0.00</div>
-                  <div class="a" id="bY">Annual: $0</div>
+                  <div class="m" style="color:var(--opt2)" id="bYearPay">$0</div>
                 </div>
               </div>
 
               <div class="yearSavings">
-                <div>Best option savings vs utility (annual)</div>
-                <div class="v" id="bestAnnual">$0</div>
+                <div>Best plan — total savings over 25 years</div>
+                <div class="v" id="best25">$0</div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -1292,432 +1418,438 @@
     </section>
 
     <!-- SLIDE 6: TIMELINE -->
-    <section class="slide" data-slide data-title="Timeline" data-sub="Tap steps to explain process">
+    <section class="slide luxShadow" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> Timeline</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a class="btn" target="_blank" rel="noreferrer" href="https://www.sunup-energy.com">sunup-energy.com</a>
-          <a class="btn" target="_blank" rel="noreferrer" href="https://fulfillpower.com">fulfillpower.com</a>
-          <a class="btn primary" target="_blank" rel="noreferrer"
-             href="https://www.google.com/search?client=safari&hs=XBx9&sca_esv=73cfac6e472fb041&hl=en-us&sxsrf=ANbL-n5pIhFe5d5WvDJM7Q0KFrq6PCcSHA:1770166523563&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXnP5y33p_1DfpRctiz00a&q=SunUp+Energy+Reviews&sa=X&dlnr=1">Reviews</a>
-        </div>
+        <h2><span class="spark"></span> Next Steps</h2>
+        <div class="pill"><span class="dot"></span> Tap each step for details</div>
       </div>
 
       <div class="slideBody">
-        <div class="timeline" id="timeline">
-          <div class="step active" data-step="0"><div class="num">1</div><div class="t">Site Survey</div><div class="d">&lt; 1 week</div></div>
-          <div class="step" data-step="1"><div class="num">2</div><div class="t">Engineering</div><div class="d">~ 1 week</div></div>
-          <div class="step" data-step="2"><div class="num">3</div><div class="t">Permits</div><div class="d">1–12 weeks</div></div>
-          <div class="step" data-step="3"><div class="num">4</div><div class="t">Install</div><div class="d">1 day – 2 weeks</div></div>
-          <div class="step" data-step="4"><div class="num">5</div><div class="t">Inspection</div><div class="d">1–2 weeks</div></div>
-          <div class="step" data-step="5"><div class="num">6</div><div class="t">PTO</div><div class="d">30–60 days</div></div>
-        </div>
+        <div class="timelineWrap">
+          <div class="timeline" id="timeline">
+            <div class="step active" data-step="0"><div class="num">1</div><div class="t">Site survey</div><div class="d">Less than 1 week</div></div>
+            <div class="step" data-step="1"><div class="num">2</div><div class="t">Engineering</div><div class="d">~ 1 week</div></div>
+            <div class="step" data-step="2"><div class="num">3</div><div class="t">Permits</div><div class="d">1–12 weeks</div></div>
+            <div class="step" data-step="3"><div class="num">4</div><div class="t">Install</div><div class="d">1 day – 2 weeks</div></div>
+            <div class="step" data-step="4"><div class="num">5</div><div class="t">Final inspection</div><div class="d">1–2 weeks</div></div>
+            <div class="step" data-step="5"><div class="num">6</div><div class="t">PTO</div><div class="d">30–60 days</div></div>
+          </div>
 
-        <div class="card" style="margin-top:16px;padding:18px" id="timelineExplain"></div>
+          <div class="explainPanel">
+            <h3 id="stepTitle">Site survey</h3>
+            <p id="stepBody">We verify roof measurements, electrical details, and battery placement so the final design matches your home exactly. This prevents surprises and keeps the project moving.</p>
+            <div class="tip" id="stepTip">Why it matters: accuracy here reduces delays later.</div>
+            <div class="tip" style="border-color: rgba(58,173,187,.28); background: rgba(58,173,187,.10);">
+              First payment: typically 1 month after PTO (Permission To Operate).
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
   </div>
 </div>
 
-<!-- Bottom dock controls -->
+<!-- ===== Bottom Controls ===== -->
 <div class="presentBar">
-  <div class="dock">
-    <button class="btn" id="btnPrev" type="button">Prev</button>
-    <button class="btn" id="btnStartDock" type="button">Start</button>
-    <button class="btn primary" id="btnNext" type="button">Next</button>
+  <div class="presentShell">
+    <button class="btn hoverLift" id="btnPrev" type="button">Prev</button>
+    <button class="btn hoverLift" id="btnStart" type="button">Start</button>
+    <button class="btn primary hoverLift" id="btnNext" type="button">Next</button>
+  </div>
+</div>
+
+<!-- ===== Modal ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modalBox">
+    <div class="modalTop">
+      <div class="title" id="modalTitle">Preview</div>
+      <div class="modalActions">
+        <button class="iconBtn" id="zoomOut" type="button" title="Zoom out">−</button>
+        <button class="iconBtn" id="zoomIn" type="button" title="Zoom in">+</button>
+        <button class="iconBtn" id="zoomFit" type="button" title="Fit">Fit</button>
+        <button class="iconBtn" id="modalClose" type="button" title="Close">Close</button>
+      </div>
+    </div>
+
+    <div class="modalBody">
+      <div class="viewer" id="viewer" style="display:none;">
+        <div class="viewerCanvas" id="viewerCanvas">
+          <img id="viewerImg" alt="Preview"/>
+        </div>
+        <div class="zoomBar">
+          <div class="zoomRange">
+            <input id="zoomRange" type="range" min="0.8" max="3.0" step="0.05" value="1.2" aria-label="Zoom"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame" id="frame" style="display:none;">
+        <iframe id="frameIframe" title="Popup"></iframe>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-/*
-  Put these files in the SAME folder as index.html:
-
-  - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png   (logo)
-  - Outagevideo.mp4
-  - Scebill.jpeg
-  - IMG_9100.jpeg
-*/
-
+/* ========= Assets ========= */
 const ASSETS = {
   logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
-  billNoSolar: "Scebill.jpeg",
+  billUtility: "Scebill.jpeg",
   billSolar: "IMG_9100.jpeg",
-  outageVideo: "Outagevideo.mp4",
-
-  linkTOU: "https://www.sce.com/residential/rates/Time-Of-Use-Residential-Rate-Plans",
-  linkSCE: "https://www.sce.com/save-money/rates-financing/residential-rate-plans/understanding-updates-to-your-bill",
-  linkLAT: "https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case",
-
-  linkTeslaVPP: "https://www.tesla.com/support/energy/virtual-power-plant",
-  linkTeslaVPP_SCE: "https://www.tesla.com/support/energy/virtual-power-plant/sce"
+  outageVideo: "Outagevideo.mp4"
 };
 
-const $ = (id)=>document.getElementById(id);
+/* iOS detection */
+(function(){
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if(isIOS) document.documentElement.classList.add("ios");
+})();
+
+/* Init assets */
+document.getElementById("logoImg").src = ASSETS.logo;
+
+const imgUtilityBill = document.getElementById("imgUtilityBill");
+const imgSolarBill = document.getElementById("imgSolarBill");
+imgUtilityBill.src = ASSETS.billUtility;
+imgSolarBill.src = ASSETS.billSolar;
+
+imgUtilityBill.addEventListener("click", () => openImageInModal("Today’s bill (no solar)", ASSETS.billUtility));
+imgSolarBill.addEventListener("click", () => openImageInModal("Solar + storage bill example ($28)", ASSETS.billSolar));
+
+const outageVideo = document.getElementById("outageVideo");
+document.getElementById("outageSrc").src = ASSETS.outageVideo;
+outageVideo.load();
+
+/* Dropdown handlers */
+document.getElementById("reviewsSelect").addEventListener("change", (e)=>{
+  openLinkInModal("Google Reviews", e.target.value);
+  e.target.selectedIndex = 0;
+});
+document.getElementById("companySelect").addEventListener("change", (e)=>{
+  openLinkInModal("Company Website", e.target.value);
+  e.target.selectedIndex = 0;
+});
 
 /* Slides */
-let slides = [];
+const slides = Array.from(document.querySelectorAll("[data-slide]"));
 let idx = 0;
-
-function refreshSlides(){ slides = Array.from(document.querySelectorAll("[data-slide]")); }
-
-function updateHUD(){
-  const pct = (idx / Math.max(1, slides.length-1)) * 100;
-  $("progressFill").style.width = `${pct}%`;
-  const c = $("slideCounter");
-  if(c) c.textContent = `Slide ${idx+1} / ${slides.length}`;
-  buildDrawerList();
+function show(i){
+  idx = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, n) => s.classList.toggle("active", n === idx));
+  const pct = ((idx) / (slides.length - 1)) * 100;
+  document.getElementById("progressFill").style.width = (isFinite(pct)?pct:0) + "%";
+  if(outageVideo && idx !== 3){ try{ outageVideo.pause(); }catch(e){} }
 }
+function go(i){ show(i); }
+function next(){ show(idx + 1); }
+function prev(){ show(idx - 1); }
+function start(){ show(0); }
 
-function activate(i){
-  refreshSlides();
-  idx = Math.max(0, Math.min(slides.length-1, i));
-  slides.forEach((s, n)=> s.classList.toggle("active", n === idx));
-  updateHUD();
-  const b = slides[idx].querySelector(".slideBody");
-  if(b) b.scrollTop = 0;
-}
+document.getElementById("btnPrev").addEventListener("click", prev);
+document.getElementById("btnNext").addEventListener("click", next);
+document.getElementById("btnStart").addEventListener("click", start);
 
-function next(){ activate(idx+1); }
-function prev(){ activate(idx-1); }
-function go(i){ activate(i); closeDrawer(); }
-window.go = go;
-
-$("btnNext")?.addEventListener("click", next);
-$("btnPrev")?.addEventListener("click", prev);
-$("btnNextTop")?.addEventListener("click", next);
-$("btnPrevTop")?.addEventListener("click", prev);
-$("btnHome")?.addEventListener("click", ()=>activate(0));
-$("btnStartDock")?.addEventListener("click", ()=>activate(0));
-
-document.addEventListener("keydown", (e)=>{
-  if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
-  if(e.key === "ArrowLeft"  || e.key === "PageUp"){ e.preventDefault(); prev(); }
-});
+document.getElementById("btnHome").addEventListener("click", start);
+document.getElementById("btnPrevTop").addEventListener("click", prev);
+document.getElementById("btnNextTop").addEventListener("click", next);
+document.getElementById("btnReset").addEventListener("click", resetAll);
 
 /* Fullscreen */
-function toggleFS(){
-  const el = document.documentElement;
-  if(!document.fullscreenElement){
-    el.requestFullscreen?.();
-  }else{
-    document.exitFullscreen?.();
-  }
-}
-$("btnFS")?.addEventListener("click", toggleFS);
-$("btnFSMenu")?.addEventListener("click", toggleFS);
-
-/* ===== In-page modal (images + links) ===== */
-const modal = $("modal");
-const modalOverlay = $("modalOverlay");
-const modalBody = $("modalBody");
-const modalTitle = $("modalTitle");
-const btnModalClose = $("btnModalClose");
-const btnModalOpenExternal = $("btnModalOpenExternal");
-
-let modalExternalUrl = null;
-
-function openModal({title, type, src, externalUrl}){
-  modalTitle.textContent = title || "Preview";
-  modalBody.innerHTML = "";
-  modalExternalUrl = externalUrl || null;
-  btnModalOpenExternal.style.display = modalExternalUrl ? "inline-flex" : "none";
-
-  if(type === "image"){
-    const img = document.createElement("img");
-    img.alt = title || "Image";
-    img.src = src;
-    modalBody.appendChild(img);
-  }else if(type === "iframe"){
-    const iframe = document.createElement("iframe");
-    iframe.loading = "lazy";
-    iframe.referrerPolicy = "no-referrer";
-    iframe.src = src;
-    modalBody.appendChild(iframe);
-  }
-
-  modalOverlay.classList.add("open");
-  modal.classList.add("open");
-}
-
-function closeModal(){
-  modalOverlay.classList.remove("open");
-  modal.classList.remove("open");
-  // keep content for a beat to avoid iOS repaint flash
-  setTimeout(()=>{ modalBody.innerHTML=""; }, 180);
-}
-
-btnModalClose.addEventListener("click", closeModal);
-modalOverlay.addEventListener("click", closeModal);
-btnModalOpenExternal.addEventListener("click", ()=>{
-  if(modalExternalUrl) window.open(modalExternalUrl, "_blank", "noopener,noreferrer");
+document.getElementById("btnFS").addEventListener("click", async ()=>{
+  try{
+    if(!document.fullscreenElement){
+      await document.documentElement.requestFullscreen();
+    }else{
+      await document.exitFullscreen();
+    }
+  }catch(e){}
 });
 
-function openBillZoom(title, imgSrc){
-  openModal({ title, type:"image", src: imgSrc, externalUrl: null });
+/* Keyboard */
+window.addEventListener("keydown", (e)=>{
+  if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " "){ e.preventDefault(); next(); }
+  if(e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); prev(); }
+  if(e.key === "Home"){ e.preventDefault(); start(); }
+  if(e.key === "Escape" && modal.classList.contains("show")) closeModal();
+});
+
+/* ========= Calculator + wheel ========= */
+function num(v, fallback=0){
+  const x = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
+  return isFinite(x) ? x : fallback;
+}
+function money(x){
+  const n = isFinite(x) ? x : 0;
+  return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
+}
+function money2(x){
+  const n = isFinite(x) ? x : 0;
+  return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
-function openInPageLink(title, url){
-  // Attempt in-page iframe; if site blocks embedding, user can tap "Open External"
-  openModal({ title, type:"iframe", src: url, externalUrl: url });
-}
-window.openInPageLink = openInPageLink;
+const uPay = document.getElementById("uPay");
+const uEsc = document.getElementById("uEsc");
+const aPay = document.getElementById("aPay");
+const aEsc = document.getElementById("aEsc");
+const bPay = document.getElementById("bPay");
+const bEsc = document.getElementById("bEsc");
 
-/* Start slide -> Utility bill sync */
-function syncStartBillToCalculator(){
-  const v = $("startBill").value;
-  $("uPay").value = v;
-  recalc();
-}
-$("startBill").addEventListener("input", syncStartBillToCalculator, {passive:true});
+const uTotal = document.getElementById("uTotal");
+const aSave = document.getElementById("aSave");
+const bSave = document.getElementById("bSave");
 
-/* Calculator + wheel */
-let year = 1;
-let cache = { u:[], a:[], b:[], uTotal:0, aTotal:0, bTotal:0 };
+const yearPill = document.getElementById("yearPill");
+const yearBig = document.getElementById("yearBig");
 
-function toNumber(v){
-  const n = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
-  return Number.isFinite(n) ? n : 0;
-}
-function money0(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
-function money2(n){ return (Number.isFinite(n)?n:0).toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+const uYearPay = document.getElementById("uYearPay");
+const uYearAnnual = document.getElementById("uYearAnnual");
+const aYearPay = document.getElementById("aYearPay");
+const bYearPay = document.getElementById("bYearPay");
+const best25 = document.getElementById("best25");
 
-function monthlySeries(baseMonthly, escPct, years=25){
+let currentYear = 1;
+const years = 25;
+
+function yearlyMonthly(base, escPct, year){
   const r = escPct/100;
-  const out = [];
-  for(let y=1;y<=years;y++) out.push(baseMonthly * Math.pow(1+r, y-1));
-  return out;
+  return base * Math.pow(1+r, Math.max(0, year-1));
 }
-function totalSeries(series){ return series.reduce((s,m)=> s + (m*12), 0); }
-function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function sum25(baseMonthly, escPct){
+  let sum = 0;
+  for(let y=1;y<=years;y++){
+    sum += yearlyMonthly(baseMonthly, escPct, y) * 12;
+  }
+  return sum;
+}
 
 function recalc(){
-  const uPay = toNumber($("uPay").value);
-  const uEsc = toNumber($("uEsc").value);
-  const aPay = toNumber($("aPay").value);
-  const aEsc = toNumber($("aEsc").value);
-  const bPay = toNumber($("bPay").value);
-  const bEsc = toNumber($("bEsc").value);
+  const U = num(uPay.value, 458);
+  const UE = num(uEsc.value, 9);
+  const A = num(aPay.value, 295);
+  const AE = num(aEsc.value, 3.5);
+  const B = num(bPay.value, 325);
+  const BE = num(bEsc.value, 4.9);
 
-  cache.u = monthlySeries(uPay, uEsc);
-  cache.a = monthlySeries(aPay, aEsc);
-  cache.b = monthlySeries(bPay, bEsc);
+  const U25 = sum25(U, UE);
+  const A25 = sum25(A, AE);
+  const B25 = sum25(B, BE);
 
-  cache.uTotal = totalSeries(cache.u);
-  cache.aTotal = totalSeries(cache.a);
-  cache.bTotal = totalSeries(cache.b);
+  const saveA = Math.max(0, U25 - A25);
+  const saveB = Math.max(0, U25 - B25);
 
-  $("uTotal").textContent = money0(cache.uTotal);
-  $("aSave25").textContent = money0(cache.uTotal - cache.aTotal);
-  $("bSave25").textContent = money0(cache.uTotal - cache.bTotal);
+  uTotal.textContent = money(U25);
+  aSave.textContent = money(saveA);
+  bSave.textContent = money(saveB);
 
-  setYear(year, true);
+  const Um = yearlyMonthly(U, UE, currentYear);
+  const Am = yearlyMonthly(A, AE, currentYear);
+  const Bm = yearlyMonthly(B, BE, currentYear);
+
+  uYearPay.textContent = money2(Um);
+  uYearAnnual.textContent = money(Um*12);
+  aYearPay.textContent = money2(Am);
+  bYearPay.textContent = money2(Bm);
+
+  best25.textContent = money(Math.max(saveA, saveB));
 }
 
-function setYear(newYear, snapWheel){
-  year = clamp(parseInt(newYear,10)||1, 1, 25);
-  $("yearBig").textContent = String(year);
-  $("yearChip").textContent = String(year);
+[uPay,uEsc,aPay,aEsc,bPay,bEsc].forEach(el=>{
+  el.addEventListener("input", recalc);
+  el.addEventListener("change", recalc);
+});
 
-  const i = year - 1;
-  const uM = cache.u[i] || 0;
-  const aM = cache.a[i] || 0;
-  const bM = cache.b[i] || 0;
-
-  $("uM").textContent = money2(uM);
-  $("aM").textContent = money2(aM);
-  $("bM").textContent = money2(bM);
-
-  $("uY").textContent = `Annual: ${money0(uM*12)}`;
-  $("aY").textContent = `Annual: ${money0(aM*12)}`;
-  $("bY").textContent = `Annual: ${money0(bM*12)}`;
-
-  const best = Math.min(aM, bM);
-  const bestAnnual = (uM - best) * 12;
-  $("bestAnnual").textContent = money0(bestAnnual);
-  $("bestAnnual").style.color = (bestAnnual >= 0) ? "var(--opt1)" : "var(--utility)";
-
-  const wheel = $("yearWheel");
-  if(wheel){
-    const items = wheel.querySelectorAll(".wheelItem");
-    items.forEach((el, idx)=> el.classList.toggle("active", idx === i));
-    if(snapWheel){
-      const target = items[i];
-      if(target){
-        const top = target.offsetTop - (wheel.clientHeight/2 - target.clientHeight/2);
-        wheel.scrollTo({ top, behavior: "auto" });
-      }
-    }
-  }
+function setYear(y, snapWheel=false){
+  currentYear = Math.max(1, Math.min(years, y));
+  yearPill.textContent = String(currentYear);
+  yearBig.textContent = String(currentYear);
+  highlightWheel();
+  recalc();
+  if(snapWheel) snapWheelToYear(currentYear);
 }
-window.setYear = setYear;
+function nudgeYear(delta){ setYear(currentYear + delta, true); }
 
-function buildYearWheel(){
-  const wheel = $("yearWheel");
-  wheel.innerHTML = "";
-  for(let y=1;y<=25;y++){
+const wheelList = document.getElementById("wheelList");
+(function buildWheel(){
+  const frag = document.createDocumentFragment();
+  for(let y=1;y<=years;y++){
     const div = document.createElement("div");
-    div.className = "wheelItem" + (y===1 ? " active" : "");
-    div.textContent = `Year ${y}`;
-    div.addEventListener("click", ()=>setYear(y, true));
-    wheel.appendChild(div);
+    div.className = "wheelItem";
+    div.dataset.year = String(y);
+    div.textContent = "Year " + y;
+    div.addEventListener("click", ()=> setYear(y, true));
+    frag.appendChild(div);
   }
+  wheelList.appendChild(frag);
+  wheelList.addEventListener("scroll", onWheelScroll, {passive:true});
+  setTimeout(()=>{ setYear(1,true); }, 0);
+})();
+let wheelScrollTimer = null;
+function onWheelScroll(){
+  if(wheelScrollTimer) clearTimeout(wheelScrollTimer);
+  wheelScrollTimer = setTimeout(()=>{
+    const items = Array.from(wheelList.querySelectorAll(".wheelItem"));
+    const rect = wheelList.getBoundingClientRect();
+    const centerY = rect.top + rect.height/2;
 
-  const ITEM_H = 44;
-  const PAD = 88;
-  let ticking = false;
-
-  wheel.addEventListener("scroll", ()=>{
-    if(ticking) return;
-    ticking = true;
-    requestAnimationFrame(()=>{
-      ticking = false;
-      const center = wheel.scrollTop + (wheel.clientHeight/2);
-      const pos = center - PAD - (ITEM_H/2);
-      const idx = clamp(Math.round(pos / ITEM_H), 0, 24);
-      const newYear = idx + 1;
-      if(newYear !== year) setYear(newYear, false);
-    });
-  }, {passive:true});
-
-  $("yearMinus").onclick = ()=>setYear(year-1, true);
-  $("yearPlus").onclick  = ()=>setYear(year+1, true);
-
-  ["uPay","uEsc","aPay","aEsc","bPay","bEsc"].forEach(id=>{
-    $(id).addEventListener("input", recalc, {passive:true});
-  });
-
-  $("uPay").value = $("startBill").value;
-  recalc();
-  setYear(1, true);
+    let best = null, bestDist = Infinity;
+    for(const it of items){
+      const r = it.getBoundingClientRect();
+      const itCenter = r.top + r.height/2;
+      const d = Math.abs(itCenter - centerY);
+      if(d < bestDist){ bestDist = d; best = it; }
+    }
+    if(best){
+      const y = parseInt(best.dataset.year,10);
+      setYear(y,false);
+    }
+  }, 90);
+}
+function highlightWheel(){
+  wheelList.querySelectorAll(".wheelItem")
+    .forEach(it => it.classList.toggle("active", parseInt(it.dataset.year,10) === currentYear));
+}
+function snapWheelToYear(y){
+  const target = wheelList.querySelector(`.wheelItem[data-year="${y}"]`);
+  if(!target) return;
+  target.scrollIntoView({block:"center", behavior: document.documentElement.classList.contains("ios") ? "auto" : "smooth"});
 }
 
-/* Reset */
-function hardReset(){
-  $("startBill").value="458";
-  $("uPay").value="458"; $("uEsc").value="9";
-  $("aPay").value="295"; $("aEsc").value="0";
-  $("bPay").value="325"; $("bEsc").value="0";
-  year = 1;
-  recalc();
-  activate(0);
-}
-$("btnReset")?.addEventListener("click", hardReset);
-$("btnResetMobile")?.addEventListener("click", hardReset);
+/* Timeline click */
+const stepTitle = document.getElementById("stepTitle");
+const stepBody  = document.getElementById("stepBody");
+const stepTip   = document.getElementById("stepTip");
 
-/* Timeline explanations */
-const TIMELINE_TEXT = [
-  { title:"Site Survey", body:"A quick visit to confirm roof condition, electrical layout, and equipment placement. This ensures pricing and design accuracy before permits.", why:"Prevents redesigns and delays later" },
-  { title:"Engineering", body:"Engineers design the system to meet utility and city requirements. Structural, electrical, and fire safety rules are verified here.", why:"Required for permits and utility approval" },
-  { title:"Permits", body:"City and utility review the plans. Timing varies by jurisdiction — this is usually the longest step.", why:"This step is out of the homeowner’s control, but it protects your investment" },
-  { title:"Installation", body:"Panels, batteries, and electrical work are installed. Most homes are completed in 1–2 days once scheduled.", why:"The visible transformation happens here" },
-  { title:"Inspection", body:"City verifies the installation meets code. Minor corrections, if any, are handled quickly.", why:"Final approval before utility permission" },
-  { title:"Permission to Operate (PTO)", body:"The utility grants approval to turn the system on. First payment typically occurs one month after PTO.", why:"This is when savings officially begin" }
+const stepData = [
+  {title:"Site survey", body:"We verify roof measurements, electrical details, and battery placement so the final design matches your home exactly. This prevents surprises and keeps the project moving.", tip:"Why it matters: accuracy here reduces delays later."},
+  {title:"Engineering", body:"Your system is designed to code and finalized for the roof, electrical, and utility requirements. This turns the concept into a build-ready plan.", tip:"Why it matters: clean engineering speeds up permits and reduces change orders."},
+  {title:"Permits", body:"The city reviews and approves the plans. Timelines vary by city workload and specific requirements.", tip:"Why it matters: this is the widest time range step—tracking is key."},
+  {title:"Install", body:"Solar and batteries are installed. Some homes are completed quickly; larger projects can take longer based on scope and scheduling.", tip:"Why it matters: once installed, you’re close to inspection and PTO."},
+  {title:"Final inspection", body:"The city/authority verifies the installation matches the approved plans and meets code.", tip:"Why it matters: passing inspection is required before the utility grants PTO."},
+  {title:"PTO (Permission To Operate)", body:"The utility grants permission to operate/export fully. This step typically takes 30–60 days after inspection depending on utility processing.", tip:"Why it matters: PTO is the official go-live milestone."}
 ];
 
-function initTimeline(){
-  const steps = Array.from(document.querySelectorAll(".step[data-step]"));
-  const box = $("timelineExplain");
-  if(!steps.length || !box) return;
+document.getElementById("timeline").addEventListener("click", (e)=>{
+  const step = e.target.closest(".step");
+  if(!step) return;
+  const i = parseInt(step.dataset.step,10);
+  document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+  step.classList.add("active");
 
-  function render(i){
-    const data = TIMELINE_TEXT[i] || TIMELINE_TEXT[0];
-    box.innerHTML = `
-      <div style="font-weight:1000;font-size:clamp(20px,2.5vw,32px);letter-spacing:-.03em">
-        ${data.title}
-      </div>
-      <p style="margin:10px 0 0;color:var(--muted);font-weight:900;line-height:1.45">
-        ${data.body}
-      </p>
-      <div class="metric" style="margin-top:14px">
-        <div class="mk">Why this matters</div>
-        <div class="mv">${data.why}</div>
-      </div>
-      <div style="margin-top:10px;color:rgba(255,255,255,.78);font-weight:900;line-height:1.4;font-size:13px;">
-        First payment is typically <strong>one month after PTO</strong> — not at install.
-      </div>
-    `;
+  const d = stepData[i] || stepData[0];
+  stepTitle.textContent = d.title;
+  stepBody.textContent = d.body;
+  stepTip.textContent = d.tip;
+});
+
+/* ========= Modal functions ========= */
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const modalClose = document.getElementById("modalClose");
+const viewer = document.getElementById("viewer");
+const viewerCanvas = document.getElementById("viewerCanvas");
+const viewerImg = document.getElementById("viewerImg");
+const zoomRange = document.getElementById("zoomRange");
+const zoomOut = document.getElementById("zoomOut");
+const zoomIn = document.getElementById("zoomIn");
+const zoomFit = document.getElementById("zoomFit");
+const frame = document.getElementById("frame");
+const frameIframe = document.getElementById("frameIframe");
+
+let viewScale = 1.2, imgW = 0, imgH = 0, panX = 0, panY = 0;
+let dragging = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
+
+function openModal(){ modal.classList.add("show"); modal.setAttribute("aria-hidden","false"); }
+function closeModal(){
+  modal.classList.remove("show"); modal.setAttribute("aria-hidden","true");
+  frameIframe.src = "about:blank";
+  viewerImg.src = "";
+}
+modalClose.addEventListener("click", closeModal);
+modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+
+function openImageInModal(title, src){
+  modalTitle.textContent = title;
+  frame.style.display = "none";
+  viewer.style.display = "block";
+  viewerImg.onload = ()=>{
+    imgW = viewerImg.naturalWidth;
+    imgH = viewerImg.naturalHeight;
+    fitToView();
+  };
+  viewerImg.src = src;
+  openModal();
+}
+function openLinkInModal(title, url){
+  modalTitle.textContent = title;
+  viewer.style.display = "none";
+  frame.style.display = "block";
+  frameIframe.src = url;
+  openModal();
+}
+function applyTransform(){
+  const s = Math.max(0.8, Math.min(3.0, viewScale));
+  viewScale = s;
+  zoomRange.value = String(s);
+  viewerImg.style.transform = `translate(${panX}px, ${panY}px) scale(${s})`;
+}
+function fitToView(){
+  const box = viewerCanvas.getBoundingClientRect();
+  if(!imgW || !imgH || !box.width || !box.height){
+    viewScale = 1.2; panX = 0; panY = 0; applyTransform(); return;
   }
-
-  render(0);
-
-  steps.forEach(step=>{
-    step.addEventListener("click", ()=>{
-      steps.forEach(s=>s.classList.remove("active"));
-      step.classList.add("active");
-      render(Number(step.dataset.step));
-    });
-  });
+  const sx = (box.width - 24) / imgW;
+  const sy = (box.height - 24) / imgH;
+  const fit = Math.min(sx, sy);
+  viewScale = Math.max(0.9, Math.min(1.6, fit * 1.15));
+  panX = Math.max(12, (box.width - imgW * viewScale)/2);
+  panY = Math.max(12, (box.height - imgH * viewScale)/2);
+  applyTransform();
 }
 
-/* ===== Mobile Drawer Menu ===== */
-const drawer = $("drawer");
-const overlay = $("drawerOverlay");
-const drawerBody = $("drawerBody");
+viewerCanvas.addEventListener("pointerdown", (e)=>{
+  dragging = true;
+  viewerCanvas.classList.add("grabbing");
+  viewerCanvas.setPointerCapture(e.pointerId);
+  startX = e.clientX; startY = e.clientY;
+  startPanX = panX; startPanY = panY;
+});
+viewerCanvas.addEventListener("pointermove", (e)=>{
+  if(!dragging) return;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+  panX = startPanX + dx;
+  panY = startPanY + dy;
+  applyTransform();
+});
+viewerCanvas.addEventListener("pointerup", ()=>{
+  dragging = false;
+  viewerCanvas.classList.remove("grabbing");
+});
+viewerCanvas.addEventListener("pointercancel", ()=>{
+  dragging = false;
+  viewerCanvas.classList.remove("grabbing");
+});
 
-function openDrawer(){
-  overlay.classList.add("open");
-  drawer.classList.add("open");
-  buildDrawerList();
-}
-function closeDrawer(){
-  overlay.classList.remove("open");
-  drawer.classList.remove("open");
-}
-function buildDrawerList(){
-  if(!drawerBody) return;
-  drawerBody.innerHTML = "";
-  slides.forEach((s, i)=>{
-    const title = s.getAttribute("data-title") || `Slide ${i+1}`;
-    const sub = s.getAttribute("data-sub") || "";
-    const item = document.createElement("div");
-    item.className = "slideLink" + (i===idx ? " active" : "");
-    item.innerHTML = `<strong>${title}</strong><span>${sub}</span>`;
-    item.addEventListener("click", ()=>go(i));
-    drawerBody.appendChild(item);
-  });
+zoomRange.addEventListener("input", ()=>{ viewScale = parseFloat(zoomRange.value); applyTransform(); });
+zoomIn.addEventListener("click", ()=>{ viewScale = Math.min(3.0, viewScale + 0.15); applyTransform(); });
+zoomOut.addEventListener("click", ()=>{ viewScale = Math.max(0.8, viewScale - 0.15); applyTransform(); });
+zoomFit.addEventListener("click", fitToView);
 
-  const hr = document.createElement("div");
-  hr.style.height="1px";
-  hr.style.background="rgba(255,255,255,.10)";
-  hr.style.margin="6px 0";
-  drawerBody.appendChild(hr);
-
-  const quick = document.createElement("div");
-  quick.className = "slideLink";
-  quick.innerHTML = `<strong>Reset Presentation</strong><span>Clear values and return to Start.</span>`;
-  quick.addEventListener("click", ()=>{ hardReset(); closeDrawer(); });
-  drawerBody.appendChild(quick);
+/* Reset */
+function resetAll(){
+  uPay.value = "458"; uEsc.value = "9";
+  aPay.value = "295"; aEsc.value = "3.5";
+  bPay.value = "325"; bEsc.value = "4.9";
+  setYear(1,true); show(0); recalc();
 }
 
-$("btnMenu")?.addEventListener("click", openDrawer);
-$("btnCloseMenu")?.addEventListener("click", closeDrawer);
-overlay?.addEventListener("click", closeDrawer);
-
-/* Boot */
-(function init(){
-  refreshSlides();
-
-  $("logoImg").src = ASSETS.logo;
-
-  const imgNo = $("imgBillNoSolar");
-  const imgSo = $("imgBillSolar");
-
-  imgNo.src = ASSETS.billNoSolar;
-  imgSo.src = ASSETS.billSolar;
-
-  // Tap-to-zoom bills inside the same window
-  imgNo.addEventListener("click", ()=>openBillZoom("Bill example (no solar)", ASSETS.billNoSolar));
-  imgSo.addEventListener("click", ()=>openBillZoom("Bill example (solar + storage)", ASSETS.billSolar));
-
-  const v = $("outageVid");
-  v.src = ASSETS.outageVideo;
-  v.load();
-
-  buildYearWheel();
-  initTimeline();
-  activate(0);
-})();
+/* Init */
+setYear(1,true);
+recalc();
+show(0);
 </script>
+
 </body>
 </html>
