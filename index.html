@@ -8,18 +8,31 @@
 
 <style>
   :root{
-    --navy:#0b1017; --navy2:#06122a; --gold:#FBC909; --teal:#3AADBB;
-    --utility:#ff3b30; --opt1:#34c759; --opt2:#00c2ff;
-    /* brighter shades for $/kWh rows */
-    --utilityB:#ff6a61; --opt1B:#5dff8a; --opt2B:#49d7ff;
+    --navy:#0b1017;
+    --navy2:#06122a;
+    --gold:#FBC909;
+    --teal:#3AADBB;
 
-    --text:rgba(255,255,255,.96); --muted:rgba(255,255,255,.72); --muted2:rgba(255,255,255,.56);
+    --utility:#ff3b30;
+    --opt1:#34c759;
+    --opt2:#00c2ff;
+
+    --text:rgba(255,255,255,.96);
+    --muted:rgba(255,255,255,.72);
+    --muted2:rgba(255,255,255,.56);
+
     --grad:linear-gradient(135deg,var(--gold),var(--teal));
     --shadow:0 18px 70px rgba(0,0,0,.45);
+
+    --r:16px;
     --r2:22px;
-    --safeT: env(safe-area-inset-top); --safeB: env(safe-area-inset-bottom);
-    --safeL: env(safe-area-inset-left); --safeR: env(safe-area-inset-right);
+
+    --safeT: env(safe-area-inset-top);
+    --safeB: env(safe-area-inset-bottom);
+    --safeL: env(safe-area-inset-left);
+    --safeR: env(safe-area-inset-right);
   }
+
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -34,31 +47,56 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
+
   html.ios .luxShadow{ box-shadow:none !important; }
   html.ios .hoverLift:hover{ transform:none !important; box-shadow:none !important; }
   html.ios .slide{ transition:none !important; }
+
   a{color:#cfe8ff;text-decoration:none}
+  a:hover{text-decoration:underline}
   button, a, input { -webkit-tap-highlight-color: transparent; }
 
+  /* ===== Top Bar ===== */
   .topbar{
-    position:fixed; inset:0 0 auto 0; z-index:100;
+    position:fixed; inset:0 0 auto 0;
+    z-index:100;
     padding-top:var(--safeT);
     background: rgba(10,16,24,.88);
     border-bottom:1px solid rgba(255,255,255,.12);
   }
   .topbarInner{
-    max-width:1280px; margin:0 auto;
+    max-width:1280px;
+    margin:0 auto;
     padding:10px 14px;
     padding-left: calc(14px + var(--safeL));
     padding-right: calc(14px + var(--safeR));
-    display:flex; gap:10px; align-items:center; justify-content:space-between;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
   }
   .brand{display:flex; align-items:center; gap:12px; min-width:180px; overflow:hidden;}
-  .brand img{height:56px; width:auto; display:block; filter:drop-shadow(0 12px 28px rgba(0,0,0,.35));}
+  .brand img{
+    height:56px; width:auto; display:block;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,.35));
+  }
   .brandTitle{display:flex; flex-direction:column; line-height:1.1; min-width:0}
-  .brandTitle .name{font-weight:1000; letter-spacing:-.02em; display:flex; align-items:center; gap:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .dot{width:10px;height:10px;border-radius:999px;background:var(--grad); box-shadow:0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18); flex:0 0 auto;}
-  .brandTitle .sub{font-size:12px; color:var(--muted2); margin-top:3px; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .brandTitle .name{
+    font-weight:1000; letter-spacing:-.02em;
+    display:flex; align-items:center; gap:10px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:999px;
+    background:var(--grad);
+    box-shadow:0 0 0 6px rgba(251,201,9,.10), 0 0 26px rgba(58,173,187,.18);
+    flex:0 0 auto;
+  }
+  .brandTitle .sub{
+    font-size:12px; color:var(--muted2);
+    margin-top:3px; letter-spacing:.02em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
 
   .nav{display:flex; gap:8px; align-items:center; justify-content:flex-end; flex-wrap:wrap;}
   .btn{
@@ -77,8 +115,18 @@
     user-select:none;
     transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
-  .btn.hoverLift:hover{transform:translateY(-1px); background:rgba(255,255,255,.10); box-shadow:0 14px 44px rgba(0,0,0,.25); border-color:rgba(255,255,255,.18);}
-  .btn.primary{background:var(--grad); color:#07121b; border-color:rgba(255,255,255,.18); box-shadow:0 18px 58px rgba(58,173,187,.14), 0 18px 58px rgba(251,201,9,.10);}
+  .btn.hoverLift:hover{
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.10);
+    box-shadow: 0 14px 44px rgba(0,0,0,.25);
+    border-color: rgba(255,255,255,.18);
+  }
+  .btn.primary{
+    background: var(--grad);
+    color:#07121b;
+    border-color: rgba(255,255,255,.18);
+    box-shadow: 0 18px 58px rgba(58,173,187,.14), 0 18px 58px rgba(251,201,9,.10);
+  }
   .btn.danger{border-color: rgba(255,59,48,.25); background: rgba(255,59,48,.10);}
   .btn.icon{min-width:46px; padding:10px 12px;}
   .hideMobile{display:inline-flex;}
@@ -87,25 +135,35 @@
     .brandTitle .sub{display:none}
     .hideMobile{display:none;}
   }
+
   .progressWrap{
     max-width:1280px; margin:0 auto;
     padding:0 14px 10px;
     padding-left: calc(14px + var(--safeL));
     padding-right: calc(14px + var(--safeR));
   }
-  .progress{height:7px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);overflow:hidden;}
+  .progress{
+    height:7px;
+    border-radius:999px;
+    background: rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.10);
+    overflow:hidden;
+  }
   .progress > div{height:100%; width:0%; background:var(--grad); transition: width .18s ease;}
 
+  /* ===== Deck ===== */
   .deck{
     height:100%;
     padding-top: calc(88px + var(--safeT));
     padding-bottom: calc(86px + var(--safeB));
-    display:flex; align-items:stretch; justify-content:center;
+    display:flex;
+    align-items:stretch;
+    justify-content:center;
   }
   .stage{
     width:min(1280px, 100vw);
     height:100%;
-    padding:14px 16px;
+    padding: 14px 16px;
     padding-left: calc(16px + var(--safeL));
     padding-right: calc(16px + var(--safeR));
     position:relative;
@@ -124,23 +182,34 @@
     pointer-events:none;
     transition: opacity .16s ease, transform .16s ease;
   }
-  .slide.active{opacity:1; transform: translateY(0) scale(1); pointer-events:auto;}
-  .luxShadow{box-shadow:var(--shadow);}
+  .slide.active{
+    opacity:1;
+    transform: translateY(0) scale(1);
+    pointer-events:auto;
+  }
+  .luxShadow{ box-shadow: var(--shadow); }
 
   .slideHead{
     padding:16px 18px;
     border-bottom:1px solid rgba(255,255,255,.10);
     background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
   }
   .slideHead h2{
     margin:0;
-    font-size:15px;
+    font-size: 15px;
     letter-spacing:.04em;
     text-transform:uppercase;
-    display:flex; align-items:center; gap:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
   }
   .spark{width:10px;height:10px;border-radius:999px;background:var(--grad); box-shadow:0 0 22px rgba(251,201,9,.16), 0 0 22px rgba(58,173,187,.14);}
+
   .slideBody{
     padding:18px;
     height: calc(100% - 58px);
@@ -148,14 +217,23 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Bottom presentation controls */
   .presentBar{
-    position:fixed; left:12px; right:12px; bottom: calc(12px + var(--safeB));
-    z-index:120; display:flex; justify-content:center; pointer-events:none;
+    position:fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + var(--safeB));
+    z-index:120;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
   }
   .presentShell{
     pointer-events:auto;
     width:min(980px,100%);
-    display:flex; gap:10px; align-items:center;
+    display:flex;
+    gap:10px;
+    align-items:center;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.24);
     border-radius:18px;
@@ -163,6 +241,16 @@
   }
   .presentShell .btn{flex:1; min-height:46px;}
   .presentShell .btn.primary{flex:1.2;}
+  @media (max-width:520px){
+    .presentShell{gap:8px;padding:8px}
+    .presentShell .btn{min-height:44px;padding:10px 10px}
+  }
+
+  /* Helpers */
+  .grid{display:grid; gap:14px;}
+  .grid2{grid-template-columns: 1.05fr .95fr;}
+  .grid2eq{grid-template-columns:1fr 1fr;}
+  @media (max-width:980px){ .grid2, .grid2eq{grid-template-columns:1fr;} }
 
   .pill{
     border:1px solid rgba(255,255,255,.14);
@@ -184,7 +272,7 @@
     font-weight:1000;
   }
 
-  /* Start slide */
+  /* Slide 1 inputs */
   .centerStage{height:100%;display:grid;place-items:center;}
   .heroCard{
     width:min(980px,100%);
@@ -202,7 +290,15 @@
   .heroSub{margin-top:10px;color:var(--muted);font-weight:900;font-size:15px;line-height:1.5}
   .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
   @media (max-width:980px){.formGrid{grid-template-columns:1fr}}
-  .klabel{display:block;color:rgba(255,255,255,.78);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+  .klabel{
+    display:block;
+    color:rgba(255,255,255,.78);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
   input{
     width:100%;
     padding:12px 12px;
@@ -215,8 +311,11 @@
     outline:none;
     min-height:44px;
   }
-  input:focus{border-color: rgba(58,173,187,.72); box-shadow: 0 0 0 6px rgba(58,173,187,.12);}
-  html.ios input:focus{box-shadow:none;}
+  input:focus{
+    border-color: rgba(58,173,187,.72);
+    box-shadow: 0 0 0 6px rgba(58,173,187,.12);
+  }
+  html.ios input:focus{ box-shadow:none; }
   .metricRow{
     margin-top:12px;
     border:1px solid rgba(255,255,255,.12);
@@ -232,103 +331,325 @@
   .metricRow .mk{color:rgba(255,255,255,.70);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
   .metricRow .mv{font-weight:1000;font-size:clamp(26px,3.6vw,42px);letter-spacing:-.04em;color:var(--utility)}
 
-  /* Problem links */
-  .linkBtns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
-  @media (max-width:980px){.linkBtns{grid-template-columns:1fr}}
-  .linkBtn{
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:18px;
-    background: rgba(0,0,0,.16);
-    padding:14px;
-    cursor:pointer;
-    transition: transform .12s ease, background .12s ease, border-color .12s ease;
-    display:flex; flex-direction:column; gap:10px;
-  }
-  .linkBtn:hover{transform:translateY(-1px);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
-  .linkTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .capTag{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px;color: rgba(255,255,255,.86);white-space:nowrap;}
-  .linkTitle{font-weight:1000;letter-spacing:-.02em;font-size:18px;line-height:1.12}
-  .linkDesc{color:var(--muted);font-weight:900;font-size:13.5px;line-height:1.4}
-
   /* Bills */
-  .grid{display:grid; gap:14px;}
-  .grid2{grid-template-columns:1.05fr .95fr;}
-  @media (max-width:980px){ .grid2{grid-template-columns:1fr;} }
   .billFrame{border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(0,0,0,.16);overflow:hidden}
   .billViewport{height:clamp(260px,42vh,520px);background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .billViewport img{width:100%;height:100%;object-fit:contain;display:block;background:#000}
-
-  /* Outage */
-  .videoShell{border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;background:rgba(0,0,0,.22)}
-  .videoViewport{width:100%;height:clamp(260px,46vh,520px);background:#000}
-  video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
-
-  /* Compare */
-  .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
-  @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
-  .col{border:1px solid rgba(255,255,255,.14);border-radius:18px;background: rgba(255,255,255,.04);overflow:hidden;}
-  .colHead{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.05);display:flex;justify-content:space-between;gap:12px;align-items:center;}
-  .colHead .label{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .colHead .title{margin-top:2px; font-weight:1000; font-size:18px; letter-spacing:-.02em;}
-  .tag{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:999px;padding:6px 10px;font-weight:950;font-size:12px;color: rgba(255,255,255,.86);white-space:nowrap;}
-  .colBody{padding:14px; display:grid; gap:10px;}
-  .metric{border:1px solid rgba(255,255,255,.12);background: rgba(0,0,0,.16);border-radius:14px;padding:10px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;}
-  .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .metric .mv{font-weight:1000; font-size:18px;}
-
-  /* Price/kWh under monthly payments (brighter color) */
-  .cpkwhRow{
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.14);
-    border-radius:14px;
-    padding:10px 12px;
+  .billViewport img{width:100%;height:100%;object-fit:contain;display:block;cursor:pointer;background:#000}
+  .cap{
+    padding:12px 14px;
+    border-top:1px solid rgba(255,255,255,.10);
     display:flex;
     justify-content:space-between;
     gap:10px;
     align-items:center;
+    background: rgba(0,0,0,.14);
+    font-weight:1000;
+  }
+  .cap small{color:var(--muted2); font-weight:900; white-space:nowrap;}
+
+  .headlineBox{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(0,0,0,.16);
+    padding:16px;
+  }
+  .headlineBox .big{
+    margin:0 0 10px;
+    font-size: clamp(22px, 3.1vw, 40px);
+    font-weight:1000;
+    letter-spacing:-.045em;
+    line-height:1.06;
+  }
+  .headlineBox .sub{margin:0; color:var(--muted); font-weight:900; font-size:15px; line-height:1.45;}
+
+  /* Compare tool */
+  .compareTop{display:grid; grid-template-columns: repeat(3,1fr); gap:12px;}
+  @media (max-width:980px){ .compareTop{grid-template-columns:1fr;} }
+  .col{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    background: rgba(255,255,255,.04);
+    overflow:hidden;
+  }
+  .colHead{
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+  }
+  .colHead .label{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .colHead .title{margin-top:2px; font-weight:1000; font-size:18px; letter-spacing:-.02em;}
+  .tag{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:950;
+    font-size:12px;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
+  }
+  .colBody{padding:14px; display:grid; gap:10px;}
+  .metric{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.16);
+    border-radius:14px;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
     flex-wrap:wrap;
   }
-  .cpkwhRow .k{color:var(--muted2); font-weight:1000; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
-  .cpkwhRow .v{font-weight:1000; font-size:16px;}
-  .cpkwhRow.utility .v{color:var(--utilityB)}
-  .cpkwhRow.opt1 .v{color:var(--opt1B)}
-  .cpkwhRow.opt2 .v{color:var(--opt2B)}
+  .metric .mk{color:var(--muted2); font-weight:950; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+  .metric .mv{font-weight:1000; font-size:18px;}
 
-  /* Year wheel */
-  .yearPanel{margin-top:14px;border:1px solid rgba(255,255,255,.14);border-radius:22px;background: rgba(255,255,255,.04);overflow:hidden;}
-  .yearHead{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.10);background: linear-gradient(135deg, rgba(251,201,9,.11), rgba(58,173,187,.09));display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;}
+  /* NEW: price/kWh line under each monthly payment (in calculator) */
+  .cpkLine{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.12);
+    border-radius:14px;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .cpkLine .k{
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .cpkLine .v{
+    font-weight:1000;
+    font-size:16px;
+    letter-spacing:-.01em;
+  }
+
+  /* Year wheel panel */
+  .yearPanel{
+    margin-top:14px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    background: rgba(255,255,255,.04);
+    overflow:hidden;
+  }
+  .yearHead{
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background: linear-gradient(135deg, rgba(251,201,9,.11), rgba(58,173,187,.09));
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
   .yearHead .t{font-weight:1000; letter-spacing:-.02em; display:flex; align-items:center; gap:10px;}
-  .yearPill{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:999px;padding:8px 10px;font-weight:1000;display:flex;align-items:center;gap:10px;white-space:nowrap;}
+  .yearPill{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:8px 10px;
+    font-weight:1000;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    white-space:nowrap;
+  }
   .yearPill .dot2{width:10px;height:10px;border-radius:999px;background:var(--grad);}
-  .yearBody{padding:16px;display:grid;grid-template-columns: .9fr 1.1fr;gap:12px;align-items:stretch;}
+  .yearBody{
+    padding:16px;
+    display:grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap:12px;
+    align-items:stretch;
+  }
   @media (max-width:980px){ .yearBody{grid-template-columns:1fr;} }
-  .wheelBox{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:18px;padding:14px;display:grid;gap:12px;}
+
+  .wheelBox{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:18px;
+    padding:14px;
+    display:grid;
+    gap:12px;
+  }
   .wheelTop{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
   .yearBig{font-size: clamp(46px, 6.6vw, 78px); font-weight:1000; letter-spacing:-.05em; line-height:1;}
   .dialBtns{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-  .miniBtn{border:1px solid rgba(255,255,255,.14);background: rgba(255,255,255,.06);color:var(--text);border-radius:14px;padding:10px 12px;font-weight:950;min-height:44px;cursor:pointer;}
-  .wheel{position:relative;height:220px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background: rgba(0,0,0,.20);overflow:hidden;}
-  .wheel::before{content:"";position:absolute;inset:0;background: linear-gradient(180deg, rgba(11,16,23,.92), transparent 26%, transparent 74%, rgba(11,16,23,.92));pointer-events:none;z-index:2;}
-  .wheel::after{content:"";position:absolute;left:10px;right:10px;top: calc(50% - 22px);height:44px;border-radius:14px;border:1px solid rgba(251,201,9,.24);box-shadow: 0 0 0 6px rgba(58,173,187,.10);pointer-events:none;z-index:3;}
-  html.ios .wheel::after{box-shadow:none;}
-  .wheelList{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling: touch;padding: 88px 0;margin:0;}
-  .wheelList::-webkit-scrollbar{width:0;height:0;}
-  .wheelItem{height:44px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-weight:1000;font-size:20px;letter-spacing:-.01em;color: rgba(255,255,255,.72);user-select:none;cursor:pointer;}
-  .wheelItem.active{color: rgba(255,255,255,.96);text-shadow: 0 10px 32px rgba(0,0,0,.35);}
+  .miniBtn{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 12px;
+    font-weight:950;
+    min-height:44px;
+    cursor:pointer;
+  }
+  .wheel{
+    position:relative;
+    height:220px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.20);
+    overflow:hidden;
+  }
+  .wheel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(11,16,23,.92), transparent 26%, transparent 74%, rgba(11,16,23,.92));
+    pointer-events:none;
+    z-index:2;
+  }
+  .wheel::after{
+    content:"";
+    position:absolute;
+    left:10px; right:10px;
+    top: calc(50% - 22px);
+    height:44px;
+    border-radius:14px;
+    border:1px solid rgba(251,201,9,.24);
+    box-shadow: 0 0 0 6px rgba(58,173,187,.10);
+    pointer-events:none;
+    z-index:3;
+  }
+  html.ios .wheel::after{ box-shadow:none; }
 
-  .yearCompare{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:18px;padding:14px;display:grid;gap:12px;}
+  .wheelList{
+    height:100%;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 88px 0;
+    margin:0;
+  }
+  .wheelList::-webkit-scrollbar{ width: 0; height:0; }
+  .wheelItem{
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    scroll-snap-align:center;
+    font-weight:1000;
+    font-size:20px;
+    letter-spacing:-.01em;
+    color: rgba(255,255,255,.72);
+    user-select:none;
+    cursor:pointer;
+  }
+  .wheelItem.active{
+    color: rgba(255,255,255,.96);
+    text-shadow: 0 10px 32px rgba(0,0,0,.35);
+  }
+
+  .yearCompare{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:18px;
+    padding:14px;
+    display:grid;
+    gap:12px;
+  }
   .bigMoneyGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px;}
   @media (max-width:980px){ .bigMoneyGrid{grid-template-columns:1fr;} }
-  .bigTile{border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.04);border-radius:18px;padding:12px;}
-  .bigTile .bk{color:var(--muted2);font-weight:1000;font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  .chip{border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);border-radius:999px;padding:6px 10px;font-weight:950;color: rgba(255,255,255,.86);white-space:nowrap;font-size:12px;}
-  .bigTile .m{margin-top:10px;font-size: clamp(34px, 5.4vw, 58px);font-weight:1000;letter-spacing:-.035em;line-height:1;}
-  .yearSavings{border:1px solid rgba(52,199,89,.28);background: rgba(52,199,89,.10);border-radius:16px;padding:10px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;font-weight:1000;}
+  .bigTile{
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    border-radius:18px;
+    padding:12px;
+  }
+  .bigTile .bk{
+    color:var(--muted2);
+    font-weight:1000;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .chip{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    border-radius:999px;
+    padding:6px 10px;
+    font-weight:950;
+    color: rgba(255,255,255,.86);
+    white-space:nowrap;
+    font-size:12px;
+  }
+  .bigTile .m{
+    margin-top:10px;
+    font-size: clamp(34px, 5.4vw, 58px);
+    font-weight:1000;
+    letter-spacing:-.035em;
+    line-height:1;
+  }
+  .yearSavings{
+    border:1px solid rgba(52,199,89,.28);
+    background: rgba(52,199,89,.10);
+    border-radius:16px;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-weight:1000;
+  }
   .yearSavings .v{font-size:18px; color: var(--opt1); letter-spacing:-.01em;}
+
+  /* Modal (for bill zoom) */
+  .modal{
+    position:fixed; inset:0; z-index:300;
+    display:none; align-items:center; justify-content:center;
+    padding: calc(14px + var(--safeT)) calc(14px + var(--safeR)) calc(14px + var(--safeB)) calc(14px + var(--safeL));
+    background: rgba(0,0,0,.72);
+  }
+  .modal.show{display:flex}
+  .modalBox{
+    width:min(1100px, 100%);
+    height:min(84vh, 880px);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:22px;
+    background: rgba(10,16,24,.94);
+    overflow:hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,.55);
+    display:flex;
+    flex-direction:column;
+  }
+  .modalTop{
+    padding:10px 12px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .modalTop .title{font-weight:1000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60vw;}
+  .iconBtn{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+    border-radius:14px;
+    padding:10px 12px;
+    font-weight:950;
+    min-height:42px;
+    cursor:pointer;
+  }
+  .modalBody{flex:1; background:#000; display:flex; align-items:center; justify-content:center;}
+  .modalBody img{width:100%; height:100%; object-fit:contain; display:block;}
 </style>
 </head>
 
 <body>
+
 <div class="topbar">
   <div class="topbarInner">
     <div class="brand">
@@ -346,12 +667,15 @@
       <button class="btn danger hoverLift hideMobile" id="btnReset" type="button">Reset</button>
     </div>
   </div>
-  <div class="progressWrap"><div class="progress"><div id="progressFill"></div></div></div>
+  <div class="progressWrap">
+    <div class="progress"><div id="progressFill"></div></div>
+  </div>
 </div>
 
 <div class="deck">
   <div class="stage" id="stage">
 
+    <!-- Slide 1 -->
     <section class="slide luxShadow active" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Start</h2>
@@ -365,11 +689,17 @@
               <span class="pill">Baseline</span>
             </div>
             <div class="heroSub">
-              Enter the customer’s monthly average + annual usage. This calculates today’s $/kWh and auto-fills Edison in the comparison calculator.
+              Enter monthly average + annual usage. This calculates $/kWh and auto-fills Edison in the calculator.
             </div>
             <div class="formGrid">
-              <label><span class="klabel">Average monthly bill ($)</span><input id="custMonthly" inputmode="decimal" value="458"></label>
-              <label><span class="klabel">Annual usage (kWh)</span><input id="custUsage" inputmode="decimal" value="12000"></label>
+              <label>
+                <span class="klabel">Average monthly bill ($)</span>
+                <input id="custMonthly" inputmode="decimal" value="458">
+              </label>
+              <label>
+                <span class="klabel">Annual usage (kWh)</span>
+                <input id="custUsage" inputmode="decimal" value="12000">
+              </label>
             </div>
             <div class="metricRow">
               <div class="mk">Today’s average cost per kWh</div>
@@ -384,10 +714,11 @@
       </div>
     </section>
 
+    <!-- Slide 2 (Bills) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
-        <h2><span class="spark"></span> The Problem</h2>
-        <div class="pill"><span class="dot"></span> TOU + rising rates</div>
+        <h2><span class="spark"></span> Bills</h2>
+        <div class="pill"><span class="dot"></span> Problem → Proof</div>
       </div>
       <div class="slideBody">
         <div class="grid grid2">
@@ -395,61 +726,31 @@
             <div class="billViewport">
               <img id="imgUtilityBill" alt="Utility bill without solar">
             </div>
-          </div>
-          <div>
-            <div class="pill" style="margin-bottom:12px;">Peak hours cost more. Storage fixes the timing problem.</div>
-            <div class="linkBtns">
-              <div class="linkBtn" data-newtab="1" data-url="https://www.sce.com/save-money/rates-financing/residential-rate-plans/time-of-use-plans">
-                <div class="linkTop"><span class="capTag">TOU</span><span class="capTag">New window</span></div>
-                <div class="linkTitle">SCE Time-of-Use plans</div>
-                <div class="linkDesc">Official SCE TOU plans and pricing information.</div>
-              </div>
-
-              <div class="linkBtn" data-newtab="1" data-url="https://www.latimes.com/business/story/2025-05-22/edison-general-rate-case">
-                <div class="linkTop"><span class="capTag">L.A. fires</span><span class="capTag">New window</span></div>
-                <div class="linkTitle">LA Times: Edison rate case</div>
-                <div class="linkDesc">News context for continued rate pressure.</div>
-              </div>
+            <div class="cap">
+              <div>Today’s bill (no solar)</div>
+              <small>Tap to zoom</small>
             </div>
-
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide luxShadow" data-slide>
-      <div class="slideHead">
-        <h2><span class="spark"></span> Proof</h2>
-        <div class="pill"><span class="dot"></span> Solar + Storage</div>
-      </div>
-      <div class="slideBody">
-        <div class="grid grid2">
           <div class="billFrame">
             <div class="billViewport">
               <img id="imgSolarBill" alt="Solar + storage bill example">
             </div>
+            <div class="cap">
+              <div>Solar + storage bill example</div>
+              <small>Tap to zoom</small>
+            </div>
           </div>
-          <div class="pill">Solar covers the day • Batteries cover the expensive hours • Utility becomes backup</div>
+        </div>
+        <div class="headlineBox" style="margin-top:14px;">
+          <div class="big">Why storage changes everything</div>
+          <p class="sub">
+            Solar covers daytime. Batteries cover expensive hours. That’s why the utility bill can drop dramatically — the grid becomes backup.
+          </p>
         </div>
       </div>
     </section>
 
-    <section class="slide luxShadow" data-slide>
-      <div class="slideHead">
-        <h2><span class="spark"></span> Outage Protection</h2>
-        <div class="pill"><span class="dot"></span> Win the day • Own the night</div>
-      </div>
-      <div class="slideBody">
-        <div class="videoShell">
-          <div class="videoViewport">
-            <video id="outageVideo" controls playsinline preload="metadata">
-              <source id="outageSrc" type="video/mp4">
-            </video>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <!-- Slide 3 (Calculator) -->
     <section class="slide luxShadow" data-slide>
       <div class="slideHead">
         <h2><span class="spark"></span> Compare</h2>
@@ -463,20 +764,23 @@
 
       <div class="slideBody">
         <div class="compareTop">
-
+          <!-- Utility -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,255,255,.05));">
-              <div><div class="label">Utility</div><div class="title">Edison</div></div>
+              <div>
+                <div class="label">Utility</div>
+                <div class="title">Edison</div>
+              </div>
               <span class="tag">Red</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly bill ($)</span><input id="uPay" inputmode="decimal" value="458"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="uEsc" inputmode="decimal" value="9"></label>
 
-              <!-- brighter $/kWh under monthly payments -->
-              <div class="cpkwhRow utility">
-                <div class="k">Selected year cost per kWh</div>
-                <div class="v" id="uCpkwh">$0.00</div>
+              <!-- NEW: $/kWh line under monthly payment (UTILITY) -->
+              <div class="cpkLine">
+                <div class="k">Cost per kWh (selected year)</div>
+                <div class="v" id="uCpkwh" style="color:var(--utility)">$0.00</div>
               </div>
 
               <div class="metric">
@@ -486,19 +790,23 @@
             </div>
           </div>
 
+          <!-- Option 1 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(52,199,89,.16), rgba(255,255,255,.05));">
-              <div><div class="label">Option 1</div><div class="title">Proposal A</div></div>
+              <div>
+                <div class="label">Option 1</div>
+                <div class="title">Proposal A</div>
+              </div>
               <span class="tag">Green</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="aPay" inputmode="decimal" value="295"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="aEsc" inputmode="decimal" value="3.5"></label>
 
-              <!-- brighter $/kWh under monthly payments -->
-              <div class="cpkwhRow opt1">
-                <div class="k">Selected year cost per kWh</div>
-                <div class="v" id="aCpkwh">$0.00</div>
+              <!-- NEW: $/kWh line under monthly payment (OPTION A) -->
+              <div class="cpkLine">
+                <div class="k">Cost per kWh (selected year)</div>
+                <div class="v" id="aCpkwh" style="color:var(--opt1)">$0.00</div>
               </div>
 
               <div class="metric">
@@ -508,19 +816,23 @@
             </div>
           </div>
 
+          <!-- Option 2 -->
           <div class="col">
             <div class="colHead" style="background:linear-gradient(180deg, rgba(0,194,255,.16), rgba(255,255,255,.05));">
-              <div><div class="label">Option 2</div><div class="title">Proposal B</div></div>
+              <div>
+                <div class="label">Option 2</div>
+                <div class="title">Proposal B</div>
+              </div>
               <span class="tag">Cyan</span>
             </div>
             <div class="colBody">
               <label><span class="klabel">Avg monthly payment ($)</span><input id="bPay" inputmode="decimal" value="325"></label>
               <label><span class="klabel">Annual increase (%)</span><input id="bEsc" inputmode="decimal" value="4.9"></label>
 
-              <!-- brighter $/kWh under monthly payments -->
-              <div class="cpkwhRow opt2">
-                <div class="k">Selected year cost per kWh</div>
-                <div class="v" id="bCpkwh">$0.00</div>
+              <!-- NEW: $/kWh line under monthly payment (OPTION B) -->
+              <div class="cpkLine">
+                <div class="k">Cost per kWh (selected year)</div>
+                <div class="v" id="bCpkwh" style="color:var(--opt2)">$0.00</div>
               </div>
 
               <div class="metric">
@@ -529,7 +841,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="yearPanel">
@@ -550,7 +861,10 @@
               </div>
 
               <div class="wheel"><div class="wheelList" id="wheelList"></div></div>
-              <div style="color:var(--muted);font-weight:900;font-size:13px;">Scroll the year wheel. All three options update together.</div>
+
+              <div style="color:var(--muted);font-weight:900;font-size:13px;">
+                Scroll the year wheel. All three options update together.
+              </div>
             </div>
 
             <div class="yearCompare">
@@ -577,13 +891,13 @@
 
           </div>
         </div>
-
       </div>
     </section>
 
   </div>
 </div>
 
+<!-- Bottom controls -->
 <div class="presentBar">
   <div class="presentShell">
     <button class="btn" id="btnPrev" type="button">Prev</button>
@@ -592,20 +906,33 @@
   </div>
 </div>
 
+<!-- Bill zoom modal -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modalBox">
+    <div class="modalTop">
+      <div class="title" id="modalTitle">Bill</div>
+      <button class="iconBtn" id="modalClose" type="button">Close</button>
+    </div>
+    <div class="modalBody">
+      <img id="modalImg" alt="Zoomed bill">
+    </div>
+  </div>
+</div>
+
 <script>
-/* Put these 4 files next to index.html (same folder):
-   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png
-   - Scebill.jpeg
-   - IMG_9100.jpeg
-   - Outagevideo.mp4
-*/
+/* ===========================
+   FILES NEXT TO index.html (same folder, exact names):
+   - 4A5B0E0C-50D9-4752-8469-F61A667110D8.png   (logo)
+   - Scebill.jpeg                               (regular bill image)
+   - IMG_9100.jpeg                              (solar+storage bill image)
+   =========================== */
 const ASSETS = {
   logo: "4A5B0E0C-50D9-4752-8469-F61A667110D8.png",
   billUtility: "Scebill.jpeg",
-  billSolar: "IMG_9100.jpeg",
-  outageVideo: "Outagevideo.mp4"
+  billSolar: "IMG_9100.jpeg"
 };
 
+/* iOS detect */
 (function(){
   const ua = navigator.userAgent || "";
   const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -613,15 +940,16 @@ const ASSETS = {
 })();
 
 const $ = (id)=>document.getElementById(id);
+
+/* Load assets */
 $("logoImg").src = ASSETS.logo;
 $("imgUtilityBill").src = ASSETS.billUtility;
 $("imgSolarBill").src = ASSETS.billSolar;
-$("outageSrc").src = ASSETS.outageVideo;
-$("outageVideo").load();
 
 /* Slides */
 const slides = Array.from(document.querySelectorAll("[data-slide]"));
 let idx = 0;
+
 function show(i){
   idx = Math.max(0, Math.min(slides.length-1, i));
   slides.forEach((s,n)=>s.classList.toggle("active", n===idx));
@@ -647,56 +975,71 @@ $("btnFS").addEventListener("click", async ()=>{
     else await document.exitFullscreen();
   }catch(e){}
 });
+
 window.addEventListener("keydown", (e)=>{
   if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){ e.preventDefault(); next(); }
   if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); prev(); }
   if(e.key==="Home"){ e.preventDefault(); start(); }
+  if(e.key==="Escape" && $("modal").classList.contains("show")) closeModal();
 });
 
-/* Problem links open new window */
-document.addEventListener("click", (e)=>{
-  const n = e.target.closest("[data-url][data-newtab='1']");
-  if(!n) return;
-  const url = n.getAttribute("data-url");
-  if(url) window.open(url, "_blank", "noopener,noreferrer");
-});
-
+/* Customer baseline */
 function num(v,fallback=0){
   const x = parseFloat(String(v).replace(/[^0-9.\-]/g,""));
   return isFinite(x)?x:fallback;
 }
-function money(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
-function money2(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+const custMonthly = $("custMonthly");
+const custUsage = $("custUsage");
+const custCpkwh = $("custCpkwh");
 
-/* Start slide baseline */
-const custMonthly=$("custMonthly"), custUsage=$("custUsage"), custCpkwh=$("custCpkwh");
 function recalcCustomer(){
-  const m=num(custMonthly.value,458);
-  const kwh=Math.max(0,num(custUsage.value,12000));
-  const annual=m*12;
-  const cpk=(kwh>0)?(annual/kwh):0;
-  custCpkwh.textContent="$"+(cpk||0).toFixed(2);
+  const m = num(custMonthly.value,458);
+  const kwh = Math.max(0, num(custUsage.value,12000));
+  const annual = m*12;
+  const cpk = (kwh>0) ? (annual/kwh) : 0;
+  custCpkwh.textContent = "$" + (cpk||0).toFixed(2);
 }
 custMonthly.addEventListener("input", ()=>{ recalcCustomer(); syncUtilityFromCustomer(); });
 custUsage.addEventListener("input", ()=>{ recalcCustomer(); recalc(); });
+
 $("btnApply").addEventListener("click", ()=>syncUtilityFromCustomer());
 $("btnContinue").addEventListener("click", next);
 
-function syncUtilityFromCustomer(){
-  $("uPay").value = String(num(custMonthly.value,458));
-  recalc();
+/* Bill zoom modal */
+const modal = $("modal");
+const modalImg = $("modalImg");
+const modalTitle = $("modalTitle");
+
+function openModal(title, src){
+  modalTitle.textContent = title;
+  modalImg.src = src;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
 }
+function closeModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+  modalImg.src = "";
+}
+$("modalClose").addEventListener("click", closeModal);
+modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
+
+$("imgUtilityBill").addEventListener("click", ()=>openModal("Today’s bill (no solar)", ASSETS.billUtility));
+$("imgSolarBill").addEventListener("click", ()=>openModal("Solar + storage bill example", ASSETS.billSolar));
 
 /* Calculator */
-const years=25;
-let currentYear=1;
+function money(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0}); }
+function money2(x){ const n=isFinite(x)?x:0; return n.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+const years = 25;
+let currentYear = 1;
 
 const uPay=$("uPay"), uEsc=$("uEsc"), aPay=$("aPay"), aEsc=$("aEsc"), bPay=$("bPay"), bEsc=$("bEsc");
 const uTotal=$("uTotal"), aSave=$("aSave"), bSave=$("bSave");
 const yearPill=$("yearPill"), yearBig=$("yearBig");
 const uYearPay=$("uYearPay"), aYearPay=$("aYearPay"), bYearPay=$("bYearPay"), best25=$("best25");
 
-/* Price per kWh displays */
+/* NEW: $/kWh fields under monthly payments */
 const uCpkwh=$("uCpkwh"), aCpkwh=$("aCpkwh"), bCpkwh=$("bCpkwh");
 
 function yearlyMonthly(base, escPct, year){
@@ -708,11 +1051,13 @@ function sum25(baseMonthly, escPct){
   for(let y=1;y<=years;y++) sum += yearlyMonthly(baseMonthly, escPct, y)*12;
   return sum;
 }
-function costPerKwhForYear(monthly, escPct, year, annualUsage){
-  const kwh = Math.max(0, annualUsage);
-  if(kwh <= 0) return 0;
-  const annualCost = yearlyMonthly(monthly, escPct, year) * 12;
-  return annualCost / kwh;
+
+/* NEW: cost per kWh for selected year based on annual usage */
+function cpkwhForYear(monthlyPaymentForYear, annualUsage){
+  const usage = Math.max(0, annualUsage);
+  if(usage <= 0) return 0;
+  const annualCost = monthlyPaymentForYear * 12;
+  return annualCost / usage;
 }
 
 function recalc(){
@@ -727,26 +1072,35 @@ function recalc(){
   aSave.textContent = money(saveA);
   bSave.textContent = money(saveB);
 
-  uYearPay.textContent = money2(yearlyMonthly(U,UE,currentYear));
-  aYearPay.textContent = money2(yearlyMonthly(A,AE,currentYear));
-  bYearPay.textContent = money2(yearlyMonthly(B,BE,currentYear));
+  const uY = yearlyMonthly(U,UE,currentYear);
+  const aY = yearlyMonthly(A,AE,currentYear);
+  const bY = yearlyMonthly(B,BE,currentYear);
+
+  uYearPay.textContent = money2(uY);
+  aYearPay.textContent = money2(aY);
+  bYearPay.textContent = money2(bY);
 
   best25.textContent = money(Math.max(saveA, saveB));
 
-  const annualUsage = num(custUsage.value,12000);
-  const uK = costPerKwhForYear(U,UE,currentYear,annualUsage);
-  const aK = costPerKwhForYear(A,AE,currentYear,annualUsage);
-  const bK = costPerKwhForYear(B,BE,currentYear,annualUsage);
+  /* NEW: update $/kWh under monthly payments based on selected year + annual usage */
+  const usage = num(custUsage.value,12000);
+  const uK = cpkwhForYear(uY, usage);
+  const aK = cpkwhForYear(aY, usage);
+  const bK = cpkwhForYear(bY, usage);
 
-  uCpkwh.textContent = "$" + (uK||0).toFixed(2);
-  aCpkwh.textContent = "$" + (aK||0).toFixed(2);
-  bCpkwh.textContent = "$" + (bK||0).toFixed(2);
+  uCpkwh.textContent = "$" + (uK||0).toFixed(2) + " / kWh";
+  aCpkwh.textContent = "$" + (aK||0).toFixed(2) + " / kWh";
+  bCpkwh.textContent = "$" + (bK||0).toFixed(2) + " / kWh";
 }
-
 [uPay,uEsc,aPay,aEsc,bPay,bEsc].forEach(el=>{
   el.addEventListener("input", recalc);
   el.addEventListener("change", recalc);
 });
+
+function syncUtilityFromCustomer(){
+  uPay.value = String(num(custMonthly.value,458));
+  recalc();
+}
 
 /* Year wheel */
 function setYear(y, snapWheel=false){
@@ -757,12 +1111,12 @@ function setYear(y, snapWheel=false){
   recalc();
   if(snapWheel) snapWheelToYear(currentYear);
 }
-window.setYear=setYear;
+window.setYear = setYear;
 
 function nudgeYear(d){ setYear(currentYear + d, true); }
-$("btnYMinus")?.addEventListener("click", ()=>nudgeYear(-1));
-$("btnYPlus")?.addEventListener("click", ()=>nudgeYear(1));
-$("btnYReset")?.addEventListener("click", ()=>setYear(1,true));
+$("btnYMinus").addEventListener("click", ()=>nudgeYear(-1));
+$("btnYPlus").addEventListener("click", ()=>nudgeYear(1));
+$("btnYReset").addEventListener("click", ()=>setYear(1,true));
 
 const wheelList = $("wheelList");
 (function buildWheel(){
@@ -815,11 +1169,14 @@ function resetAll(){
   recalcCustomer(); syncUtilityFromCustomer();
   setYear(1,true); show(0); recalc();
 }
+
+/* Init */
 recalcCustomer();
 syncUtilityFromCustomer();
 setYear(1,true);
 recalc();
 show(0);
 </script>
+
 </body>
 </html>
